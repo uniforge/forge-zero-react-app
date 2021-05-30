@@ -11,6 +11,8 @@ function App() {
       <WalletProvider>
         <div className="App">
           <header className="App-header">
+            <img src={logo} className="App-logo" alt="logo" />
+            <br />
             <ListAccount />
           </header>
         </div>
