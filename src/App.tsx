@@ -2,7 +2,7 @@ import { Provider } from "react-redux";
 import { store } from "./store";
 import { WalletProvider, useWallet } from "./components/WalletProvider";
 import { ListAccount } from "./components/ListAccount";
-import logo from "./logo.svg";
+import logo from "./forge_angle.png";
 import "./App.css";
 
 function App() {
