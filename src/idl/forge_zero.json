@@ -1,0 +1,385 @@
+{
+  "version": "0.0.0",
+  "name": "forge_zero",
+  "instructions": [
+    {
+      "name": "offerTokenForSale",
+      "accounts": [
+        {
+          "name": "tokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "from",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "artist",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "tokenId",
+          "type": "u16"
+        },
+        {
+          "name": "minBidLamports",
+          "type": "u64"
+        }
+      ]
+    }
+  ],
+  "state": {
+    "struct": {
+      "name": "Forge",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "type": {
+              "array": ["u8", 64]
+            }
+          },
+          {
+            "name": "symbol",
+            "type": {
+              "array": ["u8", 16]
+            }
+          },
+          {
+            "name": "contentHash",
+            "type": {
+              "array": ["u8", 32]
+            }
+          },
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "maxSupply",
+            "type": "u16"
+          },
+          {
+            "name": "supplyUnclaimed",
+            "type": "u16"
+          },
+          {
+            "name": "artist",
+            "type": "publicKey"
+          },
+          {
+            "name": "minFeeLamports",
+            "type": "u64"
+          },
+          {
+            "name": "secondaryFeeBps",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    "methods": [
+      {
+        "name": "new",
+        "accounts": [
+          {
+            "name": "authority",
+            "isMut": false,
+            "isSigner": true
+          }
+        ],
+        "args": [
+          {
+            "name": "name",
+            "type": {
+              "array": ["u8", 64]
+            }
+          },
+          {
+            "name": "symbol",
+            "type": {
+              "array": ["u8", 16]
+            }
+          },
+          {
+            "name": "contentHash",
+            "type": {
+              "array": ["u8", 32]
+            }
+          },
+          {
+            "name": "maxSupply",
+            "type": "u16"
+          },
+          {
+            "name": "artist",
+            "type": "publicKey"
+          },
+          {
+            "name": "minFeeLamports",
+            "type": "u64"
+          },
+          {
+            "name": "secondaryFeeBps",
+            "type": "u64"
+          }
+        ]
+      },
+      {
+        "name": "createAccount",
+        "accounts": [
+          {
+            "name": "tokenAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "authority",
+            "isMut": true,
+            "isSigner": true
+          },
+          {
+            "name": "from",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "artist",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "tokenProgram",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "forge",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "rent",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "systemProgram",
+            "isMut": false,
+            "isSigner": false
+          }
+        ],
+        "args": [
+          {
+            "name": "fee",
+            "type": "u64"
+          }
+        ]
+      },
+      {
+        "name": "claimToken",
+        "accounts": [
+          {
+            "name": "tokenAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "authority",
+            "isMut": true,
+            "isSigner": true
+          },
+          {
+            "name": "from",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "artist",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "tokenProgram",
+            "isMut": false,
+            "isSigner": false
+          }
+        ],
+        "args": [
+          {
+            "name": "fee",
+            "type": "u64"
+          }
+        ]
+      },
+      {
+        "name": "buyToken",
+        "accounts": [
+          {
+            "name": "sellerTokenAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "tokenAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "authority",
+            "isMut": true,
+            "isSigner": true
+          },
+          {
+            "name": "from",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "to",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "artist",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "tokenProgram",
+            "isMut": false,
+            "isSigner": false
+          }
+        ],
+        "args": [
+          {
+            "name": "tokenId",
+            "type": "u16"
+          },
+          {
+            "name": "bidLamports",
+            "type": "u64"
+          }
+        ]
+      }
+    ]
+  },
+  "accounts": [
+    {
+      "name": "TokenAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "nTokens",
+            "type": "u16"
+          },
+          {
+            "name": "ownedTokens",
+            "type": {
+              "array": [
+                {
+                  "defined": "Token"
+                },
+                16
+              ]
+            }
+          },
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "nativeTokenAddress",
+            "type": "publicKey"
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "Token",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "u16"
+          },
+          {
+            "name": "forSale",
+            "type": "bool"
+          },
+          {
+            "name": "minBidLamports",
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [
+    {
+      "code": 100,
+      "name": "AllTokensClaimed",
+      "msg": "All tokens from this forge have been claimed. Try the secondary market"
+    },
+    {
+      "code": 101,
+      "name": "TokenAccountFull",
+      "msg": "This account does not have any remaining space"
+    },
+    {
+      "code": 102,
+      "name": "Unauthorized",
+      "msg": "You do not have sufficient permissions to perform this action."
+    },
+    {
+      "code": 103,
+      "name": "TokenNotOwned",
+      "msg": "You do not own that token"
+    },
+    {
+      "code": 104,
+      "name": "NonexistentToken",
+      "msg": "Invalid token id"
+    },
+    {
+      "code": 105,
+      "name": "InsufficientFee",
+      "msg": "Creating an account requires at least 0.1 Sol (100,000,000 lamports)"
+    },
+    {
+      "code": 106,
+      "name": "WrongArtistAccount",
+      "msg": "Account supplied for the artist is incorrect"
+    },
+    {
+      "code": 107,
+      "name": "TokenNotForSale",
+      "msg": "Requested token is not for sale"
+    },
+    {
+      "code": 108,
+      "name": "WrongSellerAccount",
+      "msg": "Native token account for the seller is incorrect"
+    }
+  ]
+}
