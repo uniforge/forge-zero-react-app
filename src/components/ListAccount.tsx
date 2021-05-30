@@ -3,6 +3,8 @@ import { PublicKey } from "@solana/web3.js";
 import { BN } from "@project-serum/anchor";
 import { useWallet } from "./WalletProvider";
 import { Token } from "../types/types";
+import { Row, Col } from "antd";
+import { BeachCard } from "./BeachCard";
 
 const forgeAddress = new PublicKey(
   "91xgw1p2LNkgeLnSq4RgYLGN8Liy7khSxxJPuawBFgJ4"
@@ -46,35 +48,30 @@ const defaultAccountState: AccountState = {
 
 function AccountCard(account: AccountState) {
   return (
-    <div>
-      <h3>{account.authority.toBase58()}</h3>
-      <ol>
-        {account.ownedTokens.map((token) => {
-          if (token.id != 0) {
-            return <li>{tokenFormatter(token)}</li>;
-          }
+    <Row gutter={[{ xs: 0, sm: 16 }, 16]}>
+      {account.ownedTokens
+        .filter((token) => token.id != 0)
+        .map((token) => {
+          return (
+            <Col xs={20} sm={16} md={12} lg={8} xl={6}>
+              <BeachCard token={token} />
+            </Col>
+          );
         })}
-      </ol>
-    </div>
+    </Row>
   );
 }
 
 export function ListAccount() {
-  const { forgeClient } = useWallet();
+  const { wallet, forgeClient } = useWallet();
   const [tokenAccount, setTokenAccount] =
     useState<AccountState>(defaultAccountState);
-  const [tokenAccountAddr, settokenAccountAddr] = useState<any>(undefined);
-  const [tokenState, setTokenState] = useState<any>(undefined);
 
   useEffect(() => {
     forgeClient.account.tokenAccount
       .associated(userAddress, forgeAddress)
       .then((account: any) => {
         setTokenAccount(account);
-        settokenAccountAddr(account.authority.toBase58());
-        const aToken = account.ownedTokens[2];
-        const minBidSol = aToken.minBidLamports / 1e9;
-        setTokenState(tokenFormatter(aToken));
       });
   }, []);
 
