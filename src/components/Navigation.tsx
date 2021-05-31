@@ -1,18 +1,17 @@
-import React, { useState, useEffect, ReactElement } from "react";
+import { useEffect, ReactElement } from "react";
+import { Link, useHistory, generatePath } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   Layout,
-  Menu,
   Select,
   Input,
   Typography,
   Button,
-  Row,
   Col,
   notification,
 } from "antd";
 import { CloseOutlined, UserOutlined } from "@ant-design/icons";
-import { networks, State as StoreState, ActionType } from "../store/reducer";
+import { State as StoreState, ActionType } from "../store/reducer";
 import { useWallet } from "./WalletProvider";
 import logo from "../logo.png";
 
@@ -62,7 +61,7 @@ export function WalletConnectButton(
       });
       notification.success({ message: "Connected to wallet" });
     });
-  }, [wallet, dispatch, notification, forgeClient.provider.connection]);
+  }, [wallet, dispatch, forgeClient.provider.connection]);
 
   return showDisconnect ? (
     <Button style={props.style} onClick={() => wallet.disconnect()}>
@@ -107,12 +106,21 @@ function UserSelector() {
 }
 
 export function Navigation() {
-  const onSearch = (value: string) => console.log(value);
+  let history = useHistory();
+
+  const onSearch = (value: string) => {
+    if (value !== "") {
+      const newPath = generatePath("/listAccount/:pubKey", { pubKey: value });
+      history.push(newPath);
+    }
+  };
   const { wallet } = useWallet();
 
   return (
     <Header style={{ display: "flex", alignItems: "center" }}>
-      <img src={logo} />
+      <Link to="/">
+        <img src={logo} alt="Uniforge logo" />
+      </Link>
       <Col flex="auto"></Col>
       <Search
         placeholder="Search for a public key"

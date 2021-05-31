@@ -1,41 +1,44 @@
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./store";
-import { WalletProvider, useWallet } from "./components/WalletProvider";
-import { ListAccount } from "./components/ListAccount";
+import { WalletProvider } from "./components/WalletProvider";
+import { Home } from "./views/Home";
+import { ListAccount } from "./views/ListAccount";
 import { Navigation } from "./components/Navigation";
-import { Layout, Button } from "antd";
+import { Layout } from "antd";
 import "./App.css";
-import builtOn from "./builton.svg";
 
-const { Header, Content, Footer } = Layout;
+const { Footer } = Layout;
 
 function App() {
   const height: number = window.innerHeight;
 
   return (
-    <Provider store={store}>
-      <WalletProvider>
-        <Layout>
-          <Navigation />
-          <Content
-            className="site-layout"
-            style={{ padding: "0 50px", marginTop: 64 }}
-          >
-            <div
-              className="site-layout-background"
-              style={{ padding: 24, minHeight: height - 132 }}
-            >
-              <ListAccount />
-            </div>
-          </Content>
-          <Footer style={{ textAlign: "center" }}>
-            <div className="builton" />
-            <br />
-            <div>Uniforge ©2021</div>
-          </Footer>
-        </Layout>
-      </WalletProvider>
-    </Provider>
+    <Router>
+      <Provider store={store}>
+        <WalletProvider>
+          <Layout>
+            <Navigation />
+            <Switch>
+              <Route
+                exact
+                path="/"
+                component={() => <Home height={height} />}
+              ></Route>
+              <Route
+                path="/listAccount/:pubKey"
+                component={() => <ListAccount height={height} />}
+              />
+            </Switch>
+            <Footer style={{ textAlign: "center" }}>
+              <div className="builton" />
+              <br />
+              <div>Uniforge ©2021</div>
+            </Footer>
+          </Layout>
+        </WalletProvider>
+      </Provider>
+    </Router>
   );
 }
 

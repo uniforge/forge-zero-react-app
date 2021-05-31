@@ -11,7 +11,6 @@ import { Connection, ConfirmOptions, PublicKey } from "@solana/web3.js";
 import Wallet from "@project-serum/sol-wallet-adapter";
 import { Program, Idl, Provider } from "@project-serum/anchor";
 import { State as StoreState } from "../store/reducer";
-import MultisigIdl from "../idl";
 import forgeZero from "../idl/forge_zero.json";
 
 const programAddress = new PublicKey(

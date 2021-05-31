@@ -1,9 +1,9 @@
-import { Card, Avatar, Tooltip, Row, Col } from "antd";
+import { Card, Tooltip, Row, Col, Typography } from "antd";
 import { ToTopOutlined } from "@ant-design/icons";
 import { BN } from "@project-serum/anchor";
 import { Token } from "../types/types";
 
-const { Meta } = Card;
+const { Text } = Typography;
 
 export function BeachCard(props: { token: Token }) {
   const minBidSol = props.token.minBidLamports.div(new BN(1e9)).toNumber();
@@ -22,15 +22,12 @@ export function BeachCard(props: { token: Token }) {
         </Tooltip>,
       ]}
     >
-      {/* <Meta
-        avatar={
-          <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-        }
-        title={props.title}
-        description={props.description}
-      /> */}
       <Row>
-        <Col>{"Solset #" + String(props.token.id).padStart(4, "0")}</Col>
+        <Col>
+          <Text strong>
+            {"Solset #" + String(props.token.id).padStart(4, "0")}
+          </Text>
+        </Col>
         <Col flex="auto"></Col>
         <Col>{props.token.forSale ? "◎" + minBidSol : "-"}</Col>
       </Row>
