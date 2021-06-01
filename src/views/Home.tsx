@@ -54,9 +54,14 @@ export function Home(props: { height: number }) {
             : "Connect a wallet to get started."}
         </Title>
 
-        {wallet.publicKey ? <Title level={3}>Create an account!</Title> : ""}
-
-        <ClaimButton />
+        {wallet.publicKey ? (
+          <div>
+            <Title level={3}>Create an account!</Title>
+            <ClaimButton />
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </Content>
   );

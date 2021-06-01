@@ -20,7 +20,7 @@ import Wallet from "@project-serum/sol-wallet-adapter";
 import { useWallet } from "./WalletProvider";
 
 notification.config({
-  duration: 3,
+  duration: 5,
   rtl: true,
   placement: "topRight",
 });
@@ -119,7 +119,14 @@ export function ClaimButton() {
       const url = "https://explorer.solana.com/tx/" + signature + "?" + params;
       console.log(url);
 
-      notification.success({ message: "Created a new token account" });
+      notification.success({
+        message: "Created a new token account",
+        description: (
+          <a href={url} target="_blank">
+            View transaction on explorer
+          </a>
+        ),
+      });
     } catch (e) {
       console.warn(e);
       notification.error({ message: "Failed to create a new token account" });
