@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { PublicKey } from "@solana/web3.js";
 import { BN } from "@project-serum/anchor";
 import { useWallet } from "../components/WalletProvider";
-import { Token } from "../types/types";
+import { AccountState } from "../types";
 import { Breadcrumb, Layout, Row, Col } from "antd";
 import { HomeOutlined } from "@ant-design/icons";
 import { BeachCard } from "../components/BeachCard";
@@ -16,13 +16,6 @@ const forgeAddress = new PublicKey(
 // const userAddress = new PublicKey(
 //   "FdG56qcR42XREhtNz8SQPYRdCVeTrexwskqizkY95P1Z"
 // );
-
-type AccountState = {
-  nTokens: number;
-  ownedTokens: [Token];
-  authority: PublicKey | null;
-  nativeTokenAddress: PublicKey | null;
-};
 
 const defaultAccountState: AccountState = {
   nTokens: 0,
@@ -66,9 +59,10 @@ export function ListAccount(props: { height: number }) {
         forgeClient.account.tokenAccount
           .associated(address, forgeAddress)
           .then((account: any) => {
+            console.log("Doing something")
             setTokenAccount(account);
           })
-          .catch((error) => {
+          .catch(() => {
             setTokenAccount(defaultAccountState);
           });
       }
@@ -85,7 +79,7 @@ export function ListAccount(props: { height: number }) {
       </Breadcrumb>
       <div
         className="site-layout-background"
-        style={{ padding: 24, minHeight: props.height - 254 }}
+        style={{ padding: 24, minHeight: props.height - 214 }}
       >
         <div>{AccountCard(tokenAccount)}</div>
       </div>

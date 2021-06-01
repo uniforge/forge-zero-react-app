@@ -1,7 +1,7 @@
 import { Card, Tooltip, Row, Col, Typography } from "antd";
 import { ToTopOutlined } from "@ant-design/icons";
 import { BN } from "@project-serum/anchor";
-import { Token } from "../types/types";
+import { Token } from "../types";
 
 const { Text } = Typography;
 

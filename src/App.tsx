@@ -32,8 +32,6 @@ function App() {
             </Switch>
             <Footer style={{ textAlign: "center" }}>
               <div className="builton" />
-              <br />
-              <div>Uniforge ©2021</div>
             </Footer>
           </Layout>
         </WalletProvider>

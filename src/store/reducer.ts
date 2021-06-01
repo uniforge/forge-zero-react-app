@@ -1,4 +1,5 @@
 import { PublicKey } from "@solana/web3.js";
+import { AccountState } from "../types";
 
 export type Action = {
   type: ActionType;
@@ -12,6 +13,7 @@ export enum ActionType {
   CommonWalletDidDisconnect,
   CommonWalletSetProvider,
   CommonSetNetwork,
+  CommonSetBalance,
 }
 
 export default function reducer(
@@ -30,6 +32,7 @@ export default function reducer(
       return newState;
     case ActionType.CommonWalletDidDisconnect:
       newState.common.isWalletConnected = false;
+      newState.common.walletDetails.balance = null;
       return newState;
     case ActionType.CommonSetNetwork:
       if (newState.common.network.label !== action.item.network.label) {
@@ -38,6 +41,9 @@ export default function reducer(
       return newState;
     default:
       return newState;
+    case ActionType.CommonSetBalance:
+      newState.common.walletDetails.balance = action.item.newBalance;
+      return newState;
   }
 }
 
@@ -45,10 +51,16 @@ export type State = {
   common: CommonState;
 };
 
+export type WalletDetails = {
+  balance: number | null;
+  tokenAccount: AccountState | null;
+};
+
 export type CommonState = {
   walletProvider?: string;
   isWalletConnected: boolean;
   network: Network;
+  walletDetails: WalletDetails;
 };
 
 export const networks: Networks = {
@@ -57,11 +69,11 @@ export const networks: Networks = {
     label: "Mainnet Beta",
     url: "https://solana-api.projectserum.com",
     explorerClusterSuffix: "",
-    multisigProgramId: new PublicKey(
-      "A9HAbnCwoD6f2NkZobKFf6buJoN9gUVVvX5PoUnDHS6u"
+    forgeProgramId: new PublicKey(
+      "ForgeHXbqRF4ssv7QVn9NHkQx4hqUDXrWaJ9EGywjTqv"
     ),
-    multisigUpgradeAuthority: new PublicKey(
-      "3uztpEgUmvirDBYRXgDamUDZiU5EcgTwArQ2pULtHJPC"
+    forgeUpgradeAuthority: new PublicKey(
+      "8czvGZQcUDrUop7yw6vybroVu7jrtGsEshDCc4nbUScf"
     ),
   },
   devnet: {
@@ -69,20 +81,20 @@ export const networks: Networks = {
     label: "Devnet",
     url: "https://devnet.solana.com",
     explorerClusterSuffix: "devnet",
-    multisigProgramId: new PublicKey(
-      "F3Uf5F61dmht1xuNNNkk3jnzj82TY56vVjVEhZALRkN"
+    forgeProgramId: new PublicKey(
+      "ForgeHXbqRF4ssv7QVn9NHkQx4hqUDXrWaJ9EGywjTqv"
     ),
   },
   // Fill in with your local cluster addresses.
-  // localhost: {
-  //   // Cluster.
-  //   label: "Localhost",
-  //   url: "http://localhost:8899",
-  //   explorerClusterSuffix: "localhost",
-  //   multisigProgramId: new PublicKey(
-  //     "9z7Pq56To96qbVLzuBcf47Lc7u8uUWZh6k5rhcaTsDjz"
-  //   ),
-  // },
+  localhost: {
+    // Cluster.
+    label: "Localhost",
+    url: "http://localhost:8899",
+    explorerClusterSuffix: "localhost",
+    forgeProgramId: new PublicKey(
+      "ForgeHXbqRF4ssv7QVn9NHkQx4hqUDXrWaJ9EGywjTqv"
+    ),
+  },
 };
 
 export const initialState: State = {
@@ -90,6 +102,7 @@ export const initialState: State = {
     isWalletConnected: false,
     walletProvider: "https://www.sollet.io",
     network: networks.devnet,
+    walletDetails: { balance: null, tokenAccount: null },
   },
 };
 
@@ -100,6 +113,6 @@ export type Network = {
   label: string;
   url: string;
   explorerClusterSuffix: string;
-  multisigProgramId: PublicKey;
-  multisigUpgradeAuthority?: PublicKey;
+  forgeProgramId: PublicKey;
+  forgeUpgradeAuthority?: PublicKey;
 };

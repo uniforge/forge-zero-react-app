@@ -30,6 +30,7 @@ const WalletContext = React.createContext<null | WalletContextValues>(null);
 
 type WalletContextValues = {
   wallet: typeof Wallet;
+  connection: Connection;
   forgeClient: Program;
 };
 
@@ -43,7 +44,7 @@ export function WalletProvider(
     };
   });
 
-  const { wallet, forgeClient } = useMemo(() => {
+  const { wallet, connection, forgeClient } = useMemo(() => {
     const opts: ConfirmOptions = {
       preflightCommitment: "recent",
       commitment: "recent",
@@ -56,12 +57,13 @@ export function WalletProvider(
 
     return {
       wallet,
+      connection,
       forgeClient,
     };
   }, [walletProvider, network]);
 
   return (
-    <WalletContext.Provider value={{ wallet, forgeClient }}>
+    <WalletContext.Provider value={{ wallet, connection, forgeClient }}>
       {props.children}
     </WalletContext.Provider>
   );
