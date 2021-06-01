@@ -13,6 +13,7 @@ import {
 import { CloseOutlined, UserOutlined } from "@ant-design/icons";
 import { State as StoreState, ActionType } from "../store/reducer";
 import { useWallet } from "../contexts/WalletProvider";
+import { useTokenAccount } from "../contexts/TokenAccountProvider";
 import logo from "../Anvil.png";
 
 const { Header } = Layout;
@@ -40,6 +41,7 @@ export function WalletConnectButton(
   });
   const dispatch = useDispatch();
   const { wallet, forgeClient } = useWallet();
+  const { setTokenAccountState } = useTokenAccount();
   const [key, setKey] = useState<number>(0);
 
   // Wallet connection event listeners.
@@ -58,6 +60,7 @@ export function WalletConnectButton(
         message: "Disconnected from wallet",
       });
       setKey(key + 1);
+      setTokenAccountState({ has: true, account: undefined });
     });
     wallet.on("connect", async () => {
       dispatch({

@@ -21,6 +21,7 @@ import { BN, Program } from "@project-serum/anchor";
 // @ts-ignore
 import Wallet from "@project-serum/sol-wallet-adapter";
 import { useWallet } from "../contexts/WalletProvider";
+import { useTokenAccount } from "../contexts/TokenAccountProvider";
 import { FORGE_ID } from "../constants";
 
 notification.config({
@@ -29,7 +30,7 @@ notification.config({
   placement: "topRight",
 });
 
-export function ClaimButton() {
+export function CreateAccount() {
   console.log("ClaimButton main body");
   // Get URL params from redux store
   const { params } = useSelector((state: StoreState) => {
@@ -50,13 +51,14 @@ export function ClaimButton() {
   });
 
   const { wallet, forgeClient } = useWallet();
+  const { getTokenAccount } = useTokenAccount();
 
   async function createAccount(
     wallet: Wallet,
     forgeClient: Program,
     params: string
   ) {
-    console.log("Main of singleshot");
+    console.log("Main of account creation");
     const connection = forgeClient.provider.connection;
     const balanceNeeded = await Token.getMinBalanceRentForExemptAccount(
       connection
@@ -157,6 +159,9 @@ export function ClaimButton() {
           </a>
         ),
       });
+
+      // Get the updated the account
+      getTokenAccount();
     } catch (e) {
       console.warn(e);
       notification.error({ message: "Failed to create a new token account" });

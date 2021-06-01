@@ -5,39 +5,30 @@ import { HomeOutlined } from "@ant-design/icons";
 import { useWallet } from "../contexts/WalletProvider";
 import { useTokenAccount } from "../contexts/TokenAccountProvider";
 import { Forge } from "../components/Forge";
-import { useEffect } from "react";
+import { TokenAccount } from "../components/TokenAccount";
+import { Airdrop } from "../components/Airdrop";
+import { useCallback, useEffect, useState } from "react";
+import { SYMBOLS } from "../constants";
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
 
 export function Home(props: { height: number }) {
   const { wallet, connection } = useWallet();
-
   const { tokenAccount, getTokenAccount } = useTokenAccount();
+  const [balanceSol, setBalanceSol] = useState<number>();
 
-  const { isWalletConnected, balanceSol } = useSelector((state: StoreState) => {
-    return {
-      isWalletConnected: state.common.isWalletConnected,
-      balanceSol: state.common.walletDetails.balance,
-    };
-  });
-
-  const dispatch = useDispatch();
+  const getBalance = useCallback(async () => {
+    const balance = await connection.getBalance(wallet.publicKey);
+    console.log("Get balance");
+    setBalanceSol(balance / 1e9);
+  }, [wallet.publicKey, connection]);
 
   useEffect(() => {
-    if (isWalletConnected) {
-      connection
-        .getBalance(wallet.publicKey)
-        .then((balance) => {
-          console.log("Updating wallet balance.");
-          dispatch({
-            type: ActionType.CommonSetBalance,
-            item: { newBalance: balance / 1e9 },
-          });
-        })
-        .catch(() => {});
+    if (wallet.publicKey) {
+      getBalance();
     }
-  }, [isWalletConnected, connection, dispatch, wallet]);
+  }, [wallet.publicKey, setBalanceSol, getBalance]);
 
   return (
     <Content className="site-layout" style={{ padding: "0 50px" }}>
@@ -58,26 +49,25 @@ export function Home(props: { height: number }) {
           <div>
             <Text>{wallet.publicKey.toBase58()}</Text>
             <br />
-            <Text>
-              {balanceSol
-                ? "Balance: ◎" + balanceSol
-                : "Connect a wallet to get started."}
-            </Text>
-            {tokenAccount ? (
+
+            {balanceSol ? (
               <div>
-                <Title level={4}>Holdings</Title>
-                <Text>{"Number of tokens: " + tokenAccount.nTokens}</Text>
-                <br />
-                <Text>{JSON.stringify(tokenAccount.ownedTokens)}</Text>
-                <br />
+                <Text>{"Balance: " + SYMBOLS.SOL + balanceSol}</Text>
+                <TokenAccount />
               </div>
             ) : (
-              ""
+              <div>
+                <Text>
+                  It looks like you don't have any Sol, request some below.
+                </Text>
+                <br />
+              </div>
             )}
           </div>
         ) : (
           ""
         )}
+        <Airdrop getBalance={getBalance} />
       </div>
     </Content>
   );

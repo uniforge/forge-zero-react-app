@@ -5,6 +5,7 @@ import React, {
   useState,
   useEffect,
   useContext,
+  useMemo,
 } from "react";
 import { useWallet } from "./WalletProvider";
 import { AccountState } from "../types";
@@ -25,35 +26,50 @@ const TokenAccountContext =
 type TokenAccountContextValues = {
   tokenAccount?: AccountState;
   getTokenAccount: any;
+  setTokenAccountState: any;
 };
 
 export function TokenAccountProvider(
   props: PropsWithChildren<ReactNode>
 ): ReactElement {
   const { wallet, forgeClient } = useWallet();
-  const [tokenAccount, setTokenAccount] = useState<AccountState>();
+  const [tokenAccountState, setTokenAccountState] = useState<{
+    has: boolean;
+    account: AccountState | undefined;
+  }>({ has: true, account: undefined });
 
   useEffect(() => {
     if (wallet.publicKey) {
-      if (!tokenAccount) {
+      if (tokenAccountState.has && !tokenAccountState.account) {
         getTokenAccount();
       }
     }
-  }, [wallet.publicKey, tokenAccount]);
+  }, [wallet.publicKey, tokenAccountState]);
 
   const getTokenAccount = async () => {
-    const tokenAccountFromNet =
-      await forgeClient.account.tokenAccount.associated(
-        wallet.publicKey,
-        FORGE_ID
-      );
+    // console.log("Getting state of token account");
+    try {
+      const tokenAccountFromNet =
+        await forgeClient.account.tokenAccount.associated(
+          wallet.publicKey,
+          FORGE_ID
+        );
 
-    console.log(tokenAccountFromNet);
-    setTokenAccount(tokenAccountFromNet);
+      setTokenAccountState({ has: true, account: tokenAccountFromNet });
+    } catch (e) {
+      // This user has not created a token account
+      setTokenAccountState({ has: false, account: undefined });
+    }
   };
 
   return (
-    <TokenAccountContext.Provider value={{ tokenAccount, getTokenAccount }}>
+    <TokenAccountContext.Provider
+      value={{
+        tokenAccount: tokenAccountState.account,
+        getTokenAccount,
+        setTokenAccountState,
+      }}
+    >
       {props.children}
     </TokenAccountContext.Provider>
   );
