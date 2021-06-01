@@ -4,7 +4,7 @@ import { CreateAccount } from "./CreateAccount";
 
 const { Title, Text } = Typography;
 
-export function TokenAccount() {
+export function TokenAccount(props: { getBalance: any }) {
   const { tokenAccount } = useTokenAccount();
 
   return (
@@ -21,7 +21,7 @@ export function TokenAccount() {
         <div>
           <Text>You don't have a Forge account, yet.</Text>
           <br />
-          <CreateAccount />
+          <CreateAccount getBalance={props.getBalance} />
         </div>
       )}
     </div>

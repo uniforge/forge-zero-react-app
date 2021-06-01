@@ -56,7 +56,7 @@ export function Home(props: { height: number }) {
                 <br />
                 <Airdrop getBalance={getBalance} />
                 <br />
-                <TokenAccount />
+                <TokenAccount getBalance={getBalance} />
               </div>
             ) : (
               <div>

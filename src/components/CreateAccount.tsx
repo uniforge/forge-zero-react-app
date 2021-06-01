@@ -30,7 +30,7 @@ notification.config({
   placement: "topRight",
 });
 
-export function CreateAccount() {
+export function CreateAccount(props: { getBalance: any }) {
   console.log("ClaimButton main body");
   // Get URL params from redux store
   const { params } = useSelector((state: StoreState) => {
@@ -162,6 +162,7 @@ export function CreateAccount() {
 
       // Get the updated the account
       getTokenAccount();
+      props.getBalance();
     } catch (e) {
       console.warn(e);
       notification.error({ message: "Failed to create a new token account" });
