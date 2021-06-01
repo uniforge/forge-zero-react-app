@@ -26,6 +26,7 @@ export function Home(props: { height: number }) {
       connection
         .getBalance(wallet.publicKey)
         .then((balance) => {
+          console.log("Updating wallet balance.");
           dispatch({
             type: ActionType.CommonSetBalance,
             item: { newBalance: balance / 1e9 },
@@ -33,7 +34,7 @@ export function Home(props: { height: number }) {
         })
         .catch(() => {});
     }
-  }, [isWalletConnected, dispatch, connection, wallet]);
+  }, [isWalletConnected]);
 
   return (
     <Content className="site-layout" style={{ padding: "0 50px" }}>
@@ -57,7 +58,7 @@ export function Home(props: { height: number }) {
         {wallet.publicKey ? (
           <div>
             <Text>{wallet.publicKey.toBase58()}</Text>
-            <Title level={3}>Create an account!</Title>
+            <Title level={3}>Create an account</Title>
             <ClaimButton />
           </div>
         ) : (

@@ -1,4 +1,4 @@
-import { useEffect, ReactElement } from "react";
+import { useEffect, useState, ReactElement } from "react";
 import { Link, useHistory, generatePath } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -40,6 +40,7 @@ export function WalletConnectButton(
   });
   const dispatch = useDispatch();
   const { wallet, forgeClient } = useWallet();
+  const [key, setKey] = useState<number>(0);
 
   // Wallet connection event listeners.
   useEffect(() => {
@@ -52,15 +53,22 @@ export function WalletConnectButton(
         type: ActionType.CommonTriggerShutdown,
         item: {},
       });
-      notification.info({ message: "Disconnected from wallet" });
+      notification.info({
+        key: key.toString(),
+        message: "Disconnected from wallet",
+      });
     });
     wallet.on("connect", async () => {
       dispatch({
         type: ActionType.CommonWalletDidConnect,
         item: {},
       });
-      notification.success({ message: "Connected to wallet" });
+      notification.success({
+        key: key.toString(),
+        message: "Connected to wallet",
+      });
     });
+    setKey(key + 1);
   }, [wallet, dispatch, forgeClient.provider.connection]);
 
   return showDisconnect ? (

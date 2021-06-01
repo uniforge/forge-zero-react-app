@@ -21,7 +21,6 @@ import { BN } from "@project-serum/anchor";
 // @ts-ignore
 import Wallet from "@project-serum/sol-wallet-adapter";
 import { useWallet } from "./WalletProvider";
-import { sleep } from "@project-serum/common";
 
 notification.config({
   duration: 5,
@@ -38,6 +37,7 @@ const forgeAddress = new PublicKey(
 );
 
 export function ClaimButton() {
+  // Get URL params from redux store
   const { params } = useSelector((state: StoreState) => {
     const suffix = state.common.network.explorerClusterSuffix;
     const url = state.common.network.url;
@@ -53,167 +53,9 @@ export function ClaimButton() {
       return { params: "cluster=" + suffix };
     }
   });
+  console.log("Main of ClaimButton");
   const { wallet, forgeClient } = useWallet();
-  const [newAccountPubKey, setNewAccountPubKey] = useState<PublicKey>();
-  const selectedWallet = wallet;
   const connection = forgeClient.provider.connection;
-
-  // async function claimToken(newAccount: Keypair) {
-  //   // Get an associated account for the forge
-  //   const accountAddress =
-  //     await forgeClient.account.tokenAccount.associatedAddress(
-  //       selectedWallet.publicKey,
-  //       forgeAddress
-  //     );
-
-  //   notification.info({ message: accountAddress.toBase58() });
-
-  //   // Create the account on the forge
-  //   const accounts = {
-  //     tokenAccount: accountAddress,
-  //     authority: selectedWallet.publicKey,
-  //     from: newAccount.publicKey,
-  //     artist: artistAddress,
-  //     tokenProgram: TOKEN_PROGRAM_ID,
-  //     forge: forgeAddress,
-  //     rent: SYSVAR_RENT_PUBKEY,
-  //     systemProgram: SystemProgram.programId,
-  //   };
-  //   console.log(accounts);
-  //   try {
-  //     // @ts-ignore
-  //     const someRes = await forgeClient.state["rpc"].createAccount(
-  //       new BN(1e8),
-  //       {
-  //         accounts,
-  //       }
-  //     );
-  //     console.log(someRes);
-  //   } catch (e) {
-  //     console.log("Error from program:", e.toString());
-  //   }
-  // }
-
-  // async function createAccount() {
-  //   // Something is broken with the combination of the sol-wallet-adapter
-  //   // and the Token.createWrappedNativeAccount method. I think the adapter
-  //   // is not using uint8 arrays and that is causing an issue.
-
-  //   // Cleaner but broken code:
-  //   // await Token.createWrappedNativeAccount(
-  //   //   connection,
-  //   //   TOKEN_PROGRAM_ID,
-  //   //   selectedWallet.publicKey,
-  //   //   selectedWallet,
-  //   //   1e8
-  //   // );
-
-  //   // Work around needed for now. Manually create all the transactions
-  //   const balanceNeeded = await Token.getMinBalanceRentForExemptAccount(
-  //     connection
-  //   );
-
-  //   const newAccount = Keypair.generate();
-  //   const transaction = new Transaction();
-
-  //   try {
-  //     // Create the account
-  //     transaction.add(
-  //       SystemProgram.createAccount({
-  //         fromPubkey: selectedWallet.publicKey,
-  //         newAccountPubkey: newAccount.publicKey,
-  //         lamports: balanceNeeded,
-  //         space: AccountLayout.span,
-  //         programId: TOKEN_PROGRAM_ID,
-  //       })
-  //     );
-  //     // Fund it
-  //     transaction.add(
-  //       SystemProgram.transfer({
-  //         fromPubkey: selectedWallet.publicKey,
-  //         toPubkey: newAccount.publicKey,
-  //         lamports: 1e8,
-  //       })
-  //     );
-  //     // Assign the account to the native mint
-  //     transaction.add(
-  //       Token.createInitAccountInstruction(
-  //         TOKEN_PROGRAM_ID,
-  //         NATIVE_MINT,
-  //         newAccount.publicKey,
-  //         selectedWallet.publicKey
-  //       )
-  //     );
-
-  //     // Attach transaction details
-  //     transaction.recentBlockhash = (
-  //       await connection.getRecentBlockhash()
-  //     ).blockhash;
-  //     transaction.feePayer = selectedWallet.publicKey;
-  //     transaction.sign(...[newAccount]);
-
-  //     // Here is the part that breaks... This method of signing using the
-  //     // wallet works
-  //     let allSigned = await selectedWallet.signTransaction(transaction);
-  //     let signature = await connection.sendRawTransaction(
-  //       allSigned.serialize()
-  //     );
-
-  //     const hide = message.loading("Waiting for confirmations", 0);
-  //     await connection.confirmTransaction(signature, "max").then(() => {
-  //       hide();
-  //     });
-
-  //     // Get an associated account for the forge
-  //     const accountAddress =
-  //       await forgeClient.account.tokenAccount.associatedAddress(
-  //         selectedWallet.publicKey,
-  //         forgeAddress
-  //       );
-
-  //     notification.info({ message: accountAddress.toBase58() });
-
-  //     // Create the account on the forge
-  //     const accounts = {
-  //       tokenAccount: accountAddress,
-  //       authority: selectedWallet.publicKey,
-  //       from: newAccount.publicKey,
-  //       artist: artistAddress,
-  //       tokenProgram: TOKEN_PROGRAM_ID,
-  //       forge: forgeAddress,
-  //       rent: SYSVAR_RENT_PUBKEY,
-  //       systemProgram: SystemProgram.programId,
-  //     };
-  //     console.log(accounts);
-  //     try {
-  //       // @ts-ignore
-  //       const someRes = await forgeClient.state["rpc"].createAccount(
-  //         new BN(1e8),
-  //         {
-  //           accounts,
-  //         }
-  //       );
-  //       console.log(someRes);
-  //     } catch (e) {
-  //       console.log("Error from program:", e.toString());
-  //     }
-
-  //     const url = "https://explorer.solana.com/tx/" + signature + "?" + params;
-
-  //     notification.success({
-  //       message: "Created a new token account",
-  //       description: (
-  //         <a href={url} target="_blank">
-  //           View transaction on explorer
-  //         </a>
-  //       ),
-  //     });
-  //     setNewAccountPubKey(newAccount.publicKey);
-  //   } catch (e) {
-  //     console.warn(e);
-  //     notification.error({ message: "Failed to create a new token account" });
-  //   }
-  // }
 
   async function singleShot() {
     const balanceNeeded = await Token.getMinBalanceRentForExemptAccount(
@@ -230,7 +72,7 @@ export function ClaimButton() {
       // Create the account
       transaction.add(
         SystemProgram.createAccount({
-          fromPubkey: selectedWallet.publicKey,
+          fromPubkey: wallet.publicKey,
           newAccountPubkey: newAccount.publicKey,
           lamports: balanceNeeded,
           space: AccountLayout.span,
@@ -240,7 +82,7 @@ export function ClaimButton() {
       // Fund it
       transaction.add(
         SystemProgram.transfer({
-          fromPubkey: selectedWallet.publicKey,
+          fromPubkey: wallet.publicKey,
           toPubkey: newAccount.publicKey,
           lamports: 1e8,
         })
@@ -251,7 +93,7 @@ export function ClaimButton() {
           TOKEN_PROGRAM_ID,
           NATIVE_MINT,
           newAccount.publicKey,
-          selectedWallet.publicKey
+          wallet.publicKey
         )
       );
 
@@ -259,14 +101,14 @@ export function ClaimButton() {
       // Get an associated account for the forge
       const accountAddress =
         await forgeClient.account.tokenAccount.associatedAddress(
-          selectedWallet.publicKey,
+          wallet.publicKey,
           forgeAddress
         );
 
       // Create the account on the forge
       const accounts = {
         tokenAccount: accountAddress,
-        authority: selectedWallet.publicKey,
+        authority: wallet.publicKey,
         from: newAccount.publicKey,
         artist: artistAddress,
         tokenProgram: TOKEN_PROGRAM_ID,
@@ -287,12 +129,12 @@ export function ClaimButton() {
       transaction.recentBlockhash = (
         await connection.getRecentBlockhash()
       ).blockhash;
-      transaction.feePayer = selectedWallet.publicKey;
+      transaction.feePayer = wallet.publicKey;
       transaction.sign(...[newAccount]);
 
       // Here is the part that breaks... This method of signing using the
       // wallet works
-      let allSigned = await selectedWallet.signTransaction(transaction);
+      let allSigned = await wallet.signTransaction(transaction);
       console.log(allSigned);
       let signature = await connection.sendRawTransaction(
         allSigned.serialize()
@@ -315,7 +157,6 @@ export function ClaimButton() {
           </a>
         ),
       });
-      setNewAccountPubKey(newAccount.publicKey);
     } catch (e) {
       console.warn(e);
       notification.error({ message: "Failed to create a new token account" });
@@ -323,10 +164,8 @@ export function ClaimButton() {
   }
 
   return (
-    <Row>
-      <Button type="primary" onClick={singleShot}>
-        Create account
-      </Button>
-    </Row>
+    <Button type="primary" onClick={singleShot}>
+      Create account
+    </Button>
   );
 }
