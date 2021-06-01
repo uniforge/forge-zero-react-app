@@ -1,9 +1,10 @@
 import { useSelector, useDispatch } from "react-redux";
 import { State as StoreState, ActionType } from "../store/reducer";
-import { Breadcrumb, Layout, Typography } from "antd";
+import { Breadcrumb, Button, Layout, Typography } from "antd";
 import { HomeOutlined } from "@ant-design/icons";
-import { useWallet } from "../components/WalletProvider";
-import { ClaimButton } from "../components/ClaimButton";
+import { useWallet } from "../contexts/WalletProvider";
+import { useTokenAccount } from "../contexts/TokenAccountProvider";
+import { Forge } from "../components/Forge";
 import { useEffect } from "react";
 
 const { Content } = Layout;
@@ -11,6 +12,8 @@ const { Title, Text } = Typography;
 
 export function Home(props: { height: number }) {
   const { wallet, connection } = useWallet();
+
+  const { tokenAccount, getTokenAccount } = useTokenAccount();
 
   const { isWalletConnected, balanceSol } = useSelector((state: StoreState) => {
     return {
@@ -48,18 +51,29 @@ export function Home(props: { height: number }) {
         className="site-layout-background"
         style={{ padding: 24, minHeight: props.height - 214 }}
       >
-        <Title level={2}>
-          Welcome!{" "}
-          {balanceSol
-            ? "Balance: ◎" + balanceSol
-            : "Connect a wallet to get started."}
-        </Title>
-
+        <Title level={2}>Welcome! </Title>
+        <Forge />
+        <Title level={3}>Account info:</Title>
         {wallet.publicKey ? (
           <div>
             <Text>{wallet.publicKey.toBase58()}</Text>
-            <Title level={3}>Create an account</Title>
-            <ClaimButton />
+            <br />
+            <Text>
+              {balanceSol
+                ? "Balance: ◎" + balanceSol
+                : "Connect a wallet to get started."}
+            </Text>
+            {tokenAccount ? (
+              <div>
+                <Title level={4}>Holdings</Title>
+                <Text>{"Number of tokens: " + tokenAccount.nTokens}</Text>
+                <br />
+                <Text>{JSON.stringify(tokenAccount.ownedTokens)}</Text>
+                <br />
+              </div>
+            ) : (
+              ""
+            )}
           </div>
         ) : (
           ""

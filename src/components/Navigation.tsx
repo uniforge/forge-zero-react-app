@@ -12,7 +12,7 @@ import {
 } from "antd";
 import { CloseOutlined, UserOutlined } from "@ant-design/icons";
 import { State as StoreState, ActionType } from "../store/reducer";
-import { useWallet } from "./WalletProvider";
+import { useWallet } from "../contexts/WalletProvider";
 import logo from "../Anvil.png";
 
 const { Header } = Layout;

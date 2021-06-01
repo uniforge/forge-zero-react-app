@@ -11,11 +11,8 @@ import { Connection, ConfirmOptions, PublicKey } from "@solana/web3.js";
 import Wallet from "@project-serum/sol-wallet-adapter";
 import { Program, Idl, Provider } from "@project-serum/anchor";
 import { State as StoreState } from "../store/reducer";
+import { UNIFORGE_PROGRAM_ID } from "../constants";
 import forgeZero from "../idl/forge_zero.json";
-
-const programAddress = new PublicKey(
-  "9ZaKmWXHigQFH6FfGTf5WLgkd6GmeMPjy22S3yfEwFeR"
-);
 
 export function useWallet(): WalletContextValues {
   const w = useContext(WalletContext);
@@ -53,7 +50,11 @@ export function WalletProvider(
     const wallet = new Wallet(walletProvider, network.url);
     const provider = new Provider(connection, wallet, opts);
 
-    const forgeClient = new Program(forgeZero as Idl, programAddress, provider);
+    const forgeClient = new Program(
+      forgeZero as Idl,
+      UNIFORGE_PROGRAM_ID,
+      provider
+    );
 
     return {
       wallet,

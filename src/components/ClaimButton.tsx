@@ -20,7 +20,8 @@ import {
 import { BN, Program } from "@project-serum/anchor";
 // @ts-ignore
 import Wallet from "@project-serum/sol-wallet-adapter";
-import { useWallet } from "./WalletProvider";
+import { useWallet } from "../contexts/WalletProvider";
+import { FORGE_ID } from "../constants";
 
 notification.config({
   duration: 5,
@@ -28,21 +29,13 @@ notification.config({
   placement: "topRight",
 });
 
-// ToDo put this in a main file and make it an import
-const programAddress = new PublicKey(
-  "9ZaKmWXHigQFH6FfGTf5WLgkd6GmeMPjy22S3yfEwFeR"
-);
-const forgeAddress = new PublicKey(
-  "91xgw1p2LNkgeLnSq4RgYLGN8Liy7khSxxJPuawBFgJ4"
-);
-
 export function ClaimButton() {
   console.log("ClaimButton main body");
   // Get URL params from redux store
   const { params } = useSelector((state: StoreState) => {
     const suffix = state.common.network.explorerClusterSuffix;
     const url = state.common.network.url;
-    console.log("useSelector");
+    console.log("ClaimButton - useSelector");
 
     if (suffix === "localhost") {
       return {
@@ -59,7 +52,7 @@ export function ClaimButton() {
   const { wallet, forgeClient } = useWallet();
 
   async function createAccount(
-    wallet: any,
+    wallet: Wallet,
     forgeClient: Program,
     params: string
   ) {
@@ -109,7 +102,7 @@ export function ClaimButton() {
       const accountAddress =
         await forgeClient.account.tokenAccount.associatedAddress(
           wallet.publicKey,
-          forgeAddress
+          FORGE_ID
         );
 
       // Create the account on the forge
@@ -119,7 +112,7 @@ export function ClaimButton() {
         from: newAccount.publicKey,
         artist: artistAddress,
         tokenProgram: TOKEN_PROGRAM_ID,
-        forge: forgeAddress,
+        forge: FORGE_ID,
         rent: SYSVAR_RENT_PUBKEY,
         systemProgram: SystemProgram.programId,
       };

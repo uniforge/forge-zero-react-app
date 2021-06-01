@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { PublicKey } from "@solana/web3.js";
 import { BN } from "@project-serum/anchor";
-import { useWallet } from "../components/WalletProvider";
+import { useWallet } from "../contexts/WalletProvider";
 import { AccountState } from "../types";
 import { Breadcrumb, Layout, Row, Col } from "antd";
 import { HomeOutlined } from "@ant-design/icons";
@@ -59,7 +59,7 @@ export function ListAccount(props: { height: number }) {
         forgeClient.account.tokenAccount
           .associated(address, forgeAddress)
           .then((account: any) => {
-            console.log("Doing something")
+            console.log("Doing something");
             setTokenAccount(account);
           })
           .catch(() => {
