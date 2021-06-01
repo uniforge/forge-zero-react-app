@@ -57,6 +57,7 @@ export function WalletConnectButton(
         key: key.toString(),
         message: "Disconnected from wallet",
       });
+      setKey(key + 1);
     });
     wallet.on("connect", async () => {
       dispatch({
@@ -67,9 +68,9 @@ export function WalletConnectButton(
         key: key.toString(),
         message: "Connected to wallet",
       });
+      setKey(key + 1);
     });
-    setKey(key + 1);
-  }, [wallet, dispatch, forgeClient.provider.connection]);
+  }, [wallet, dispatch, forgeClient.provider.connection, key]);
 
   return showDisconnect ? (
     <Button style={props.style} onClick={() => wallet.disconnect()}>

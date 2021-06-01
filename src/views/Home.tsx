@@ -34,7 +34,7 @@ export function Home(props: { height: number }) {
         })
         .catch(() => {});
     }
-  }, [isWalletConnected]);
+  }, [isWalletConnected, connection, dispatch, wallet]);
 
   return (
     <Content className="site-layout" style={{ padding: "0 50px" }}>

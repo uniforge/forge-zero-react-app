@@ -17,7 +17,7 @@ import {
   AccountLayout,
   NATIVE_MINT,
 } from "@solana/spl-token";
-import { BN } from "@project-serum/anchor";
+import { BN, Program } from "@project-serum/anchor";
 // @ts-ignore
 import Wallet from "@project-serum/sol-wallet-adapter";
 import { useWallet } from "./WalletProvider";
@@ -37,10 +37,12 @@ const forgeAddress = new PublicKey(
 );
 
 export function ClaimButton() {
+  console.log("ClaimButton main body");
   // Get URL params from redux store
   const { params } = useSelector((state: StoreState) => {
     const suffix = state.common.network.explorerClusterSuffix;
     const url = state.common.network.url;
+    console.log("useSelector");
 
     if (suffix === "localhost") {
       return {
@@ -53,11 +55,16 @@ export function ClaimButton() {
       return { params: "cluster=" + suffix };
     }
   });
-  console.log("Main of ClaimButton");
-  const { wallet, forgeClient } = useWallet();
-  const connection = forgeClient.provider.connection;
 
-  async function singleShot() {
+  const { wallet, forgeClient } = useWallet();
+
+  async function createAccount(
+    wallet: any,
+    forgeClient: Program,
+    params: string
+  ) {
+    console.log("Main of singleshot");
+    const connection = forgeClient.provider.connection;
     const balanceNeeded = await Token.getMinBalanceRentForExemptAccount(
       connection
     );
@@ -164,7 +171,12 @@ export function ClaimButton() {
   }
 
   return (
-    <Button type="primary" onClick={singleShot}>
+    <Button
+      type="primary"
+      onClick={() => {
+        createAccount(wallet, forgeClient, params);
+      }}
+    >
       Create account
     </Button>
   );
