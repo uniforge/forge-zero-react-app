@@ -13,7 +13,7 @@ import {
 import { CloseOutlined, UserOutlined } from "@ant-design/icons";
 import { State as StoreState, ActionType } from "../store/reducer";
 import { useWallet } from "./WalletProvider";
-import logo from "../logo.png";
+import logo from "../Anvil.png";
 
 const { Header } = Layout;
 const { Search } = Input;
