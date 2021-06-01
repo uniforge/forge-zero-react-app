@@ -53,6 +53,9 @@ export function Home(props: { height: number }) {
             {balanceSol ? (
               <div>
                 <Text>{"Balance: " + SYMBOLS.SOL + balanceSol}</Text>
+                <br />
+                <Airdrop getBalance={getBalance} />
+                <br />
                 <TokenAccount />
               </div>
             ) : (
@@ -61,13 +64,13 @@ export function Home(props: { height: number }) {
                   It looks like you don't have any Sol, request some below.
                 </Text>
                 <br />
+                <Airdrop getBalance={getBalance} />
               </div>
             )}
           </div>
         ) : (
           ""
         )}
-        <Airdrop getBalance={getBalance} />
       </div>
     </Content>
   );
