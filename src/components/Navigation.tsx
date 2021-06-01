@@ -119,7 +119,7 @@ export function Navigation() {
   return (
     <Header style={{ display: "flex", alignItems: "center" }}>
       <Link to="/">
-        <img src={logo} alt="Uniforge logo" />
+        <img src={logo} style={{ maxHeight: "32px" }} alt="Uniforge logo" />
       </Link>
       <Col flex="auto"></Col>
       <Search

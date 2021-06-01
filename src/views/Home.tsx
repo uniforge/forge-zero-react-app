@@ -7,7 +7,7 @@ import { ClaimButton } from "../components/ClaimButton";
 import { useEffect } from "react";
 
 const { Content } = Layout;
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 export function Home(props: { height: number }) {
   const { wallet, connection } = useWallet();
@@ -56,6 +56,7 @@ export function Home(props: { height: number }) {
 
         {wallet.publicKey ? (
           <div>
+            <Text>{wallet.publicKey.toBase58()}</Text>
             <Title level={3}>Create an account!</Title>
             <ClaimButton />
           </div>
