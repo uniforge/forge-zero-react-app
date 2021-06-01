@@ -115,9 +115,7 @@ export function ClaimButton() {
         allSigned.serialize()
       );
       await connection.confirmTransaction(signature, "singleGossip");
-      console.log(allSigned);
       const url = "https://explorer.solana.com/tx/" + signature + "?" + params;
-      console.log(url);
 
       notification.success({
         message: "Created a new token account",
