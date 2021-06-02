@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { Card, Tooltip, Row, Col, Typography } from "antd";
 import {
   ToTopOutlined,
@@ -7,19 +8,40 @@ import {
 import { BN } from "@project-serum/anchor";
 import { Token } from "../types";
 import { LABELS } from "../constants";
+import anvil from "../Anvil.png";
 
 const { Text } = Typography;
 
 export function BeachCard(props: { token: Token }) {
   const minBidSol = props.token.minBidLamports.div(new BN(1e9)).toNumber();
+  const canvasRef = useRef(null);
+  const imgRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (canvas !== null) {
+      //@ts-ignore
+      const context = canvas.getContext("2d");
+      context.drawImage(imgRef.current, 0, 0);
+    }
+  }, [canvasRef, imgRef]);
+
   return (
     <Card
       //   style={{ width: 300 }}
       cover={
-        <img
-          alt="example"
-          src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-        />
+        <div>
+          <canvas ref={canvasRef} width="32" height="32"></canvas>
+          <div style={{ display: "none" }}>
+            <img
+              ref={imgRef}
+              src={anvil}
+              width="32"
+              height="32"
+              alt={"Image of token ID " + props.token.id}
+            />
+          </div>
+        </div>
       }
       actions={[
         <Tooltip title="Offer for sale">

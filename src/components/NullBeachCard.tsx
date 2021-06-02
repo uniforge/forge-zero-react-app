@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { Card, Tooltip, Row, Col, Typography } from "antd";
 import {
   DashOutlined,
@@ -7,8 +8,7 @@ import {
 import { BN } from "@project-serum/anchor";
 import { Token } from "../types";
 import { LABELS } from "../constants";
-import Anvil from "../questionMark.png";
-import { useEffect, useRef } from "react";
+import questionMark from "../questionMark.png";
 
 const { Text } = Typography;
 
@@ -24,7 +24,7 @@ export function NullBeachCard(props: { token: Token }) {
       const context = canvas.getContext("2d");
       context.drawImage(imgRef.current, 0, 0);
     }
-  }, []);
+  }, [canvasRef, imgRef]);
 
   return (
     <Card
@@ -33,7 +33,13 @@ export function NullBeachCard(props: { token: Token }) {
         <div>
           <canvas ref={canvasRef} width="32" height="32"></canvas>
           <div style={{ display: "none" }}>
-            <img ref={imgRef} src={Anvil} width="32" height="32" />
+            <img
+              ref={imgRef}
+              src={questionMark}
+              width="32"
+              height="32"
+              alt="Question mark image for empty slot in wallet"
+            />
           </div>
         </div>
       }

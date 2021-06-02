@@ -134,7 +134,6 @@ function UserSelector() {
 export function Navigation() {
   let history = useHistory();
   const [activePage, setActivePage] = useState<string>("/");
-  console.log(history.location);
 
   // const onSearch = (value: string) => {
   //   if (value !== "") {
