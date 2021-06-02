@@ -171,8 +171,9 @@ export function ClaimToken(props: {
             claimToken(wallet, forgeClient, queryString);
           }}
           size="large"
+          loading={claiming}
         >
-          {LABELS.CREATE_ACCOUNT}
+          {LABELS.CLAIM_TOKEN}
         </Button>
       ) : (
         <Tooltip
@@ -186,8 +187,9 @@ export function ClaimToken(props: {
               claimToken(wallet, forgeClient, queryString);
             }}
             size="large"
+            loading={claiming}
           >
-            {LABELS.CREATE_ACCOUNT}
+            {LABELS.CLAIM_TOKEN}
           </Button>
         </Tooltip>
       )}

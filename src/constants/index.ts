@@ -10,6 +10,7 @@ export const FORGE_ID = new PublicKey(
 export const LABELS = {
   AIRDROP_REQUEST: "Request Sol",
   AIRDROP_SUCCESS: "Airdrop successful",
+  CLAIM_TOKEN: "Claim a ForgeZero",
   CREATE_ACCOUNT: "Create and claim",
   MAX_SUPPLY: 8192,
   MAX_TOKENS_PER_WALLET: 16,
@@ -19,7 +20,7 @@ export const LABELS = {
   SOL_CHARS: "Sol",
   TOKEN_NAME: "ForgeZero",
   UNFUNDED:
-    "This action requires Sol, request some above if you are on Devnet. If you are on Mainnet, please connect a wallet that contains Sol.",
+    "This action requires at least ◎0.5, request some above if you are on Devnet. If you are on Mainnet, please connect a wallet that contains Sol.",
   WALLET_FULL: "Your wallet is full, try selling some to open up new slots.",
   WAITING_FOR_CONF: "Waiting for confirmation",
 };
