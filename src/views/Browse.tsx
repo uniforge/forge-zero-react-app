@@ -42,7 +42,7 @@ function AccountCard(account: AccountState) {
   );
 }
 
-export function ListAccountView(props: { height: number }) {
+export function BrowseView(props: { height: number }) {
   const { forgeClient } = useWallet();
   let { pubKey } = useParams<{ pubKey: string }>();
   const [tokenAccount, setTokenAccount] =

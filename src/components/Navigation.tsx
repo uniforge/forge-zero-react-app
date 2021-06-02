@@ -3,7 +3,9 @@ import { Link, useHistory, generatePath } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   Layout,
+  Menu,
   Select,
+  Space,
   Input,
   Typography,
   Button,
@@ -40,6 +42,7 @@ export function WalletConnectButton(
     };
   });
   const dispatch = useDispatch();
+  // let history = useHistory();
   const { wallet } = useWallet();
   const { setTokenAccountState } = useTokenAccount();
   const [key, setKey] = useState<number>(0);
@@ -72,6 +75,16 @@ export function WalletConnectButton(
         message: "Connected to wallet",
       });
       setKey(key + 1);
+
+      // const onSearch = (value: string) => {
+      //   if (value !== "") {
+      //     const newPath = generatePath("/listAccount/:pubKey", {
+      //       pubKey: value,
+      //     });
+      //     history.push(newPath);
+      //   }
+      // };
+      // onSearch(wallet.publicKey.toBase58());
     });
   }, [wallet, dispatch, key, setTokenAccountState]);
 
@@ -119,27 +132,48 @@ function UserSelector() {
 
 export function Navigation() {
   let history = useHistory();
+  const [activePage, setActivePage] = useState<string>("/");
+  console.log(history.location);
 
-  const onSearch = (value: string) => {
-    if (value !== "") {
-      const newPath = generatePath("/listAccount/:pubKey", { pubKey: value });
-      history.push(newPath);
-    }
-  };
+  // const onSearch = (value: string) => {
+  //   if (value !== "") {
+  //     const newPath = generatePath("/listAccount/:pubKey", { pubKey: value });
+  //     history.push(newPath);
+  //   }
+  // };
   const { wallet } = useWallet();
+
+  function handleClick(e: any) {
+    let page: string;
+    e.key === "/about" ? (page = "/") : (page = e.key);
+    setActivePage(e.key);
+    history.push(page);
+  }
 
   return (
     <Header style={{ display: "flex", alignItems: "center" }}>
-      <Link to="/">
-        <img src={logo} style={{ maxHeight: "32px" }} alt="Uniforge logo" />
-      </Link>
-      <Col flex="auto"></Col>
+      <Space size="large">
+        <Link to="/" onClick={handleClick} key="/">
+          <img src={logo} style={{ maxHeight: "32px" }} alt="Uniforge logo" />
+        </Link>
+        <Menu
+          theme="dark"
+          mode="horizontal"
+          onClick={handleClick}
+          selectedKeys={[activePage]}
+        >
+          <Menu.Item key="/yours">Yours</Menu.Item>
+          <Menu.Item key="/browse">Browse</Menu.Item>
+          <Menu.Item key="/about">About</Menu.Item>
+        </Menu>
+      </Space>
+      {/* <Col flex="auto"></Col>
       <Search
         placeholder="Search for a public key"
         onSearch={onSearch}
         enterButton
         style={{ width: 500 }}
-      />
+      /> */}
       <Col flex="auto"></Col>
       {!wallet.publicKey ? (
         <WalletConnectButton

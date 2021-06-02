@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { Button, message, notification } from "antd";
+import { PlusCircleOutlined } from "@ant-design/icons";
 import {
   Keypair,
   Transaction,
@@ -24,6 +26,7 @@ export function ClaimToken(props: {
   getForge: any;
   disabled: boolean;
 }) {
+  const [claiming, setClaiming] = useState<boolean>(false);
   const { wallet, forgeClient } = useWallet();
   const { getTokenAccount } = useTokenAccount();
   const queryString = useExplorerQueryString();
@@ -33,6 +36,7 @@ export function ClaimToken(props: {
     forgeClient: Program,
     queryString: string
   ) {
+    setClaiming(true);
     const connection = forgeClient.provider.connection;
     const balanceNeeded = await Token.getMinBalanceRentForExemptAccount(
       connection
@@ -118,6 +122,7 @@ export function ClaimToken(props: {
       console.warn(e.toString());
       notification.error({ message: "Failed to claim a new token account" });
     }
+    setClaiming(false);
   }
 
   return props.disabled ? (
@@ -130,6 +135,7 @@ export function ClaimToken(props: {
       onClick={() => {
         claimToken(wallet, forgeClient, queryString);
       }}
+      loading={claiming}
     >
       Claim a token
     </Button>

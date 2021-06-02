@@ -4,16 +4,28 @@ import { store } from "./store";
 import { WalletProvider } from "./contexts/WalletProvider";
 import { ForgeProvider } from "./contexts/ForgeProvider";
 import { TokenAccountProvider } from "./contexts/TokenAccountProvider";
-import { Home } from "./views/Home";
-import { ListAccount } from "./views/ListAccount";
+import { HomeView } from "./views/Home";
+import { YoursView } from "./views/Yours";
+import { BrowseView } from "./views/Browse";
+import { ListAccountView } from "./views/ListAccount";
 import { Navigation } from "./components/Navigation";
 import { Layout } from "antd";
 import "./App.css";
+import { useState, useLayoutEffect } from "react";
 
-const { Footer } = Layout;
+const { Content, Footer } = Layout;
 
 function App() {
-  const height: number = window.innerHeight;
+  const [height, setHeight] = useState<number>(window.innerHeight);
+
+  useLayoutEffect(() => {
+    function handleResize() {
+      setHeight(window.innerHeight);
+    }
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <Router>
@@ -23,17 +35,27 @@ function App() {
             <TokenAccountProvider>
               <Layout>
                 <Navigation />
-                <Switch>
-                  <Route
-                    exact
-                    path="/"
-                    component={() => <Home height={height} />}
-                  ></Route>
-                  <Route
-                    path="/listAccount/:pubKey"
-                    component={() => <ListAccount height={height} />}
-                  />
-                </Switch>
+                <Content className="site-layout" style={{ padding: "0 0px" }}>
+                  <Switch>
+                    <Route
+                      exact
+                      path="/"
+                      component={() => <HomeView height={height} />}
+                    ></Route>
+                    <Route
+                      path="/yours"
+                      component={() => <YoursView height={height} />}
+                    />
+                    <Route
+                      path="/browse"
+                      component={() => <BrowseView height={height} />}
+                    />
+                    <Route
+                      path="/listAccount/:pubKey"
+                      component={() => <ListAccountView height={height} />}
+                    />
+                  </Switch>
+                </Content>
                 <Footer style={{ textAlign: "center" }}>
                   <div className="builton" />
                 </Footer>

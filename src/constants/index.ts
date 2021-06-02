@@ -7,13 +7,13 @@ export const FORGE_ID = new PublicKey(
   "91xgw1p2LNkgeLnSq4RgYLGN8Liy7khSxxJPuawBFgJ4"
 );
 
-export const SYMBOLS = {
-  SOL: "◎",
-  TOKEN_NAME: "Token",
-};
-
 export const LABELS = {
   AIRDROP_REQUEST: "Request Sol",
   AIRDROP_SUCCESS: "Airdrop successful",
+  CREATE_ACCOUNT: "Create and claim",
+  MIN_FEE: 0.5,
+  SOL_SYM: "◎",
+  SOL_CHARS: "Sol",
+  TOKEN_NAME: "Token",
   WAITING_FOR_CONF: "Waiting for confirmation",
 };

@@ -101,7 +101,7 @@ export const initialState: State = {
   common: {
     isWalletConnected: false,
     walletProvider: "https://www.sollet.io",
-    network: networks.devnet,
+    network: networks.localhost,
     walletDetails: { balance: null, tokenAccount: null },
   },
 };

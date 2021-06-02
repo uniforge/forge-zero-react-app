@@ -1,9 +1,18 @@
-import { Button, message, notification } from "antd";
+import { useState } from "react";
+import {
+  Button,
+  Input,
+  InputNumber,
+  Typography,
+  message,
+  notification,
+} from "antd";
 import {
   Keypair,
   Transaction,
   SystemProgram,
   SYSVAR_RENT_PUBKEY,
+  LAMPORTS_PER_SOL,
 } from "@solana/web3.js";
 import {
   Token,
@@ -17,7 +26,9 @@ import Wallet from "@project-serum/sol-wallet-adapter";
 import { useWallet } from "../contexts/WalletProvider";
 import { useTokenAccount } from "../contexts/TokenAccountProvider";
 import { useExplorerQueryString, createWrappedNativeAccountTx } from "../utils";
-import { FORGE_ID } from "../constants";
+import { FORGE_ID, LABELS } from "../constants";
+
+const { Text } = Typography;
 
 notification.config({
   duration: 5,
@@ -26,6 +37,7 @@ notification.config({
 });
 
 export function CreateAccount(props: { getBalance: any; getForge: any }) {
+  const [artistFeeSol, setArtistFeeSol] = useState<number>(LABELS.MIN_FEE);
   const { wallet, forgeClient } = useWallet();
   const { getTokenAccount } = useTokenAccount();
   const queryString = useExplorerQueryString();
@@ -44,6 +56,7 @@ export function CreateAccount(props: { getBalance: any; getForge: any }) {
     const newAccount = Keypair.generate();
     const forgeAccount = await forgeClient.state();
     const artistAddress = forgeAccount.artist.toBase58();
+    const artistFeeLamports = artistFeeSol * LAMPORTS_PER_SOL;
 
     try {
       // Create the base transaction contents
@@ -51,7 +64,7 @@ export function CreateAccount(props: { getBalance: any; getForge: any }) {
         wallet,
         newAccount,
         balanceNeeded,
-        1e8
+        artistFeeLamports
       );
 
       // Create the account on the Forge
@@ -77,7 +90,7 @@ export function CreateAccount(props: { getBalance: any; getForge: any }) {
       // @ts-ignore
       const createAcctInst = await forgeClient.state[
         "instruction"
-      ].createAccount(new BN(1e8), {
+      ].createAccount(new BN(artistFeeLamports), {
         accounts,
       });
       transaction.add(createAcctInst);
@@ -126,13 +139,36 @@ export function CreateAccount(props: { getBalance: any; getForge: any }) {
   }
 
   return (
-    <Button
-      type="primary"
-      onClick={() => {
-        createAccount(wallet, forgeClient, queryString);
-      }}
-    >
-      Create account
-    </Button>
+    <Input.Group compact>
+      <InputNumber
+        style={{ width: "20%" }}
+        defaultValue={artistFeeSol}
+        min={artistFeeSol}
+        formatter={(value) => {
+          if (value && !isNaN(value)) {
+            setArtistFeeSol(value);
+          }
+          return (
+            "Artist's fee: " +
+            LABELS.SOL_SYM +
+            ` ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+          );
+        }}
+        // @ts-ignore
+        parser={(value) => value.replace(/Artist's fee: ◎\s?|(,*)/g, "")}
+        step={0.1}
+        onPressEnter={(event) => {
+          createAccount(wallet, forgeClient, queryString);
+        }}
+      />
+      <Button
+        type="primary"
+        onClick={() => {
+          createAccount(wallet, forgeClient, queryString);
+        }}
+      >
+        {LABELS.CREATE_ACCOUNT}
+      </Button>
+    </Input.Group>
   );
 }

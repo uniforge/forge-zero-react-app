@@ -2,7 +2,7 @@ import { Card, Tooltip, Row, Col, Typography } from "antd";
 import { ToTopOutlined } from "@ant-design/icons";
 import { BN } from "@project-serum/anchor";
 import { Token } from "../types";
-import { SYMBOLS } from "../constants";
+import { LABELS } from "../constants";
 
 const { Text } = Typography;
 
@@ -30,7 +30,7 @@ export function BeachCard(props: { token: Token }) {
           </Text>
         </Col>
         <Col flex="auto"></Col>
-        <Col>{props.token.forSale ? SYMBOLS.SOL + minBidSol : "-"}</Col>
+        <Col>{props.token.forSale ? LABELS.SOL_SYM + minBidSol : "-"}</Col>
       </Row>
     </Card>
   );

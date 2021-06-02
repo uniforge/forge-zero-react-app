@@ -1,10 +1,11 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { Button, message, notification } from "antd";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { useWallet } from "../contexts/WalletProvider";
 import { LABELS } from "../constants";
 
 export function Airdrop(props: { getBalance: any }) {
+  const [airdropping, setAirdropping] = useState<boolean>(false);
   const { wallet, connection } = useWallet();
 
   const airdrop = useCallback(() => {
@@ -12,7 +13,7 @@ export function Airdrop(props: { getBalance: any }) {
       // Nothing to see here folks
       return;
     }
-
+    setAirdropping(true);
     // Make it rain (Make it shine since it's Sol?)
     connection
       .requestAirdrop(wallet.publicKey, 2 * LAMPORTS_PER_SOL)
@@ -25,12 +26,13 @@ export function Airdrop(props: { getBalance: any }) {
             type: "success",
           });
           props.getBalance();
+          setAirdropping(false);
         });
       });
   }, [wallet.publicKey, connection, props]);
 
   return (
-    <Button type="primary" onClick={airdrop}>
+    <Button type="primary" onClick={airdrop} loading={airdropping}>
       {LABELS.AIRDROP_REQUEST}
     </Button>
   );
