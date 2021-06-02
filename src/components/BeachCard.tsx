@@ -1,5 +1,9 @@
 import { Card, Tooltip, Row, Col, Typography } from "antd";
-import { ToTopOutlined, FieldNumberOutlined } from "@ant-design/icons";
+import {
+  ToTopOutlined,
+  FieldNumberOutlined,
+  InfoCircleOutlined,
+} from "@ant-design/icons";
 import { BN } from "@project-serum/anchor";
 import { Token } from "../types";
 import { LABELS } from "../constants";
@@ -20,6 +24,9 @@ export function BeachCard(props: { token: Token }) {
       actions={[
         <Tooltip title="Offer for sale">
           <ToTopOutlined key="sell" />
+        </Tooltip>,
+        <Tooltip title={"See the details of this " + LABELS.TOKEN_NAME}>
+          <InfoCircleOutlined key="details" />
         </Tooltip>,
       ]}
     >

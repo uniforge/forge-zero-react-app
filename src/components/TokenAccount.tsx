@@ -3,6 +3,7 @@ import { useTokenAccount } from "../contexts/TokenAccountProvider";
 import { CreateAccount } from "./CreateAccount";
 import { ClaimToken } from "./ClaimToken";
 import { BeachCard } from "./BeachCard";
+import { NullBeachCard } from "./NullBeachCard";
 import { AccountState } from "../types";
 import { LABELS } from "../constants";
 
@@ -20,6 +21,18 @@ function AccountCard(account: AccountState) {
           return (
             <Col xs={20} sm={16} md={12} lg={8} xl={6} key={index}>
               <BeachCard token={token} />
+            </Col>
+          );
+        })}
+      {account.ownedTokens
+        .filter((token) => token.id === 0)
+        .sort((a, b) => {
+          return a.id - b.id;
+        })
+        .map((token, index) => {
+          return (
+            <Col xs={20} sm={16} md={12} lg={8} xl={6} key={index}>
+              <NullBeachCard token={token} />
             </Col>
           );
         })}

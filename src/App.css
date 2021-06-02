@@ -21,3 +21,12 @@
   background-repeat: no-repeat;
   margin: 0 auto 0 auto;
 }
+
+canvas {
+  width: 232px;
+  height: 232px;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
