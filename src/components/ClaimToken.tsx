@@ -19,7 +19,11 @@ import { useTokenAccount } from "../contexts/TokenAccountProvider";
 import { useExplorerQueryString, createWrappedNativeAccountTx } from "../utils";
 import { FORGE_ID } from "../constants";
 
-export function ClaimToken(props: { getBalance: any; getForge: any }) {
+export function ClaimToken(props: {
+  getBalance: any;
+  getForge: any;
+  disabled: boolean;
+}) {
   const { wallet, forgeClient } = useWallet();
   const { getTokenAccount } = useTokenAccount();
   const queryString = useExplorerQueryString();
@@ -116,7 +120,11 @@ export function ClaimToken(props: { getBalance: any; getForge: any }) {
     }
   }
 
-  return (
+  return props.disabled ? (
+    <Button type="primary" disabled>
+      Claim a token
+    </Button>
+  ) : (
     <Button
       type="primary"
       onClick={() => {

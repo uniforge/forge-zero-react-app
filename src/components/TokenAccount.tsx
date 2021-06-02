@@ -33,7 +33,11 @@ export function TokenAccount(props: { getBalance: any; getForge: any }) {
       {tokenAccount ? (
         <div>
           <Title level={4}>Holdings</Title>
-          <ClaimToken getBalance={props.getBalance} getForge={props.getForge} />
+          <ClaimToken
+            getBalance={props.getBalance}
+            getForge={props.getForge}
+            disabled={tokenAccount.nTokens >= 16}
+          />
           <br />
           <Text>{"Number of tokens: " + tokenAccount.nTokens + "/16"}</Text>
           <br />
