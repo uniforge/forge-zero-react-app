@@ -3,6 +3,7 @@ import {
   Button,
   Input,
   InputNumber,
+  Tooltip,
   Typography,
   message,
   notification,
@@ -36,7 +37,11 @@ notification.config({
   placement: "topLeft",
 });
 
-export function CreateAccount(props: { getBalance: any; getForge: any }) {
+export function CreateAccount(props: {
+  getBalance: any;
+  getForge: any;
+  balanceSol: number;
+}) {
   const [artistFeeSol, setArtistFeeSol] = useState<number>(LABELS.MIN_FEE);
   const { wallet, forgeClient } = useWallet();
   const { getTokenAccount } = useTokenAccount();
@@ -141,9 +146,10 @@ export function CreateAccount(props: { getBalance: any; getForge: any }) {
   return (
     <Input.Group compact>
       <InputNumber
-        style={{ width: "20%" }}
+        style={{ width: "30%" }}
+        size="large"
         defaultValue={artistFeeSol}
-        min={artistFeeSol}
+        min={LABELS.MIN_FEE}
         formatter={(value) => {
           if (value && !isNaN(value)) {
             setArtistFeeSol(value);
@@ -161,14 +167,30 @@ export function CreateAccount(props: { getBalance: any; getForge: any }) {
           createAccount(wallet, forgeClient, queryString);
         }}
       />
-      <Button
-        type="primary"
-        onClick={() => {
-          createAccount(wallet, forgeClient, queryString);
-        }}
-      >
-        {LABELS.CREATE_ACCOUNT}
-      </Button>
+      {props.balanceSol > 0 ? (
+        <Button
+          type="primary"
+          onClick={() => {
+            createAccount(wallet, forgeClient, queryString);
+          }}
+          size="large"
+        >
+          {LABELS.CREATE_ACCOUNT}
+        </Button>
+      ) : (
+        <Tooltip title={LABELS.UNFUNDED} color="blue">
+          <Button
+            type="primary"
+            disabled
+            onClick={() => {
+              createAccount(wallet, forgeClient, queryString);
+            }}
+            size="large"
+          >
+            {LABELS.CREATE_ACCOUNT}
+          </Button>
+        </Tooltip>
+      )}
     </Input.Group>
   );
 }

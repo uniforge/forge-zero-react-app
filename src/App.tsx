@@ -50,13 +50,14 @@ function App() {
                       path="/browse"
                       component={() => <BrowseView height={height} />}
                     />
-                    <Route
-                      path="/listAccount/:pubKey"
-                      component={() => <ListAccountView height={height} />}
-                    />
                   </Switch>
                 </Content>
-                <Footer style={{ textAlign: "center" }}>
+                <Footer
+                  style={{
+                    textAlign: "center",
+                    backgroundColor: "rgb(0,21,36)",
+                  }}
+                >
                   <div className="builton" />
                 </Footer>
               </Layout>

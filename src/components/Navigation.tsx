@@ -17,6 +17,7 @@ import { State as StoreState, ActionType } from "../store/reducer";
 import { useWallet } from "../contexts/WalletProvider";
 import { useTokenAccount } from "../contexts/TokenAccountProvider";
 import logo from "../Anvil.png";
+import { LABELS } from "../constants";
 
 const { Header } = Layout;
 const { Search } = Input;
@@ -162,7 +163,7 @@ export function Navigation() {
           onClick={handleClick}
           selectedKeys={[activePage]}
         >
-          <Menu.Item key="/yours">Yours</Menu.Item>
+          <Menu.Item key="/yours">Your {LABELS.TOKEN_NAME}</Menu.Item>
           <Menu.Item key="/browse">Browse</Menu.Item>
           <Menu.Item key="/about">About</Menu.Item>
         </Menu>

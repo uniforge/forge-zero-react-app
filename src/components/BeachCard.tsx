@@ -1,5 +1,5 @@
 import { Card, Tooltip, Row, Col, Typography } from "antd";
-import { ToTopOutlined } from "@ant-design/icons";
+import { ToTopOutlined, FieldNumberOutlined } from "@ant-design/icons";
 import { BN } from "@project-serum/anchor";
 import { Token } from "../types";
 import { LABELS } from "../constants";
@@ -26,11 +26,16 @@ export function BeachCard(props: { token: Token }) {
       <Row>
         <Col>
           <Text strong>
-            {"Solset #" + String(props.token.id).padStart(4, "0")}
+            <FieldNumberOutlined style={{ fontSize: "1.3em" }} />{" "}
+            {String(props.token.id).padStart(4, "0")}
           </Text>
         </Col>
         <Col flex="auto"></Col>
-        <Col>{props.token.forSale ? LABELS.SOL_SYM + minBidSol : "-"}</Col>
+        <Col>
+          {props.token.forSale
+            ? LABELS.SOL_SYM + minBidSol
+            : LABELS.NOT_FOR_SALE}
+        </Col>
       </Row>
     </Card>
   );

@@ -9,6 +9,10 @@
   background: #fff;
 }
 
+.home-text {
+  font-size: 14pt;
+}
+
 .builton {
   background-image: url("./builton.svg");
   width: 300px;

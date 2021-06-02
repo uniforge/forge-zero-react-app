@@ -23,6 +23,10 @@ export function byteToHexString(uint8arr: any) {
   return hexStr.toUpperCase();
 }
 
+export function numberWithCommas(x: number) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 export function useExplorerQueryString(): string {
   const { queryString } = useSelector((state: StoreState) => {
     const suffix = state.common.network.explorerClusterSuffix;

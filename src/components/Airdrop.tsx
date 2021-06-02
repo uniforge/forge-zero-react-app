@@ -4,7 +4,7 @@ import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { useWallet } from "../contexts/WalletProvider";
 import { LABELS } from "../constants";
 
-export function Airdrop(props: { getBalance: any }) {
+export function Airdrop(props: { getBalance: any; balance: number }) {
   const [airdropping, setAirdropping] = useState<boolean>(false);
   const { wallet, connection } = useWallet();
 
@@ -32,7 +32,11 @@ export function Airdrop(props: { getBalance: any }) {
   }, [wallet.publicKey, connection, props]);
 
   return (
-    <Button type="primary" onClick={airdrop} loading={airdropping}>
+    <Button
+      type={props.balance > 0 ? "default" : "primary"}
+      onClick={airdrop}
+      loading={airdropping}
+    >
       {LABELS.AIRDROP_REQUEST}
     </Button>
   );

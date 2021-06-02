@@ -1,5 +1,5 @@
-import { Breadcrumb, Layout, Typography } from "antd";
-import { HomeOutlined } from "@ant-design/icons";
+import { Button, Layout, Row, Col, Space, Typography } from "antd";
+import { WalletOutlined } from "@ant-design/icons";
 import { useWallet } from "../contexts/WalletProvider";
 import { useForge } from "../contexts/ForgeProvider";
 import { Forge } from "../components/Forge";
@@ -9,12 +9,12 @@ import { useCallback, useEffect, useState } from "react";
 import { LABELS } from "../constants";
 
 const { Content } = Layout;
-const { Title, Text } = Typography;
+const { Title, Text, Link } = Typography;
 
 export function YoursView(props: { height: number }) {
   const { wallet, connection } = useWallet();
-  const { getForge } = useForge();
-  const [balanceSol, setBalanceSol] = useState<number>();
+  const { forge, getForge } = useForge();
+  const [balanceSol, setBalanceSol] = useState<number>(0);
 
   const getBalance = useCallback(async () => {
     const balance = await connection.getBalance(wallet.publicKey);
@@ -28,47 +28,80 @@ export function YoursView(props: { height: number }) {
   }, [wallet.publicKey, setBalanceSol, getBalance]);
 
   return (
-    <Content className="site-layout" style={{ padding: "0 50px" }}>
-      <Breadcrumb style={{ margin: "16px 0" }}>
-        <Breadcrumb.Item>
-          <HomeOutlined />
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>Your account</Breadcrumb.Item>
-      </Breadcrumb>
-      <div
-        className="site-layout-background"
-        style={{ padding: 24, minHeight: props.height - 214 }}
-      >
-        <Title level={2}>Welcome! </Title>
-        <Forge />
-        <Title level={3}>Account info:</Title>
-        {wallet.publicKey ? (
-          <div>
-            <Text>{wallet.publicKey.toBase58()}</Text>
-            <br />
+    <div
+      className="site-layout-background"
+      style={{ padding: "5% 15%", minHeight: props.height - 162 }}
+    >
+      <Title level={1}>
+        Your {LABELS.TOKEN_NAME}{" "}
+        <Text type="secondary">
+          ({forge?.supplyUnclaimed} remain unclaimed)
+        </Text>
+      </Title>
+      {wallet.publicKey ? (
+        <Space direction="vertical">
+          <Row align="middle">
+            <Col>
+              <Text style={{ fontSize: "1.2em" }} strong>
+                {LABELS.SOL_SYM + balanceSol.toFixed(1)}
+              </Text>
+            </Col>
+            <Col span={1}></Col>
+            <Col>
+              <Text style={{ fontSize: "1.2em" }} type="secondary">
+                <WalletOutlined /> {wallet.publicKey.toBase58()}
+              </Text>
+            </Col>
+            <Col flex="auto"></Col>
+            {/* ToDo condition airdrop availability on the current network */}
+            <Col>
+              <Airdrop getBalance={getBalance} balance={balanceSol} />
+            </Col>
+          </Row>
+          <TokenAccount
+            getBalance={getBalance}
+            getForge={getForge}
+            balanceSol={balanceSol}
+          />
+        </Space>
+      ) : (
+        <Text className="home-text">
+          <Link onClick={() => wallet.connect()}>Connect</Link> a wallet to
+          begin.
+        </Text>
+      )}
+      {/* <Row>
+        <Col>
+        <WalletOutlined />
+        </Col>
+      </Row>
+      <Title level={3}>Account info:</Title>
+      {wallet.publicKey ? (
+        <div>
+          <Text>{wallet.publicKey.toBase58()}</Text>
+          <br />
 
-            {balanceSol ? (
-              <div>
-                <Text>{"Balance: " + LABELS.SOL_SYM + balanceSol}</Text>
-                <br />
-                <Airdrop getBalance={getBalance} />
-                <br />
-                <TokenAccount getBalance={getBalance} getForge={getForge} />
-              </div>
-            ) : (
-              <div>
-                <Text>
-                  It looks like you don't have any Sol, request some below.
-                </Text>
-                <br />
-                <Airdrop getBalance={getBalance} />
-              </div>
-            )}
-          </div>
-        ) : (
-          ""
-        )}
-      </div>
-    </Content>
+          {balanceSol ? (
+            <div>
+              <Text>{"Balance: " + LABELS.SOL_SYM + balanceSol}</Text>
+              <br />
+              <Airdrop getBalance={getBalance} />
+              <br />
+              <TokenAccount getBalance={getBalance} getForge={getForge} />
+            </div>
+          ) : (
+            <div>
+              <Text>
+                It looks like you don't have any Sol, request some below.
+              </Text>
+              <br />
+              <Airdrop getBalance={getBalance} />
+            </div>
+          )}
+        </div>
+      ) : (
+        ""
+      )} */}
+    </div>
   );
 }

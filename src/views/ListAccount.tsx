@@ -70,20 +70,11 @@ export function ListAccountView(props: { height: number }) {
   }, [forgeClient, pubKey]);
 
   return (
-    <Content className="site-layout" style={{ padding: "0 50px" }}>
-      <Breadcrumb style={{ margin: "16px 0" }}>
-        <Breadcrumb.Item>
-          <HomeOutlined />
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>List Account</Breadcrumb.Item>
-        <Breadcrumb.Item>{pubKey}</Breadcrumb.Item>
-      </Breadcrumb>
-      <div
-        className="site-layout-background"
-        style={{ padding: 24, minHeight: props.height - 214 }}
-      >
-        <div>{AccountCard(tokenAccount)}</div>
-      </div>
-    </Content>
+    <div
+      className="site-layout-background"
+      style={{ padding: "5% 15%", minHeight: props.height - 214 }}
+    >
+      <div>{AccountCard(tokenAccount)}</div>
+    </div>
   );
 }
