@@ -4,11 +4,11 @@ import { PublicKey } from "@solana/web3.js";
 import { BN } from "@project-serum/anchor";
 import { useWallet } from "../contexts/WalletProvider";
 import { AccountState } from "../types";
-import { Breadcrumb, Layout, Row, Col } from "antd";
+import { Typography, Layout, Row, Col } from "antd";
 import { HomeOutlined } from "@ant-design/icons";
 import { BeachCard } from "../components/BeachCard";
 
-const { Content } = Layout;
+const { Paragraph } = Typography;
 
 const forgeAddress = new PublicKey(
   "91xgw1p2LNkgeLnSq4RgYLGN8Liy7khSxxJPuawBFgJ4"
@@ -38,7 +38,9 @@ function AccountCard(account: AccountState) {
         })}
     </Row>
   ) : (
-    "Account does not exist"
+    <Paragraph className="home-text">
+      It looks like we are still working on this feature. Check back soon!
+    </Paragraph>
   );
 }
 
