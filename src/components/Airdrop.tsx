@@ -1,35 +1,24 @@
 import { useCallback } from "react";
-import { Button, Typography, message, notification } from "antd";
+import { Button, message, notification } from "antd";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { useWallet } from "../contexts/WalletProvider";
 import { LABELS } from "../constants";
-
-const { Title, Text } = Typography;
 
 export function Airdrop(props: { getBalance: any }) {
   const { wallet, connection } = useWallet();
 
   const airdrop = useCallback(() => {
     if (!wallet.publicKey) {
+      // Nothing to see here folks
       return;
     }
 
-    // let signature = await connection.sendRawTransaction(
-    //   allSigned.serialize()
-    // );
-
-    // const hide = message.loading("Waiting for confirmations", 0);
-    // await connection
-    //   .confirmTransaction(signature, "singleGossip")
-    //   .then(() => {
-    //     hide();
-    //   });
-
-    let req = connection
+    // Make it rain (Make it shine since it's Sol?)
+    connection
       .requestAirdrop(wallet.publicKey, 2 * LAMPORTS_PER_SOL)
       .then((txId) => {
         const hide = message.loading(LABELS.WAITING_FOR_CONF, 0);
-        connection.confirmTransaction(txId, "singleGossip").then(() => {
+        connection.confirmTransaction(txId, "confirmed").then(() => {
           hide();
           notification.success({
             message: LABELS.AIRDROP_SUCCESS,
@@ -38,7 +27,7 @@ export function Airdrop(props: { getBalance: any }) {
           props.getBalance();
         });
       });
-  }, [wallet.publicKey, connection]);
+  }, [wallet.publicKey, connection, props]);
 
   return (
     <Button type="primary" onClick={airdrop}>

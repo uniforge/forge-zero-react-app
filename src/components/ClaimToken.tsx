@@ -19,18 +19,12 @@ import { useTokenAccount } from "../contexts/TokenAccountProvider";
 import { useExplorerQueryString, createWrappedNativeAccountTx } from "../utils";
 import { FORGE_ID } from "../constants";
 
-notification.config({
-  duration: 5,
-  rtl: true,
-  placement: "topLeft",
-});
-
-export function CreateAccount(props: { getBalance: any; getForge: any }) {
+export function ClaimToken(props: { getBalance: any; getForge: any }) {
   const { wallet, forgeClient } = useWallet();
   const { getTokenAccount } = useTokenAccount();
   const queryString = useExplorerQueryString();
 
-  async function createAccount(
+  async function claimToken(
     wallet: Wallet,
     forgeClient: Program,
     queryString: string
@@ -40,12 +34,12 @@ export function CreateAccount(props: { getBalance: any; getForge: any }) {
       connection
     );
 
-    // Initialize an account to pay the artist
     const newAccount = Keypair.generate();
     const forgeAccount = await forgeClient.state();
     const artistAddress = forgeAccount.artist.toBase58();
 
     try {
+      // Create the base transaction contents
       const transaction = createWrappedNativeAccountTx(
         wallet,
         newAccount,
@@ -61,24 +55,22 @@ export function CreateAccount(props: { getBalance: any; getForge: any }) {
           FORGE_ID
         );
 
-      // Create the account on the forge
+      // Attempt to claim a token
       const accounts = {
         tokenAccount: accountAddress,
         authority: wallet.publicKey,
         from: newAccount.publicKey,
         artist: artistAddress,
         tokenProgram: TOKEN_PROGRAM_ID,
-        forge: FORGE_ID,
-        rent: SYSVAR_RENT_PUBKEY,
-        systemProgram: SystemProgram.programId,
       };
 
       // @ts-ignore
-      const createAcctInst = await forgeClient.state[
-        "instruction"
-      ].createAccount(new BN(1e8), {
-        accounts,
-      });
+      const createAcctInst = await forgeClient.state["instruction"].claimToken(
+        new BN(1e8),
+        {
+          accounts,
+        }
+      );
       transaction.add(createAcctInst);
 
       // Attach transaction details
@@ -106,7 +98,7 @@ export function CreateAccount(props: { getBalance: any; getForge: any }) {
         "https://explorer.solana.com/tx/" + signature + "?" + queryString;
 
       notification.success({
-        message: "Created a new token account",
+        message: "Claimed a new token",
         description: (
           <a href={url} target="_blank" rel="noreferrer">
             View transaction on explorer
@@ -119,8 +111,8 @@ export function CreateAccount(props: { getBalance: any; getForge: any }) {
       props.getBalance();
       props.getForge();
     } catch (e) {
-      console.warn(e);
-      notification.error({ message: "Failed to create a new token account" });
+      console.log(e);
+      notification.error({ message: "Failed to claim a new token account" });
     }
   }
 
@@ -128,10 +120,10 @@ export function CreateAccount(props: { getBalance: any; getForge: any }) {
     <Button
       type="primary"
       onClick={() => {
-        createAccount(wallet, forgeClient, queryString);
+        claimToken(wallet, forgeClient, queryString);
       }}
     >
-      Create account
+      Claim a token
     </Button>
   );
 }

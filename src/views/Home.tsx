@@ -1,11 +1,10 @@
-import { useSelector, useDispatch } from "react-redux";
-import { State as StoreState, ActionType } from "../store/reducer";
-import { Breadcrumb, Button, Layout, Typography } from "antd";
+import { Breadcrumb, Layout, Typography } from "antd";
 import { HomeOutlined } from "@ant-design/icons";
 import { useWallet } from "../contexts/WalletProvider";
-import { useTokenAccount } from "../contexts/TokenAccountProvider";
+import { useForge } from "../contexts/ForgeProvider";
 import { Forge } from "../components/Forge";
 import { TokenAccount } from "../components/TokenAccount";
+import { ClaimToken } from "../components/ClaimToken";
 import { Airdrop } from "../components/Airdrop";
 import { useCallback, useEffect, useState } from "react";
 import { SYMBOLS } from "../constants";
@@ -15,12 +14,11 @@ const { Title, Text } = Typography;
 
 export function Home(props: { height: number }) {
   const { wallet, connection } = useWallet();
-  const { tokenAccount, getTokenAccount } = useTokenAccount();
+  const { getForge } = useForge();
   const [balanceSol, setBalanceSol] = useState<number>();
 
   const getBalance = useCallback(async () => {
     const balance = await connection.getBalance(wallet.publicKey);
-    console.log("Get balance");
     setBalanceSol(balance / 1e9);
   }, [wallet.publicKey, connection]);
 
@@ -56,7 +54,8 @@ export function Home(props: { height: number }) {
                 <br />
                 <Airdrop getBalance={getBalance} />
                 <br />
-                <TokenAccount getBalance={getBalance} />
+                <TokenAccount getBalance={getBalance} getForge={getForge} />
+                <ClaimToken getBalance={getBalance} getForge={getForge} />
               </div>
             ) : (
               <div>

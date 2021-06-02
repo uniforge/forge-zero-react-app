@@ -6,7 +6,7 @@ import React, {
   useContext,
 } from "react";
 import { useSelector } from "react-redux";
-import { Connection, ConfirmOptions, PublicKey } from "@solana/web3.js";
+import { Connection, ConfirmOptions } from "@solana/web3.js";
 // @ts-ignore
 import Wallet from "@project-serum/sol-wallet-adapter";
 import { Program, Idl, Provider } from "@project-serum/anchor";

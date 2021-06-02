@@ -5,7 +5,7 @@ import React, {
   useState,
   useEffect,
   useContext,
-  useMemo,
+  useCallback,
 } from "react";
 import { useWallet } from "./WalletProvider";
 import { AccountState } from "../types";
@@ -38,15 +38,7 @@ export function TokenAccountProvider(
     account: AccountState | undefined;
   }>({ has: true, account: undefined });
 
-  useEffect(() => {
-    if (wallet.publicKey) {
-      if (tokenAccountState.has && !tokenAccountState.account) {
-        getTokenAccount();
-      }
-    }
-  }, [wallet.publicKey, tokenAccountState]);
-
-  const getTokenAccount = async () => {
+  const getTokenAccount = useCallback(async () => {
     // console.log("Getting state of token account");
     try {
       const tokenAccountFromNet =
@@ -60,7 +52,15 @@ export function TokenAccountProvider(
       // This user has not created a token account
       setTokenAccountState({ has: false, account: undefined });
     }
-  };
+  }, [forgeClient, wallet.publicKey, setTokenAccountState]);
+
+  useEffect(() => {
+    if (wallet.publicKey) {
+      if (tokenAccountState.has && !tokenAccountState.account) {
+        getTokenAccount();
+      }
+    }
+  }, [wallet.publicKey, tokenAccountState, getTokenAccount]);
 
   return (
     <TokenAccountContext.Provider

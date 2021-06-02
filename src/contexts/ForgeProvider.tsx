@@ -5,6 +5,7 @@ import React, {
   useState,
   useEffect,
   useContext,
+  useCallback,
 } from "react";
 import { useWallet } from "./WalletProvider";
 import { Forge } from "../types";
@@ -32,13 +33,7 @@ export function ForgeProvider(
   const { forgeClient } = useWallet();
   const [forge, setForge] = useState<Forge>();
 
-  useEffect(() => {
-    if (!forge) {
-      getForge();
-    }
-  }, []);
-
-  const getForge = async () => {
+  const getForge = useCallback(async () => {
     // Get the forge account data from network
     const forgeFromNet = await forgeClient.state();
 
@@ -57,7 +52,13 @@ export function ForgeProvider(
 
     // Update the state
     setForge(newForge);
-  };
+  }, [forgeClient, setForge]);
+
+  useEffect(() => {
+    if (!forge) {
+      getForge();
+    }
+  }, [forge, getForge]);
 
   return (
     <ForgeContext.Provider value={{ forge, getForge }}>

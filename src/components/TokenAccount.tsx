@@ -1,10 +1,10 @@
-import { Breadcrumb, Button, Layout, Typography } from "antd";
+import { Typography } from "antd";
 import { useTokenAccount } from "../contexts/TokenAccountProvider";
 import { CreateAccount } from "./CreateAccount";
 
 const { Title, Text } = Typography;
 
-export function TokenAccount(props: { getBalance: any }) {
+export function TokenAccount(props: { getBalance: any; getForge: any }) {
   const { tokenAccount } = useTokenAccount();
 
   return (
@@ -21,7 +21,10 @@ export function TokenAccount(props: { getBalance: any }) {
         <div>
           <Text>You don't have a Forge account, yet.</Text>
           <br />
-          <CreateAccount getBalance={props.getBalance} />
+          <CreateAccount
+            getBalance={props.getBalance}
+            getForge={props.getForge}
+          />
         </div>
       )}
     </div>

@@ -24,7 +24,7 @@ const { Option } = Select;
 notification.config({
   duration: 3,
   rtl: true,
-  placement: "topRight",
+  placement: "topLeft",
 });
 
 type WalletConnectButtonProps = {
@@ -40,7 +40,7 @@ export function WalletConnectButton(
     };
   });
   const dispatch = useDispatch();
-  const { wallet, forgeClient } = useWallet();
+  const { wallet } = useWallet();
   const { setTokenAccountState } = useTokenAccount();
   const [key, setKey] = useState<number>(0);
 
@@ -73,7 +73,7 @@ export function WalletConnectButton(
       });
       setKey(key + 1);
     });
-  }, [wallet, dispatch, forgeClient.provider.connection, key]);
+  }, [wallet, dispatch, key, setTokenAccountState]);
 
   return showDisconnect ? (
     <Button style={props.style} onClick={() => wallet.disconnect()}>
