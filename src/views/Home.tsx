@@ -4,7 +4,6 @@ import { useWallet } from "../contexts/WalletProvider";
 import { useForge } from "../contexts/ForgeProvider";
 import { Forge } from "../components/Forge";
 import { TokenAccount } from "../components/TokenAccount";
-import { ClaimToken } from "../components/ClaimToken";
 import { Airdrop } from "../components/Airdrop";
 import { useCallback, useEffect, useState } from "react";
 import { SYMBOLS } from "../constants";
@@ -55,7 +54,6 @@ export function Home(props: { height: number }) {
                 <Airdrop getBalance={getBalance} />
                 <br />
                 <TokenAccount getBalance={getBalance} getForge={getForge} />
-                <ClaimToken getBalance={getBalance} getForge={getForge} />
               </div>
             ) : (
               <div>

@@ -111,7 +111,7 @@ export function ClaimToken(props: { getBalance: any; getForge: any }) {
       props.getBalance();
       props.getForge();
     } catch (e) {
-      console.log(e);
+      console.warn(e.toString());
       notification.error({ message: "Failed to claim a new token account" });
     }
   }

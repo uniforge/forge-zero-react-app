@@ -46,6 +46,7 @@ export function CreateAccount(props: { getBalance: any; getForge: any }) {
     const artistAddress = forgeAccount.artist.toBase58();
 
     try {
+      // Create the base transaction contents
       const transaction = createWrappedNativeAccountTx(
         wallet,
         newAccount,
