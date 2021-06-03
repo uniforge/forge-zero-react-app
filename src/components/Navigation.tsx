@@ -20,7 +20,6 @@ import logo from "../Anvil.png";
 import { LABELS } from "../constants";
 
 const { Header } = Layout;
-const { Search } = Input;
 const { Text } = Typography;
 const { Option } = Select;
 
@@ -158,8 +157,12 @@ export function Navigation() {
           selectedKeys={[activePage]}
         >
           <Menu.Item key="/yours">Your {LABELS.TOKEN_NAME}</Menu.Item>
-          <Menu.Item key="/browse">Browse</Menu.Item>
-          <Menu.Item key="/marketplace">Marketplace</Menu.Item>
+          <Menu.Item disabled key="/browse">
+            Browse
+          </Menu.Item>
+          <Menu.Item disabled key="/marketplace">
+            Marketplace
+          </Menu.Item>
           <Menu.Item key="/about">About</Menu.Item>
         </Menu>
       </Space>

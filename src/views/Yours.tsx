@@ -66,8 +66,8 @@ export function YoursView(props: { height: number }) {
         </Space>
       ) : (
         <Text className="home-text">
-          <Link onClick={() => wallet.connect()}>Connect</Link> a wallet to
-          begin.
+          <Link onClick={() => wallet.connect()}>Connect</Link> a wallet to try{" "}
+          {LABELS.TOKEN_NAME}.
         </Text>
       )}
       {/* <Row>
