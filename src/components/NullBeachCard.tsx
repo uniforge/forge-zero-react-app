@@ -12,8 +12,7 @@ import questionMark from "../questionMark.png";
 
 const { Text } = Typography;
 
-export function NullBeachCard(props: { token: Token }) {
-  const minBidSol = props.token.minBidLamports.div(new BN(1e9)).toNumber();
+export function NullBeachCard() {
   const canvasRef = useRef(null);
   const imgRef = useRef(null);
 

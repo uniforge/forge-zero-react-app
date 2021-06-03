@@ -17,9 +17,9 @@ function AccountCard(account: AccountState) {
         .sort((a, b) => {
           return a.id - b.id;
         })
-        .map((token, index) => {
+        .map((token) => {
           return (
-            <Col xs={20} sm={16} md={12} lg={8} xl={6} key={index}>
+            <Col xs={20} sm={16} md={12} lg={8} xl={6} key={token.id}>
               <BeachCard token={token} />
             </Col>
           );
@@ -31,8 +31,8 @@ function AccountCard(account: AccountState) {
         })
         .map((token, index) => {
           return (
-            <Col xs={20} sm={16} md={12} lg={8} xl={6} key={index}>
-              <NullBeachCard token={token} />
+            <Col xs={20} sm={16} md={12} lg={8} xl={6} key={-1 * index}>
+              <NullBeachCard />
             </Col>
           );
         })}
