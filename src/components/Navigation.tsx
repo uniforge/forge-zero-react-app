@@ -43,7 +43,7 @@ export function WalletConnectButton(
     };
   });
   const dispatch = useDispatch();
-  // let history = useHistory();
+  let history = useHistory();
   const { wallet } = useWallet();
   const { setTokenAccountState } = useTokenAccount();
   const [key, setKey] = useState<number>(0);
@@ -76,7 +76,7 @@ export function WalletConnectButton(
         message: "Connected to wallet",
       });
       setKey(key + 1);
-
+      history.push("/yours");
       // const onSearch = (value: string) => {
       //   if (value !== "") {
       //     const newPath = generatePath("/listAccount/:pubKey", {
@@ -164,6 +164,7 @@ export function Navigation() {
         >
           <Menu.Item key="/yours">Your {LABELS.TOKEN_NAME}</Menu.Item>
           <Menu.Item key="/browse">Browse</Menu.Item>
+          <Menu.Item key="/marketplace">Marketplace</Menu.Item>
           <Menu.Item key="/about">About</Menu.Item>
         </Menu>
       </Space>

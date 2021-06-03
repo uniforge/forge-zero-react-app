@@ -50,6 +50,10 @@ function App() {
                       path="/browse"
                       component={() => <BrowseView height={height} />}
                     />
+                    <Route
+                      path="/marketplace"
+                      component={() => <BrowseView height={height} />}
+                    />
                   </Switch>
                 </Content>
                 <Footer
