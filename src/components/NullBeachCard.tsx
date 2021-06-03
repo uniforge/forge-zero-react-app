@@ -9,7 +9,6 @@ import { BN } from "@project-serum/anchor";
 import { Token } from "../types";
 import { LABELS } from "../constants";
 import questionMark from "../questionMark.png";
-import { sleep } from "@project-serum/common";
 
 const { Text } = Typography;
 
@@ -18,14 +17,18 @@ export function NullBeachCard() {
   const imgRef = useRef(null);
 
   useEffect(() => {
-    sleep(10).then(() => {
-      const canvas = canvasRef.current;
-      if (canvas !== null) {
-        //@ts-ignore
-        const context = canvas.getContext("2d");
-        context.drawImage(imgRef.current, 0, 0);
-      }
-    });
+    const img = imgRef.current;
+    if (img !== null) {
+      //@ts-ignore
+      img.onload = () => {
+        const canvas = canvasRef.current;
+        if (canvas !== null) {
+          //@ts-ignore
+          const context = canvas.getContext("2d");
+          context.drawImage(imgRef.current, 0, 0);
+        }
+      };
+    }
   }, [canvasRef, imgRef]);
 
   return (

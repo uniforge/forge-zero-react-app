@@ -18,11 +18,17 @@ export function BeachCard(props: { token: Token }) {
   const imgRef = useRef(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (canvas !== null) {
+    const img = imgRef.current;
+    if (img !== null) {
       //@ts-ignore
-      const context = canvas.getContext("2d");
-      context.drawImage(imgRef.current, 0, 0);
+      img.onload = () => {
+        const canvas = canvasRef.current;
+        if (canvas !== null) {
+          //@ts-ignore
+          const context = canvas.getContext("2d");
+          context.drawImage(imgRef.current, 0, 0);
+        }
+      };
     }
   }, [canvasRef, imgRef]);
 
