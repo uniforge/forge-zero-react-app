@@ -31,6 +31,7 @@ notification.config({
 });
 
 type WalletConnectButtonProps = {
+  setActivePage: any;
   style?: any;
 };
 
@@ -76,6 +77,7 @@ export function WalletConnectButton(
         message: "Connected to wallet",
       });
       setKey(key + 1);
+      props.setActivePage("/yours");
       history.push("/yours");
       // const onSearch = (value: string) => {
       //   if (value !== "") {
@@ -134,13 +136,6 @@ function UserSelector() {
 export function Navigation() {
   let history = useHistory();
   const [activePage, setActivePage] = useState<string>("/");
-
-  // const onSearch = (value: string) => {
-  //   if (value !== "") {
-  //     const newPath = generatePath("/listAccount/:pubKey", { pubKey: value });
-  //     history.push(newPath);
-  //   }
-  // };
   const { wallet } = useWallet();
 
   function handleClick(e: any) {
@@ -181,6 +176,7 @@ export function Navigation() {
           style={{
             display: wallet.publicKey ? "none" : "",
           }}
+          setActivePage={setActivePage}
         />
       ) : (
         <UserSelector />
