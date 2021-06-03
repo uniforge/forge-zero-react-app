@@ -43,6 +43,7 @@ export function CreateAccount(props: {
   balanceSol: number;
 }) {
   const [artistFeeSol, setArtistFeeSol] = useState<number>(LABELS.MIN_FEE);
+  const [creating, setCreating] = useState<boolean>(false);
   const { wallet, forgeClient } = useWallet();
   const { getTokenAccount } = useTokenAccount();
   const queryString = useExplorerQueryString();
@@ -52,6 +53,7 @@ export function CreateAccount(props: {
     forgeClient: Program,
     queryString: string
   ) {
+    setCreating(true);
     const connection = forgeClient.provider.connection;
     const balanceNeeded = await Token.getMinBalanceRentForExemptAccount(
       connection
@@ -141,6 +143,7 @@ export function CreateAccount(props: {
       console.warn(e);
       notification.error({ message: "Failed to create a new token account" });
     }
+    setCreating(false);
   }
 
   return (
@@ -174,6 +177,7 @@ export function CreateAccount(props: {
             createAccount(wallet, forgeClient, queryString);
           }}
           size="large"
+          loading={creating}
         >
           {LABELS.CREATE_ACCOUNT}
         </Button>

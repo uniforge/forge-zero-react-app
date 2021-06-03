@@ -107,11 +107,7 @@ export function ClaimToken(props: {
 
       notification.success({
         message: "Claimed a new token",
-        description: (
-          <a href={url} target="_blank" rel="noreferrer">
-            View transaction on explorer
-          </a>
-        ),
+        description: <a href={url}>View transaction on explorer</a>,
       });
 
       // Get the updated the account
