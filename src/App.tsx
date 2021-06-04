@@ -7,6 +7,8 @@ import { TokenAccountProvider } from "./contexts/TokenAccountProvider";
 import { HomeView } from "./views/Home";
 import { YoursView } from "./views/Yours";
 import { BrowseView } from "./views/Browse";
+import { ListAccountView } from "./views/ListAccountView";
+import { TokenView } from "./views/TokenView";
 import { Navigation } from "./components/Navigation";
 import { Layout } from "antd";
 import "./App.css";
@@ -62,6 +64,14 @@ function App() {
                     <Route
                       path="/browse"
                       component={() => <BrowseView height={height} />}
+                    />
+                    <Route
+                      path="/listAccount/:publickey"
+                      component={() => <ListAccountView height={height} />}
+                    />
+                    <Route
+                      path="/tokenDetail/:tokenId"
+                      component={() => <TokenView height={height} />}
                     />
                     <Route
                       path="/marketplace"

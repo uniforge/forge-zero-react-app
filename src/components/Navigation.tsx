@@ -15,6 +15,7 @@ import { CloseOutlined, UserOutlined } from "@ant-design/icons";
 import { State as StoreState, ActionType } from "../store/reducer";
 import { useWallet } from "../contexts/WalletProvider";
 import { useTokenAccount } from "../contexts/TokenAccountProvider";
+import { useForge } from "../contexts/ForgeProvider";
 import logo from "../Anvil.png";
 import { LABELS } from "../constants";
 
@@ -134,11 +135,13 @@ function UserSelector() {
 export function Navigation(props: { activePage: string; setActivePage: any }) {
   let history = useHistory();
   const { wallet } = useWallet();
+  const { getForge } = useForge();
 
   function handleClick(e: any) {
     let page: string;
     e.key === "/about" ? (page = "/") : (page = e.key);
     props.setActivePage(e.key);
+    getForge();
     history.push(page);
   }
 

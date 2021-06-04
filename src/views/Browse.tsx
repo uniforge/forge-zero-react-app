@@ -1,16 +1,16 @@
 import { useSelector } from "react-redux";
 import { State as StoreState } from "../store/reducer";
 import { useHistory, generatePath } from "react-router-dom";
-import { Button, Typography, Input, Row, Col, Select } from "antd";
+import { Typography, Input, Row, Col, Select } from "antd";
 import { useForge } from "../contexts/ForgeProvider";
+import { PublicKey } from "@solana/web3.js";
 import { Token } from "../types";
+import { SearchQuery } from "../components/SearchQuery";
 import { TokenDisplay } from "../components/TokenDisplay";
 import { LABELS, FORGE_ID } from "../constants";
-import { useState, useEffect } from "react";
 
-const { Title, Paragraph } = Typography;
+const { Title } = Typography;
 const { Search } = Input;
-const { Option } = Select;
 
 export function BrowseView(props: { height: number }) {
   let history = useHistory();
@@ -44,10 +44,19 @@ export function BrowseView(props: { height: number }) {
 
   const onSearch = (value: string) => {
     if (value !== "") {
-      const newPath = generatePath("/listAccount/:pubKey", {
-        pubKey: value,
-      });
-      history.push(newPath);
+      if (value.length === 44) {
+        // Assume query is a pubkey
+        const newPath = generatePath("/listAccount/:publickey", {
+          publickey: value,
+        });
+        history.push(newPath);
+      } else {
+        // Assume it is a token id
+        const newPath = generatePath("/tokenDetail/:tokenId", {
+          tokenId: value,
+        });
+        history.push(newPath);
+      }
     }
   };
 
@@ -56,17 +65,10 @@ export function BrowseView(props: { height: number }) {
       className="site-layout-background"
       style={{ padding: "5% 15%", minHeight: props.height - 162 }}
     >
-      <Row style={{ paddingBottom: "2em" }}>
+      <Row style={{ paddingBottom: "2.6em" }}>
         <Col flex="auto"></Col>
         <Col>
-          <Search
-            placeholder={
-              "Search by " + LABELS.TOKEN_NAME + " number or public key"
-            }
-            onSearch={onSearch}
-            enterButton
-            style={{ width: 500 }}
-          />
+          <SearchQuery />
         </Col>
         <Col flex="auto"></Col>
       </Row>
