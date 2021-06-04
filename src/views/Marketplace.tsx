@@ -30,11 +30,7 @@ function AccountCard(account: AccountState) {
       {account.ownedTokens
         .filter((token) => token.id !== 0)
         .map((token, index) => {
-          return (
-            <Col xs={20} sm={16} md={12} lg={8} xl={6} key={index}>
-              {/* <BeachCard token={token} /> */}
-            </Col>
-          );
+          return <Col xs={20} sm={16} md={12} lg={8} xl={6} key={index}></Col>;
         })}
     </Row>
   ) : (

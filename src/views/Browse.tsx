@@ -65,7 +65,8 @@ export function BrowseView(props: { height: number }) {
       className="site-layout-background"
       style={{ padding: "5% 15%", minHeight: props.height - 162 }}
     >
-      <Row style={{ paddingBottom: "2.6em" }}>
+      <Title level={1}>Browse and Search</Title>
+      <Row style={{ paddingBottom: "2.6em", paddingTop: "1em" }}>
         <Col flex="auto"></Col>
         <Col>
           <SearchQuery />

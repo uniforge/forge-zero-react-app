@@ -23,12 +23,7 @@ function AccountCard(account: AccountState, imgUrilBase: string) {
         .map((token) => {
           return (
             <Col xs={20} sm={16} md={12} lg={8} xl={6} key={token.id}>
-              <BeachCard
-                token={token}
-                imgUri={
-                  imgUrilBase + String(token.id).padStart(9, "0") + ".png"
-                }
-              />
+              <BeachCard token={token} imgUriBase={imgUrilBase} />
             </Col>
           );
         })}

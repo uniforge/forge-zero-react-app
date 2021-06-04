@@ -16,13 +16,24 @@ import questionMark from "../questionMark.png";
 
 const { Text } = Typography;
 
-export function BeachCard(props: { token: Token; imgUri: string }) {
+export function BeachCard(props: { token: Token; imgUriBase: string }) {
   const minBidSol = props.token.minBidLamports
     ? props.token.minBidLamports.div(new BN(1e9)).toNumber()
     : "";
   const canvasRef = useRef(null);
   const imgRef = useRef(null);
   const [isFlipped, setIsFlipped] = useState<boolean>(false);
+
+  const coverUri =
+    props.imgUriBase +
+    "cover_" +
+    String(props.token.id).padStart(9, "0") +
+    ".png";
+  const insertUri =
+    props.imgUriBase +
+    "insert_" +
+    String(props.token.id).padStart(9, "0") +
+    ".png";
 
   useEffect(() => {
     const img = imgRef.current;
@@ -50,7 +61,7 @@ export function BeachCard(props: { token: Token; imgUri: string }) {
       cover={
         <ReactCardFlip isFlipped={isFlipped}>
           <PixelArt
-            src={props.imgUri}
+            src={coverUri}
             alt={LABELS.TOKEN_NAME + " token number " + props.token.id}
             width={48}
             height={48}
@@ -58,10 +69,10 @@ export function BeachCard(props: { token: Token; imgUri: string }) {
             onClick={handleClick}
           />
           <PixelArt
-            src={questionMark}
+            src={insertUri}
             alt={LABELS.TOKEN_NAME + " token number " + props.token.id}
-            width={32}
-            height={32}
+            width={48}
+            height={48}
             className={"token-card"}
             onClick={handleClick}
           />

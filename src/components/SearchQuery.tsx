@@ -2,6 +2,7 @@ import { useHistory, generatePath } from "react-router-dom";
 import { Input, notification } from "antd";
 import { useForge } from "../contexts/ForgeProvider";
 import { LABELS } from "../constants";
+import { useState } from "react";
 
 const { Search } = Input;
 
@@ -9,13 +10,15 @@ export function SearchQuery(props: { maxTokenId?: number }) {
   let history = useHistory();
   const { forge } = useForge();
 
-  const onSearch = (value: string) => {
+  const handleSearch = (value: string, event: any) => {
+    console.log(event);
     if (value !== "") {
       if (value.length === 44) {
         // Assume query is a pubkey
         const newPath = generatePath("/listAccount/:publickey", {
           publickey: value,
         });
+
         history.push(newPath);
       } else {
         // Assume it is a token id, do some basic checks
@@ -37,6 +40,7 @@ export function SearchQuery(props: { maxTokenId?: number }) {
               const newPath = generatePath("/tokenDetail/:tokenId", {
                 tokenId: value,
               });
+
               history.push(newPath);
             } else {
               notification.error({
@@ -66,7 +70,7 @@ export function SearchQuery(props: { maxTokenId?: number }) {
   return (
     <Search
       placeholder={"Search by " + LABELS.TOKEN_NAME + " number or public key"}
-      onSearch={onSearch}
+      onSearch={handleSearch}
       enterButton
       style={{ width: 500 }}
     />
