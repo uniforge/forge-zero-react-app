@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Card, Tooltip, Row, Col, Typography } from "antd";
+import { Link } from "react-router-dom";
 import {
   UndoOutlined,
   ToTopOutlined,
@@ -73,9 +74,11 @@ export function BeachCard(props: { token: Token; imgUri: string }) {
         // <Tooltip title="Offer for sale">
         //   <ToTopOutlined key="sell" />
         // </Tooltip>,
-        // <Tooltip title={"See the details of this " + LABELS.TOKEN_NAME}>
-        //   <InfoCircleOutlined key="details" />
-        // </Tooltip>,
+        <Tooltip title={"See the details of this " + LABELS.TOKEN_NAME}>
+          <Link to={"/tokenDetail/" + props.token.id}>
+            <InfoCircleOutlined key="details" />
+          </Link>
+        </Tooltip>,
       ]}
     >
       <Row>
