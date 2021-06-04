@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Button,
   Input,
@@ -23,6 +23,8 @@ export function ClaimToken(props: {
   getForge: any;
   balanceSol: number;
   disabled: boolean;
+  network: string;
+  contentProvider: string;
 }) {
   const [artistFeeSol, setArtistFeeSol] = useState<number>(LABELS.MIN_FEE);
   const [claiming, setClaiming] = useState<boolean>(false);
@@ -95,12 +97,14 @@ export function ClaimToken(props: {
         allSigned.serialize()
       );
 
-      const hide = message.loading("Waiting for confirmations", 0);
-      await connection
-        .confirmTransaction(signature, "singleGossip")
-        .then(() => {
-          hide();
-        });
+      const finality = message.loading(
+        "Waiting for transaction to be finalized. This usually takes less than 20 sec",
+        0
+      );
+
+      await connection.confirmTransaction(signature, "max").then(() => {
+        finality();
+      });
 
       const url =
         "https://explorer.solana.com/tx/" + signature + "?" + queryString;
@@ -113,15 +117,54 @@ export function ClaimToken(props: {
           </a>
         ),
       });
+    } catch (e) {
+      console.warn(e.toString());
+      notification.error({ message: "Failed to claim a new token account" });
+    }
+    try {
+      const contentUpdate = message.loading(
+        "Getting your new " + LABELS.TOKEN_NAME,
+        0
+      );
+      const resp = await fetch(props.contentProvider, {
+        method: "POST",
+        body: JSON.stringify({
+          network: props.network,
+          forgeId: FORGE_ID.toBase58(),
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((resp) => {
+        contentUpdate();
+        if (!resp.ok) {
+          console.warn("Request to update content availability failed");
+          notification.warning({
+            message:
+              "Getting the metadata of your new " +
+              LABELS.TOKEN_NAME +
+              " failed. Try refreshing the page in a minute.",
+          });
+        } else {
+          notification.success({
+            message: "Enjoy your new " + LABELS.TOKEN_NAME,
+          });
+        }
+      });
+    } catch (e) {
+      console.warn("Request to update content availability failed");
+      console.warn(e);
+    }
 
+    try {
       // Get the updated the account
       getTokenAccount();
       props.getBalance();
       props.getForge();
     } catch (e) {
-      console.warn(e.toString());
-      notification.error({ message: "Failed to claim a new token account" });
+      console.warn(e);
     }
+
     setClaiming(false);
   }
 

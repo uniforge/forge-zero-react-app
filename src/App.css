@@ -26,7 +26,18 @@ canvas {
   padding: 0;
   margin: auto;
   display: block;
-  width: 70%;
+  width: 100%;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.beach-card canvas {
+  padding: 0;
+  margin: auto;
+  display: block;
+  width: 100%;
   image-rendering: -moz-crisp-edges;
   image-rendering: -webkit-crisp-edges;
   image-rendering: pixelated;

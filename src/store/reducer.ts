@@ -67,7 +67,7 @@ export const networks: Networks = {
   mainnet: {
     // Cluster.
     label: "Mainnet Beta",
-    url: "https://solana-api.projectserum.com",
+    url: "https://api.mainnet-beta.solana.com",
     explorerClusterSuffix: "",
     forgeProgramId: new PublicKey(
       "ForgeHXbqRF4ssv7QVn9NHkQx4hqUDXrWaJ9EGywjTqv"
@@ -75,15 +75,19 @@ export const networks: Networks = {
     forgeUpgradeAuthority: new PublicKey(
       "8czvGZQcUDrUop7yw6vybroVu7jrtGsEshDCc4nbUScf"
     ),
+    forgeContentProvider:
+      "https://aszi9kd696.execute-api.us-east-1.amazonaws.com/release/updateContent",
   },
   devnet: {
     // Cluster.
     label: "Devnet",
-    url: "https://devnet.solana.com",
+    url: "https://api.devnet.solana.com",
     explorerClusterSuffix: "devnet",
     forgeProgramId: new PublicKey(
       "ForgeHXbqRF4ssv7QVn9NHkQx4hqUDXrWaJ9EGywjTqv"
     ),
+    forgeContentProvider:
+      "https://aszi9kd696.execute-api.us-east-1.amazonaws.com/dev/updateContent",
   },
   // Fill in with your local cluster addresses.
   localhost: {
@@ -94,6 +98,7 @@ export const networks: Networks = {
     forgeProgramId: new PublicKey(
       "ForgeHXbqRF4ssv7QVn9NHkQx4hqUDXrWaJ9EGywjTqv"
     ),
+    forgeContentProvider: "http://127.0.0.1:5000/updateContent",
   },
 };
 
@@ -115,4 +120,5 @@ export type Network = {
   explorerClusterSuffix: string;
   forgeProgramId: PublicKey;
   forgeUpgradeAuthority?: PublicKey;
+  forgeContentProvider: string;
 };

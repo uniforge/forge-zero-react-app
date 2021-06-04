@@ -1,3 +1,5 @@
+import { useSelector } from "react-redux";
+import { State as StoreState } from "../store/reducer";
 import { Typography, Row, Col } from "antd";
 import { useTokenAccount } from "../contexts/TokenAccountProvider";
 import { CreateAccount } from "./CreateAccount";
@@ -5,11 +7,11 @@ import { ClaimToken } from "./ClaimToken";
 import { BeachCard } from "./BeachCard";
 import { NullBeachCard } from "./NullBeachCard";
 import { AccountState } from "../types";
-import { LABELS } from "../constants";
+import { FORGE_ID, LABELS } from "../constants";
 
 const { Title, Paragraph, Text } = Typography;
 
-function AccountCard(account: AccountState) {
+function AccountCard(account: AccountState, imgUrilBase: string) {
   return account.authority !== null ? (
     <Row gutter={[{ xs: 0, sm: 16 }, 16]}>
       {account.ownedTokens
@@ -20,7 +22,12 @@ function AccountCard(account: AccountState) {
         .map((token) => {
           return (
             <Col xs={20} sm={16} md={12} lg={8} xl={6} key={token.id}>
-              <BeachCard token={token} />
+              <BeachCard
+                token={token}
+                imgUri={
+                  imgUrilBase + String(token.id).padStart(9, "0") + ".png"
+                }
+              />
             </Col>
           );
         })}
@@ -48,6 +55,19 @@ export function TokenAccount(props: {
   balanceSol: number;
 }) {
   const { tokenAccount } = useTokenAccount();
+  const { network, contentProvider } = useSelector((state: StoreState) => {
+    return {
+      network: state.common.network.explorerClusterSuffix,
+      contentProvider: state.common.network.forgeContentProvider,
+    };
+  });
+
+  const imgUriBase =
+    "https://uniforge-public.s3.amazonaws.com/" +
+    network +
+    "/" +
+    FORGE_ID.toBase58() +
+    "/";
 
   return (
     <div>
@@ -68,9 +88,11 @@ export function TokenAccount(props: {
               getForge={props.getForge}
               balanceSol={props.balanceSol}
               disabled={tokenAccount.nTokens >= LABELS.MAX_TOKENS_PER_WALLET}
+              network={network}
+              contentProvider={contentProvider}
             />
           </Row>
-          {AccountCard(tokenAccount)}
+          {AccountCard(tokenAccount, imgUriBase)}
         </div>
       ) : (
         <div>

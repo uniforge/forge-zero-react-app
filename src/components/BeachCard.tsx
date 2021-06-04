@@ -12,7 +12,7 @@ import anvil from "../Anvil.png";
 
 const { Text } = Typography;
 
-export function BeachCard(props: { token: Token }) {
+export function BeachCard(props: { token: Token; imgUri: string }) {
   const minBidSol = props.token.minBidLamports.div(new BN(1e9)).toNumber();
   const canvasRef = useRef(null);
   const imgRef = useRef(null);
@@ -36,14 +36,14 @@ export function BeachCard(props: { token: Token }) {
     <Card
       //   style={{ width: 300 }}
       cover={
-        <div>
-          <canvas ref={canvasRef} width="32" height="32"></canvas>
+        <div className="beach-card">
+          <canvas ref={canvasRef} width="48" height="48"></canvas>
           <div style={{ display: "none" }}>
             <img
               ref={imgRef}
-              src={anvil}
-              width="32"
-              height="32"
+              src={props.imgUri}
+              width="48"
+              height="48"
               alt={"Image of token ID " + props.token.id}
             />
           </div>

@@ -32,7 +32,7 @@ function AccountCard(account: AccountState) {
         .map((token, index) => {
           return (
             <Col xs={20} sm={16} md={12} lg={8} xl={6} key={index}>
-              <BeachCard token={token} />
+              {/* <BeachCard token={token} /> */}
             </Col>
           );
         })}
