@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Card, Tooltip, Row, Col, Typography } from "antd";
 import {
+  UndoOutlined,
   ToTopOutlined,
   FieldNumberOutlined,
   InfoCircleOutlined,
@@ -15,7 +16,9 @@ import questionMark from "../questionMark.png";
 const { Text } = Typography;
 
 export function BeachCard(props: { token: Token; imgUri: string }) {
-  const minBidSol = props.token.minBidLamports.div(new BN(1e9)).toNumber();
+  const minBidSol = props.token.minBidLamports
+    ? props.token.minBidLamports.div(new BN(1e9)).toNumber()
+    : "";
   const canvasRef = useRef(null);
   const imgRef = useRef(null);
   const [isFlipped, setIsFlipped] = useState<boolean>(false);
@@ -64,12 +67,15 @@ export function BeachCard(props: { token: Token; imgUri: string }) {
         </ReactCardFlip>
       }
       actions={[
-        <Tooltip title="Offer for sale">
-          <ToTopOutlined key="sell" />
+        <Tooltip title="Flip the card over">
+          <UndoOutlined key="flip" onClick={handleClick} />
         </Tooltip>,
-        <Tooltip title={"See the details of this " + LABELS.TOKEN_NAME}>
-          <InfoCircleOutlined key="details" />
-        </Tooltip>,
+        // <Tooltip title="Offer for sale">
+        //   <ToTopOutlined key="sell" />
+        // </Tooltip>,
+        // <Tooltip title={"See the details of this " + LABELS.TOKEN_NAME}>
+        //   <InfoCircleOutlined key="details" />
+        // </Tooltip>,
       ]}
     >
       <Row>

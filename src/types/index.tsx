@@ -15,8 +15,8 @@ export type Forge = {
 
 export type Token = {
   id: number;
-  forSale: boolean;
-  minBidLamports: BN;
+  forSale?: boolean;
+  minBidLamports?: BN;
 };
 
 export type AccountState = {

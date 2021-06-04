@@ -6,7 +6,6 @@ import {
   Menu,
   Select,
   Space,
-  Input,
   Typography,
   Button,
   Col,
@@ -132,15 +131,14 @@ function UserSelector() {
   );
 }
 
-export function Navigation() {
+export function Navigation(props: { activePage: string; setActivePage: any }) {
   let history = useHistory();
-  const [activePage, setActivePage] = useState<string>("/");
   const { wallet } = useWallet();
 
   function handleClick(e: any) {
     let page: string;
     e.key === "/about" ? (page = "/") : (page = e.key);
-    setActivePage(e.key);
+    props.setActivePage(e.key);
     history.push(page);
   }
 
@@ -154,12 +152,10 @@ export function Navigation() {
           theme="dark"
           mode="horizontal"
           onClick={handleClick}
-          selectedKeys={[activePage]}
+          selectedKeys={[props.activePage]}
         >
           <Menu.Item key="/yours">Your {LABELS.TOKEN_NAME}</Menu.Item>
-          <Menu.Item disabled key="/browse">
-            Browse
-          </Menu.Item>
+          <Menu.Item key="/browse">Browse</Menu.Item>
           <Menu.Item disabled key="/marketplace">
             Marketplace
           </Menu.Item>
@@ -179,7 +175,7 @@ export function Navigation() {
           style={{
             display: wallet.publicKey ? "none" : "",
           }}
-          setActivePage={setActivePage}
+          setActivePage={props.setActivePage}
         />
       ) : (
         <UserSelector />

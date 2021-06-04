@@ -11,7 +11,7 @@ import { LABELS } from "../constants";
 const { Content } = Layout;
 const { Title, Text, Link } = Typography;
 
-export function YoursView(props: { height: number }) {
+export function YoursView(props: { height: number; setActivePage?: any }) {
   const { wallet, connection } = useWallet();
   const { forge, getForge } = useForge();
   const [balanceSol, setBalanceSol] = useState<number>(0);

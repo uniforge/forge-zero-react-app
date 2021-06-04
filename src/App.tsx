@@ -7,7 +7,6 @@ import { TokenAccountProvider } from "./contexts/TokenAccountProvider";
 import { HomeView } from "./views/Home";
 import { YoursView } from "./views/Yours";
 import { BrowseView } from "./views/Browse";
-import { ListAccountView } from "./views/ListAccount";
 import { Navigation } from "./components/Navigation";
 import { Layout } from "antd";
 import "./App.css";
@@ -17,6 +16,7 @@ const { Content, Footer } = Layout;
 
 function App() {
   const [height, setHeight] = useState<number>(window.innerHeight);
+  const [activePage, setActivePage] = useState<string>("/");
 
   useLayoutEffect(() => {
     function handleResize() {
@@ -34,17 +34,30 @@ function App() {
           <ForgeProvider>
             <TokenAccountProvider>
               <Layout>
-                <Navigation />
+                <Navigation
+                  activePage={activePage}
+                  setActivePage={setActivePage}
+                />
                 <Content className="site-layout" style={{ padding: "0 0px" }}>
                   <Switch>
                     <Route
                       exact
                       path="/"
-                      component={() => <HomeView height={height} />}
+                      component={() => (
+                        <HomeView
+                          height={height}
+                          setActivePage={setActivePage}
+                        />
+                      )}
                     ></Route>
                     <Route
                       path="/yours"
-                      component={() => <YoursView height={height} />}
+                      component={() => (
+                        <YoursView
+                          height={height}
+                          setActivePage={setActivePage}
+                        />
+                      )}
                     />
                     <Route
                       path="/browse"

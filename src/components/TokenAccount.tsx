@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import { HashLink as Link } from "react-router-hash-link";
 import { State as StoreState } from "../store/reducer";
 import { Typography, Row, Col } from "antd";
 import { useTokenAccount } from "../contexts/TokenAccountProvider";
@@ -54,6 +55,7 @@ export function TokenAccount(props: {
   getForge: any;
   balanceSol: number;
 }) {
+  // let history = useHistory();
   const { tokenAccount } = useTokenAccount();
   const { network, contentProvider } = useSelector((state: StoreState) => {
     return {
@@ -76,10 +78,13 @@ export function TokenAccount(props: {
           <Row gutter={16} style={{ paddingTop: "1em", paddingBottom: "2em" }}>
             <Col span={24}>
               <Paragraph className="home-text">
-                You have {tokenAccount.nTokens} {LABELS.TOKEN_NAME}s (each
-                account holds up to {LABELS.MAX_TOKENS_PER_WALLET}). Each{" "}
-                {LABELS.TOKEN_NAME} is algorithmically generated and unique, try
-                claiming another for a change of scenery.
+                Each {LABELS.TOKEN_NAME} is{" "}
+                <Link to={{ pathname: "/", hash: "#algo-gen-unique" }}>
+                  algorithmically generated and unique
+                </Link>
+                , click one to see the other side, or claim another for a change
+                of scenery. You have {tokenAccount.nTokens} {LABELS.TOKEN_NAME}s
+                (each account holds up to {LABELS.MAX_TOKENS_PER_WALLET}).
               </Paragraph>
             </Col>
 
