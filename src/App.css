@@ -33,7 +33,7 @@ canvas {
   image-rendering: crisp-edges;
 }
 
-.beach-card canvas {
+.token-card canvas {
   padding: 0;
   margin: auto;
   display: block;

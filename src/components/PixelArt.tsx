@@ -5,6 +5,8 @@ export function PixelArt(props: {
   alt: string;
   width: number;
   height: number;
+  className: string;
+  onClick?: any;
 }) {
   const canvasRef = useRef(null);
   const imgRef = useRef(null);
@@ -25,7 +27,7 @@ export function PixelArt(props: {
   }, [canvasRef, imgRef]);
 
   return (
-    <div>
+    <div className={props.className} onClick={props.onClick}>
       <canvas
         ref={canvasRef}
         width={props.width}

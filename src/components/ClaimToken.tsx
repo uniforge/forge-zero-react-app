@@ -47,6 +47,7 @@ export function ClaimToken(props: {
     const forgeAccount = await forgeClient.state();
     const artistAddress = forgeAccount.artist.toBase58();
     const artistFeeLamports = artistFeeSol * LAMPORTS_PER_SOL;
+    let signature: string = "";
 
     try {
       // Create the base transaction contents
@@ -93,9 +94,7 @@ export function ClaimToken(props: {
       // Here is the part that breaks... This method of signing using the
       // wallet works
       let allSigned = await wallet.signTransaction(transaction);
-      let signature = await connection.sendRawTransaction(
-        allSigned.serialize()
-      );
+      signature = await connection.sendRawTransaction(allSigned.serialize());
 
       const finality = message.loading(
         "Waiting for transaction to be finalized. This usually takes less than 20 sec",
@@ -119,7 +118,25 @@ export function ClaimToken(props: {
       });
     } catch (e) {
       console.warn(e.toString());
-      notification.error({ message: "Failed to claim a new token account" });
+      if (signature !== "") {
+        const url =
+          "https://explorer.solana.com/tx/" + signature + "?" + queryString;
+        notification.error({
+          message:
+            "Failed to claim a new " +
+            LABELS.TOKEN_NAME +
+            ", check the transaction to see if it succeded.",
+          description: (
+            <a href={url} target="_blank" rel="noreferrer">
+              View transaction on explorer
+            </a>
+          ),
+        });
+      } else {
+        notification.error({
+          message: "Something went wrong claiming a " + LABELS.TOKEN_NAME,
+        });
+      }
     }
     try {
       const contentUpdate = message.loading(

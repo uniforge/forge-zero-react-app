@@ -48,68 +48,76 @@ export function HomeView(props: { height: number }) {
         of works, set rights on each work, and issue prints of the work.
       </Paragraph>
       <Row gutter={[32, 32]} style={{ paddingBottom: "2em" }}>
-        <Col className="home-pixel" span={6}>
+        <Col span={6}>
           <PixelArt
             src={anvilOne}
             alt={"An anvil NFT"}
             width={48}
             height={48}
+            className={"home-pixel"}
           />
         </Col>
-        <Col className="home-pixel" span={6}>
+        <Col span={6}>
           <PixelArt
             src={anvilTwo}
             alt={"An anvil NFT"}
             width={48}
             height={48}
+            className={"home-pixel"}
           />
         </Col>
-        <Col className="home-pixel" span={6}>
+        <Col span={6}>
           <PixelArt
             src={hammerOne}
             alt={"An anvil NFT"}
             width={48}
             height={48}
+            className={"home-pixel"}
           />
         </Col>
-        <Col className="home-pixel" span={6}>
+        <Col span={6}>
           <PixelArt
             src={anvilThree}
             alt={"An anvil NFT"}
             width={48}
             height={48}
+            className={"home-pixel"}
           />
         </Col>
-        <Col className="home-pixel" span={6}>
+        <Col span={6}>
           <PixelArt
             src={hammerTwo}
             alt={"An anvil NFT"}
             width={48}
             height={48}
+            className={"home-pixel"}
           />
         </Col>
-        <Col className="home-pixel" span={6}>
+        <Col span={6}>
           <PixelArt
             src={rainbowShadesOne}
             alt={"An rainbow sunglasses NFT"}
             width={48}
             height={48}
+            className={"home-pixel"}
           />
         </Col>
-        <Col className="home-pixel" span={6}>
+        <Col span={6}>
           <PixelArt
             src={hammerThree}
             alt={"An anvil NFT"}
             width={48}
             height={48}
+            className={"home-pixel"}
           />
         </Col>
-        <Col className="home-pixel" span={6}>
+        <Col span={6}>
           <PixelArt
             src={anvilFour}
             alt={"An anvil NFT"}
             width={48}
             height={48}
+            className={"home-pixel"}
           />
         </Col>
       </Row>
