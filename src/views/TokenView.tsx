@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useHistory, generatePath } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { State as StoreState } from "../store/reducer";
-import { Row, Col, Typography, notification } from "antd";
+import { Row, Col, Typography, Collapse, Switch, notification } from "antd";
 import {
   FieldNumberOutlined,
   LeftOutlined,
@@ -12,11 +12,18 @@ import { FORGE_ID } from "../constants";
 import { useForge } from "../contexts/ForgeProvider";
 import { SearchQuery } from "../components/SearchQuery";
 import { PixelArt } from "../components/PixelArt";
-import { Token } from "../types";
+import { Token, TokenMetadata } from "../types";
 import { LABELS } from "../constants";
 import questionMark from "../questionMark.png";
 
 const { Text, Title } = Typography;
+const { Panel } = Collapse;
+
+const someText = `
+  A dog is a type of domesticated animal.
+  Known for its loyalty and faithfulness,
+  it can be found as a welcome guest in many households across the world.
+`;
 
 export function TokenView(props: { height: number; setActivePage?: any }) {
   let { tokenId } = useParams<{ tokenId: string }>();
@@ -27,6 +34,22 @@ export function TokenView(props: { height: number; setActivePage?: any }) {
       network: state.common.network.explorerClusterSuffix,
     };
   });
+  const [metadata, setMetadata] = useState<TokenMetadata>();
+  const [showJSON, setShowJSON] = useState<boolean>(false);
+
+  useEffect(() => {
+    const someJson = fetch(
+      imgUriBase + "metadata_" + String(token.id).padStart(9, "0") + ".json"
+    )
+      .then((res) => res.json())
+      .then((out) => {
+        const tokenMeta = out as TokenMetadata;
+        setMetadata(tokenMeta);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, [tokenId, setMetadata]);
 
   const goToToken = (value: number) => {
     // Valid max token
@@ -57,6 +80,10 @@ export function TokenView(props: { height: number; setActivePage?: any }) {
           "Try a Solana wallet address or a " + LABELS.TOKEN_NAME + " number",
       });
     }
+  };
+
+  const handleJSONSwitch = () => {
+    setShowJSON(!showJSON);
   };
 
   const token = { id: Number(tokenId) } as Token;
@@ -105,7 +132,7 @@ export function TokenView(props: { height: number; setActivePage?: any }) {
         </Col>
       </Row>
 
-      <Row gutter={[64, 0]}>
+      <Row gutter={[64, 0]} style={{ paddingBottom: "1.5em" }}>
         <Col xs={24} md={12}>
           <Row gutter={[0, 0]}>
             <Col span={24}>
@@ -128,22 +155,54 @@ export function TokenView(props: { height: number; setActivePage?: any }) {
               <PixelArt
                 src={insertUri}
                 alt={LABELS.TOKEN_NAME + " token number " + token.id}
-                width={48}
-                height={48}
+                width={96}
+                height={96}
                 className={"token-card"}
               />
             </Col>
             <Col span={24} style={{ textAlign: "right" }}>
-              <Title level={5}>INSERT</Title>
+              <Title level={5}>{LABELS.TOKEN_NAME.toUpperCase()}</Title>
             </Col>
           </Row>
         </Col>
       </Row>
-      {/* <Row>
+      <Row>
         <Col>
-          <Title level={3}>Description:</Title>
+          <Title level={2}>{metadata?.name}</Title>
         </Col>
-      </Row> */}
+        <Col flex="auto"></Col>
+        <Col>
+          <Switch
+            checkedChildren={"JSON"}
+            unCheckedChildren={"JSON"}
+            onClick={handleJSONSwitch}
+          ></Switch>
+        </Col>
+      </Row>
+      <Row style={{ paddingBottom: "1.6em" }}>
+        {metadata?.attributes.map((attribute) => {
+          return (
+            <Col span={24}>
+              <Text type="secondary" className="attribute-name">
+                {attribute.name}
+              </Text>
+            </Col>
+          );
+        })}
+      </Row>
+      {showJSON ? (
+        <Row>
+          <Col>
+            <Text>
+              <pre>{JSON.stringify(metadata, null, 4)}</pre>
+            </Text>
+          </Col>
+        </Row>
+      ) : (
+        <Row>
+          <Col></Col>
+        </Row>
+      )}
     </div>
   );
 }

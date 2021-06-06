@@ -39,11 +39,12 @@ export function HomeView(props: { height: number; setActivePage: any }) {
       className="site-layout-background"
       style={{ padding: "5% 15%", minHeight: props.height - 162 }}
     >
-      <Title level={1}>{LABELS.TOKEN_NAME}</Title>
+      <Title level={1}>{LABELS.TOKEN_NAME_PLURAL}</Title>
       <Paragraph className="home-text">
-        A collection of {numberWithCommas(LABELS.MAX_SUPPLY)} unique collectible
-        and tradeable assets on the <a href="https://solana.com/">Solana</a>{" "}
-        blockchain. {LABELS.TOKEN_NAME} serves as a test bed for a more general
+        A collection of {numberWithCommas(LABELS.MAX_SUPPLY)} unique,
+        collectible, and tradeable assets on the{" "}
+        <a href="https://solana.com/">Solana</a> blockchain.{" "}
+        {LABELS.TOKEN_NAME_PLURAL} serve as a test bed for a more general
         solution to the creation and management of digital assets. Using
         Uniforge's technology, any creator will be able to create a collection
         of works, set rights on each work, and issue prints of the work.

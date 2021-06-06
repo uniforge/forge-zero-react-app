@@ -1,6 +1,6 @@
 {
-  "short_name": "Forge Zero",
-  "name": "Non-fungible token minting on Solana",
+  "short_name": "Solsets",
+  "name": "Unique algorithmically generated digital assets (NFTs) on Solana",
   "icons": [
     {
       "src": "favicon.ico",

@@ -29,7 +29,7 @@ export function TokenDisplay(props: {
             </Col>
           );
         })}
-      {props.tokens
+      {/* {props.tokens
         .filter((token) => token.id === 0)
         .sort((a, b) => {
           return asc ? a.id - b.id : b.id - a.id;
@@ -40,7 +40,7 @@ export function TokenDisplay(props: {
               <NullBeachCard />
             </Col>
           );
-        })}
+        })} */}
     </Row>
   );
 }

@@ -27,18 +27,6 @@ function AccountCard(account: AccountState, imgUrilBase: string) {
             </Col>
           );
         })}
-      {account.ownedTokens
-        .filter((token) => token.id === 0)
-        .sort((a, b) => {
-          return a.id - b.id;
-        })
-        .map((token, index) => {
-          return (
-            <Col xs={20} sm={16} md={12} lg={8} xl={6} key={-1 * index}>
-              <NullBeachCard />
-            </Col>
-          );
-        })}
     </Row>
   ) : (
     <Text>Account does not exist</Text>
@@ -49,6 +37,7 @@ export function TokenAccount(props: {
   getBalance: any;
   getForge: any;
   balanceSol: number;
+  unclaimedSupply: boolean;
 }) {
   // let history = useHistory();
   const { tokenAccount } = useTokenAccount();
@@ -70,28 +59,51 @@ export function TokenAccount(props: {
     <div>
       {tokenAccount ? (
         <div>
-          <Row gutter={16} style={{ paddingTop: "1em", paddingBottom: "2em" }}>
-            <Col span={24}>
-              <Paragraph className="home-text">
-                Each {LABELS.TOKEN_NAME} is{" "}
-                <Link to={{ pathname: "/", hash: "#algo-gen-unique" }}>
-                  algorithmically generated and unique
-                </Link>
-                , click one to see the other side, or claim another for a change
-                of scenery. You have {tokenAccount.nTokens} {LABELS.TOKEN_NAME}s
-                (each account holds up to {LABELS.MAX_TOKENS_PER_WALLET}).
-              </Paragraph>
-            </Col>
-
-            <ClaimToken
-              getBalance={props.getBalance}
-              getForge={props.getForge}
-              balanceSol={props.balanceSol}
-              disabled={tokenAccount.nTokens >= LABELS.MAX_TOKENS_PER_WALLET}
-              network={network}
-              contentProvider={contentProvider}
-            />
-          </Row>
+          {props.unclaimedSupply ? (
+            <Row
+              gutter={16}
+              style={{ paddingTop: "1em", paddingBottom: "2em" }}
+            >
+              <Col span={24}>
+                <Paragraph className="home-text">
+                  You have {tokenAccount.nTokens} {LABELS.TOKEN_NAME_PLURAL}.
+                  Each {LABELS.TOKEN_NAME} is{" "}
+                  <Link to={{ pathname: "/", hash: "#algo-gen-unique" }}>
+                    algorithmically generated and unique
+                  </Link>
+                  , click on one to see the other side, or claim another for a
+                  change of scenery.
+                </Paragraph>
+              </Col>
+              <ClaimToken
+                getBalance={props.getBalance}
+                getForge={props.getForge}
+                balanceSol={props.balanceSol}
+                disabled={
+                  tokenAccount.nTokens >= tokenAccount.ownedTokens.length
+                }
+                network={network}
+                contentProvider={contentProvider}
+              />
+            </Row>
+          ) : (
+            <Row
+              gutter={16}
+              style={{ paddingTop: "1em", paddingBottom: "2em" }}
+            >
+              <Col span={24}>
+                <Paragraph className="home-text">
+                  You have {tokenAccount.nTokens} {LABELS.TOKEN_NAME_PLURAL}.
+                  Each {LABELS.TOKEN_NAME} is{" "}
+                  <Link to={{ pathname: "/", hash: "#algo-gen-unique" }}>
+                    algorithmically generated and unique
+                  </Link>
+                  , click on one to see the other side, or purchase one on the
+                  secondary market.
+                </Paragraph>
+              </Col>
+            </Row>
+          )}
           {AccountCard(tokenAccount, imgUriBase)}
         </div>
       ) : (
@@ -99,11 +111,10 @@ export function TokenAccount(props: {
           <Row gutter={16} style={{ paddingTop: "1em" }}>
             <Col span={24}>
               <Paragraph className="home-text">
-                You don't have any {LABELS.TOKEN_NAME}s yet. Creating an account
-                and claiming a {LABELS.TOKEN_NAME} requires paying a minimum fee
-                of {LABELS.SOL_SYM + LABELS.MIN_FEE} to the artist. If all{" "}
-                {LABELS.TOKEN_NAME}s have been claimed, you will have to buy one
-                in the secondary market.
+                You don't have any {LABELS.TOKEN_NAME_PLURAL} yet. Creating an
+                account and claiming a {LABELS.TOKEN_NAME} requires paying a
+                minimum fee to the artist. If all {LABELS.TOKEN_NAME}s have been
+                claimed, you will have to buy one in the secondary market.
               </Paragraph>
             </Col>
           </Row>

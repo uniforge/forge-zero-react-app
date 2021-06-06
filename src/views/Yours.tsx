@@ -1,8 +1,7 @@
-import { Button, Layout, Row, Col, Space, Typography } from "antd";
+import { Layout, Row, Col, Space, Typography } from "antd";
 import { WalletOutlined } from "@ant-design/icons";
 import { useWallet } from "../contexts/WalletProvider";
 import { useForge } from "../contexts/ForgeProvider";
-import { Forge } from "../components/Forge";
 import { TokenAccount } from "../components/TokenAccount";
 import { Airdrop } from "../components/Airdrop";
 import { useCallback, useEffect, useState } from "react";
@@ -33,9 +32,9 @@ export function YoursView(props: { height: number; setActivePage?: any }) {
       style={{ padding: "5% 15%", minHeight: props.height - 162 }}
     >
       <Title level={1}>
-        Your {LABELS.TOKEN_NAME}{" "}
+        Your {LABELS.TOKEN_NAME_PLURAL}{" "}
         <Text type="secondary">
-          ({forge?.supplyUnclaimed} remain unclaimed)
+          ({forge?.supplyUnclaimed} {LABELS.TOKEN_NAME_PLURAL} remain unclaimed)
         </Text>
       </Title>
       {wallet.publicKey ? (
@@ -62,12 +61,13 @@ export function YoursView(props: { height: number; setActivePage?: any }) {
             getBalance={getBalance}
             getForge={getForge}
             balanceSol={balanceSol}
+            unclaimedSupply={forge ? forge.supplyUnclaimed > 0 : true}
           />
         </Space>
       ) : (
         <Text className="home-text">
-          <Link onClick={() => wallet.connect()}>Connect</Link> a wallet to try{" "}
-          {LABELS.TOKEN_NAME}.
+          <Link onClick={() => wallet.connect()}>Connect</Link> a wallet to
+          claim a {LABELS.TOKEN_NAME}.
         </Text>
       )}
       {/* <Row>

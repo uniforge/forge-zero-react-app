@@ -60,7 +60,7 @@ export function ForgeProvider(
       notification.error({
         message: "Unable to get the state of " + LABELS.TOKEN_NAME,
         description:
-          "This can happen if you are trying to connect to a non-existent Forge",
+          "This can happen if the Solana network is unreachable or if you are trying to connect to a non-existent Forge",
       });
     }
   }, [forgeClient, setForge]);

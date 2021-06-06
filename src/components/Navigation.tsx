@@ -157,7 +157,7 @@ export function Navigation(props: { activePage: string; setActivePage: any }) {
           onClick={handleClick}
           selectedKeys={[props.activePage]}
         >
-          <Menu.Item key="/yours">Your {LABELS.TOKEN_NAME}</Menu.Item>
+          <Menu.Item key="/yours">Your {LABELS.TOKEN_NAME_PLURAL}</Menu.Item>
           <Menu.Item key="/browse">Browse</Menu.Item>
           <Menu.Item disabled key="/marketplace">
             Marketplace

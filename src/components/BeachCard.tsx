@@ -71,8 +71,8 @@ export function BeachCard(props: { token: Token; imgUriBase: string }) {
           <PixelArt
             src={insertUri}
             alt={LABELS.TOKEN_NAME + " token number " + props.token.id}
-            width={48}
-            height={48}
+            width={96}
+            height={96}
             className={"token-card"}
             onClick={handleClick}
           />

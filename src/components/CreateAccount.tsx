@@ -25,6 +25,7 @@ import { BN, Program } from "@project-serum/anchor";
 // @ts-ignore
 import Wallet from "@project-serum/sol-wallet-adapter";
 import { useWallet } from "../contexts/WalletProvider";
+import { useForge } from "../contexts/ForgeProvider";
 import { useTokenAccount } from "../contexts/TokenAccountProvider";
 import { useExplorerQueryString, createWrappedNativeAccountTx } from "../utils";
 import { UNIFORGE_PROGRAM_ID, FORGE_ID, LABELS } from "../constants";
@@ -44,7 +45,10 @@ export function CreateAccount(props: {
   network: string;
   contentProvider: string;
 }) {
-  const [artistFeeSol, setArtistFeeSol] = useState<number>(LABELS.MIN_FEE);
+  const { forge } = useForge();
+  const [artistFeeSol, setArtistFeeSol] = useState<number>(
+    forge ? forge.minFeeSol : LABELS.MIN_FEE
+  );
   const [creating, setCreating] = useState<boolean>(false);
   const { wallet, forgeClient } = useWallet();
   const { getTokenAccount } = useTokenAccount();
@@ -117,13 +121,12 @@ export function CreateAccount(props: {
       let allSigned = await wallet.signTransaction(transaction);
       signature = await connection.sendRawTransaction(allSigned.serialize());
 
-      const finality = message.loading(
-        "Waiting for transaction to be finalized. This usually takes less than 20 sec",
-        0
-      );
-      await connection.confirmTransaction(signature, "max").then(() => {
-        finality();
-      });
+      const finality = message.loading("Confirming your transaction", 0);
+      await connection
+        .confirmTransaction(signature, "singleGossip")
+        .then(() => {
+          finality();
+        });
 
       const url =
         "https://explorer.solana.com/tx/" + signature + "?" + queryString;
@@ -156,6 +159,7 @@ export function CreateAccount(props: {
         notification.error({
           message: "Something went wrong claiming a " + LABELS.TOKEN_NAME,
         });
+        console.error(signature);
       }
     }
     if (signature !== "") {
@@ -214,7 +218,7 @@ export function CreateAccount(props: {
         style={{ width: "30%" }}
         size="large"
         defaultValue={artistFeeSol}
-        min={LABELS.MIN_FEE}
+        min={forge ? forge.minFeeSol : LABELS.MIN_FEE}
         formatter={(value) => {
           if (value && !isNaN(value)) {
             setArtistFeeSol(value);

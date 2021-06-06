@@ -32,7 +32,7 @@ export function BrowseView(props: { height: number }) {
 
   let tokens = new Array<Token>();
 
-  if (forge?.maxSupply && forge?.supplyUnclaimed) {
+  if (forge) {
     const maxTokenId = forge.maxSupply - forge.supplyUnclaimed;
     for (let i = 0; i < Math.min(20, maxTokenId); i++) {
       let curTokenId = maxTokenId - i;
@@ -41,24 +41,6 @@ export function BrowseView(props: { height: number }) {
   } else {
     tokens.push({ id: 0 } as Token);
   }
-
-  const onSearch = (value: string) => {
-    if (value !== "") {
-      if (value.length === 44) {
-        // Assume query is a pubkey
-        const newPath = generatePath("/listAccount/:publickey", {
-          publickey: value,
-        });
-        history.push(newPath);
-      } else {
-        // Assume it is a token id
-        const newPath = generatePath("/tokenDetail/:tokenId", {
-          tokenId: value,
-        });
-        history.push(newPath);
-      }
-    }
-  };
 
   return (
     <div
@@ -74,7 +56,7 @@ export function BrowseView(props: { height: number }) {
         <Col flex="auto"></Col>
       </Row>
       <Title level={2} style={{ paddingBottom: "0.5em" }}>
-        Recently Forged {LABELS.TOKEN_NAME}s
+        Recent {LABELS.TOKEN_NAME_PLURAL}
       </Title>
       <TokenDisplay tokens={tokens} imgUrilBase={imgUriBase} />
     </div>

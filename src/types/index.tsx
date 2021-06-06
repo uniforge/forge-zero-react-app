@@ -25,3 +25,20 @@ export type AccountState = {
   authority: PublicKey | null;
   nativeTokenAddress: PublicKey | null;
 };
+
+export type TokenAttribute = {
+  name: string;
+  position: Array<number>;
+  size?: Array<number>;
+};
+
+export type TokenMetadata = {
+  id: number;
+  name: string;
+  attributes: Array<TokenAttribute>;
+  has_collisions: boolean;
+  tx?: string;
+  insertSHA256: string;
+  coverSHA256: string;
+  rarity?: string;
+};
