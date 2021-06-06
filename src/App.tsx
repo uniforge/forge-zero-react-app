@@ -71,7 +71,12 @@ function App() {
                     />
                     <Route
                       path="/tokenDetail/:tokenId"
-                      component={() => <TokenView height={height} />}
+                      component={() => (
+                        <TokenView
+                          height={height}
+                          setActivePage={setActivePage}
+                        />
+                      )}
                     />
                     <Route
                       path="/marketplace"

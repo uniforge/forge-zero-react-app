@@ -231,7 +231,8 @@ export function ClaimToken(props: {
           claimToken(wallet, forgeClient, queryString);
         }}
       />
-      {props.balanceSol > LABELS.MIN_FEE && !props.disabled ? (
+      {props.balanceSol > (forge ? forge.minFeeSol : LABELS.MIN_FEE) &&
+      !props.disabled ? (
         <Button
           type="primary"
           onClick={() => {

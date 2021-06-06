@@ -26,6 +26,7 @@ const someText = `
 `;
 
 export function TokenView(props: { height: number; setActivePage?: any }) {
+  props.setActivePage("/browse");
   let { tokenId } = useParams<{ tokenId: string }>();
   let history = useHistory();
   const { forge } = useForge();

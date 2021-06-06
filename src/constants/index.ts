@@ -14,7 +14,7 @@ export const LABELS = {
   CREATE_ACCOUNT: "Claim a Solset",
   MAX_SUPPLY: 8192,
   MAX_TOKENS_PER_WALLET: 16,
-  MIN_FEE: 0.5,
+  MIN_FEE: 0.25,
   NOT_FOR_SALE: "-",
   SOL_SYM: "◎",
   SOL_CHARS: "Sol",
