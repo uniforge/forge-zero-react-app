@@ -1,3 +1,5 @@
+import { useSelector } from "react-redux";
+import { State as StoreState } from "../store/reducer";
 import { Layout, Row, Col, Space, Typography } from "antd";
 import { WalletOutlined } from "@ant-design/icons";
 import { useWallet } from "../contexts/WalletProvider";
@@ -14,6 +16,11 @@ export function YoursView(props: { height: number; setActivePage?: any }) {
   const { wallet, connection } = useWallet();
   const { forge, getForge } = useForge();
   const [balanceSol, setBalanceSol] = useState<number>(0);
+  const { network } = useSelector((state: StoreState) => {
+    return {
+      network: state.common.network.explorerClusterSuffix,
+    };
+  });
 
   const getBalance = useCallback(async () => {
     const balance = await connection.getBalance(wallet.publicKey);
@@ -52,10 +59,13 @@ export function YoursView(props: { height: number; setActivePage?: any }) {
               </Text>
             </Col>
             <Col flex="auto"></Col>
-            {/* ToDo condition airdrop availability on the current network */}
-            <Col>
-              <Airdrop getBalance={getBalance} balance={balanceSol} />
-            </Col>
+            {network !== "" ? (
+              <Col>
+                <Airdrop getBalance={getBalance} balance={balanceSol} />
+              </Col>
+            ) : (
+              <Col></Col>
+            )}
           </Row>
           <TokenAccount
             getBalance={getBalance}
