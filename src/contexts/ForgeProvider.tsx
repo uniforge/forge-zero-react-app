@@ -8,8 +8,10 @@ import React, {
   useCallback,
 } from "react";
 import { useWallet } from "./WalletProvider";
+import { notification } from "antd";
 import { Forge } from "../types";
 import { byteToHexString } from "../utils";
+import { LABELS } from "../constants";
 
 export function useForge(): ForgeContextValues {
   const w = useContext(ForgeContext);
@@ -35,23 +37,32 @@ export function ForgeProvider(
 
   const getForge = useCallback(async () => {
     // Get the forge account data from network
-    const forgeFromNet = await forgeClient.state();
+    try {
+      const forgeFromNet = await forgeClient.state();
 
-    // Coerce Forge account data into Forge type
-    const newForge: Forge = {
-      name: String.fromCharCode.apply(null, forgeFromNet.name).trim(),
-      symbol: String.fromCharCode.apply(null, forgeFromNet.symbol).trim(),
-      contentHash: byteToHexString(forgeFromNet.contentHash),
-      authority: forgeFromNet.authority,
-      maxSupply: forgeFromNet.maxSupply,
-      supplyUnclaimed: forgeFromNet.supplyUnclaimed,
-      artist: forgeFromNet.artist,
-      minFeeSol: forgeFromNet.minFeeLamports / 1e9,
-      secondaryFeeBps: forgeFromNet.secondaryFeeBps.toNumber(),
-    };
+      // Coerce Forge account data into Forge type
+      const newForge: Forge = {
+        name: String.fromCharCode.apply(null, forgeFromNet.name).trim(),
+        symbol: String.fromCharCode.apply(null, forgeFromNet.symbol).trim(),
+        contentHash: byteToHexString(forgeFromNet.contentHash),
+        authority: forgeFromNet.authority,
+        maxSupply: forgeFromNet.maxSupply,
+        supplyUnclaimed: forgeFromNet.supplyUnclaimed,
+        artist: forgeFromNet.artist,
+        minFeeSol: forgeFromNet.minFeeLamports / 1e9,
+        secondaryFeeBps: forgeFromNet.secondaryFeeBps.toNumber(),
+      };
 
-    // Update the state
-    setForge(newForge);
+      // Update the state
+      setForge(newForge);
+    } catch {
+      console.error("Unable to get the Forge state");
+      notification.error({
+        message: "Unable to get the state of " + LABELS.TOKEN_NAME,
+        description:
+          "This can happen if you are trying to connect to a non-existent Forge",
+      });
+    }
   }, [forgeClient, setForge]);
 
   useEffect(() => {

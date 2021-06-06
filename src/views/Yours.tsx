@@ -43,7 +43,7 @@ export function YoursView(props: { height: number; setActivePage?: any }) {
           <Row align="middle">
             <Col>
               <Text style={{ fontSize: "1.2em" }} strong>
-                {LABELS.SOL_SYM + balanceSol.toFixed(1)}
+                {LABELS.SOL_SYM + balanceSol.toFixed(2)}
               </Text>
             </Col>
             <Col span={1}></Col>

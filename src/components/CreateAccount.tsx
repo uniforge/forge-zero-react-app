@@ -27,7 +27,7 @@ import Wallet from "@project-serum/sol-wallet-adapter";
 import { useWallet } from "../contexts/WalletProvider";
 import { useTokenAccount } from "../contexts/TokenAccountProvider";
 import { useExplorerQueryString, createWrappedNativeAccountTx } from "../utils";
-import { FORGE_ID, LABELS } from "../constants";
+import { UNIFORGE_PROGRAM_ID, FORGE_ID, LABELS } from "../constants";
 
 const { Text } = Typography;
 
@@ -41,6 +41,8 @@ export function CreateAccount(props: {
   getBalance: any;
   getForge: any;
   balanceSol: number;
+  network: string;
+  contentProvider: string;
 }) {
   const [artistFeeSol, setArtistFeeSol] = useState<number>(LABELS.MIN_FEE);
   const [creating, setCreating] = useState<boolean>(false);
@@ -64,6 +66,7 @@ export function CreateAccount(props: {
     const forgeAccount = await forgeClient.state();
     const artistAddress = forgeAccount.artist.toBase58();
     const artistFeeLamports = artistFeeSol * LAMPORTS_PER_SOL;
+    let signature: string = "";
 
     try {
       // Create the base transaction contents
@@ -112,16 +115,15 @@ export function CreateAccount(props: {
       // Here is the part that breaks... This method of signing using the
       // wallet works
       let allSigned = await wallet.signTransaction(transaction);
-      let signature = await connection.sendRawTransaction(
-        allSigned.serialize()
-      );
+      signature = await connection.sendRawTransaction(allSigned.serialize());
 
-      const hide = message.loading("Waiting for confirmations", 0);
-      await connection
-        .confirmTransaction(signature, "singleGossip")
-        .then(() => {
-          hide();
-        });
+      const finality = message.loading(
+        "Waiting for transaction to be finalized. This usually takes less than 20 sec",
+        0
+      );
+      await connection.confirmTransaction(signature, "max").then(() => {
+        finality();
+      });
 
       const url =
         "https://explorer.solana.com/tx/" + signature + "?" + queryString;
@@ -134,14 +136,74 @@ export function CreateAccount(props: {
           </a>
         ),
       });
+    } catch (e) {
+      console.warn(e.toString());
+      if (signature !== "") {
+        const url =
+          "https://explorer.solana.com/tx/" + signature + "?" + queryString;
+        notification.error({
+          message:
+            "Failed to claim a new " +
+            LABELS.TOKEN_NAME +
+            ", check the transaction to see if it succeded.",
+          description: (
+            <a href={url} target="_blank" rel="noreferrer">
+              View transaction on explorer
+            </a>
+          ),
+        });
+      } else {
+        notification.error({
+          message: "Something went wrong claiming a " + LABELS.TOKEN_NAME,
+        });
+      }
+    }
+    if (signature !== "") {
+      try {
+        const contentUpdate = message.loading(
+          "Getting your new " + LABELS.TOKEN_NAME,
+          0
+        );
+        const resp = await fetch(props.contentProvider, {
+          method: "POST",
+          body: JSON.stringify({
+            network: props.network,
+            forgeId: FORGE_ID.toBase58(),
+            txSign: signature,
+            programId: UNIFORGE_PROGRAM_ID.toBase58(),
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((resp) => {
+          contentUpdate();
+          if (!resp.ok) {
+            console.warn("Request to update content availability failed");
+            notification.warning({
+              message:
+                "Getting the metadata of your new " +
+                LABELS.TOKEN_NAME +
+                " failed. Try refreshing the page in a minute.",
+            });
+          } else {
+            notification.success({
+              message: "Enjoy your new " + LABELS.TOKEN_NAME,
+            });
+          }
+        });
+      } catch (e) {
+        console.warn("Request to update content availability failed");
+        console.warn(e);
+      }
+    }
 
+    try {
       // Get the updated the account
       getTokenAccount();
       props.getBalance();
       props.getForge();
     } catch (e) {
       console.warn(e);
-      notification.error({ message: "Failed to create a new token account" });
     }
     setCreating(false);
   }

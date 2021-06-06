@@ -5,8 +5,6 @@ import {
   FieldNumberOutlined,
   InfoCircleOutlined,
 } from "@ant-design/icons";
-import { BN } from "@project-serum/anchor";
-import { Token } from "../types";
 import { LABELS } from "../constants";
 import questionMark from "../questionMark.png";
 
@@ -36,7 +34,16 @@ export function NullBeachCard() {
       //   style={{ width: 300 }}
       cover={
         <div>
-          <canvas ref={canvasRef} width="32" height="32"></canvas>
+          <Tooltip
+            color="blue"
+            title={
+              "This is an empty slot in your wallet. You can fill it with an unclaimed " +
+              LABELS.TOKEN_NAME +
+              " or buy one on the secondary market."
+            }
+          >
+            <canvas ref={canvasRef} width="32" height="32"></canvas>
+          </Tooltip>
           <div style={{ display: "none" }}>
             <img
               ref={imgRef}

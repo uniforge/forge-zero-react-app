@@ -11,7 +11,7 @@ export const LABELS = {
   AIRDROP_REQUEST: "Request Sol",
   AIRDROP_SUCCESS: "Airdrop successful",
   CLAIM_TOKEN: "Claim a ForgeZero",
-  CREATE_ACCOUNT: "Create and claim",
+  CREATE_ACCOUNT: "Claim a ForgeZero",
   MAX_SUPPLY: 8192,
   MAX_TOKENS_PER_WALLET: 16,
   MIN_FEE: 0.5,

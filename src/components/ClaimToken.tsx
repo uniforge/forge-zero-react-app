@@ -16,7 +16,7 @@ import Wallet from "@project-serum/sol-wallet-adapter";
 import { useWallet } from "../contexts/WalletProvider";
 import { useTokenAccount } from "../contexts/TokenAccountProvider";
 import { useExplorerQueryString, createWrappedNativeAccountTx } from "../utils";
-import { FORGE_ID, LABELS } from "../constants";
+import { UNIFORGE_PROGRAM_ID, FORGE_ID, LABELS } from "../constants";
 
 export function ClaimToken(props: {
   getBalance: any;
@@ -138,39 +138,43 @@ export function ClaimToken(props: {
         });
       }
     }
-    try {
-      const contentUpdate = message.loading(
-        "Getting your new " + LABELS.TOKEN_NAME,
-        0
-      );
-      const resp = await fetch(props.contentProvider, {
-        method: "POST",
-        body: JSON.stringify({
-          network: props.network,
-          forgeId: FORGE_ID.toBase58(),
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }).then((resp) => {
-        contentUpdate();
-        if (!resp.ok) {
-          console.warn("Request to update content availability failed");
-          notification.warning({
-            message:
-              "Getting the metadata of your new " +
-              LABELS.TOKEN_NAME +
-              " failed. Try refreshing the page in a minute.",
-          });
-        } else {
-          notification.success({
-            message: "Enjoy your new " + LABELS.TOKEN_NAME,
-          });
-        }
-      });
-    } catch (e) {
-      console.warn("Request to update content availability failed");
-      console.warn(e);
+    if (signature !== "") {
+      try {
+        const contentUpdate = message.loading(
+          "Getting your new " + LABELS.TOKEN_NAME,
+          0
+        );
+        const resp = await fetch(props.contentProvider, {
+          method: "POST",
+          body: JSON.stringify({
+            network: props.network,
+            forgeId: FORGE_ID.toBase58(),
+            txSign: signature,
+            programId: UNIFORGE_PROGRAM_ID.toBase58(),
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((resp) => {
+          contentUpdate();
+          if (!resp.ok) {
+            console.warn("Request to update content availability failed");
+            notification.warning({
+              message:
+                "Getting the metadata of your new " +
+                LABELS.TOKEN_NAME +
+                " failed. Try refreshing the page in a minute.",
+            });
+          } else {
+            notification.success({
+              message: "Enjoy your new " + LABELS.TOKEN_NAME,
+            });
+          }
+        });
+      } catch (e) {
+        console.warn("Request to update content availability failed");
+        console.warn(e);
+      }
     }
 
     try {

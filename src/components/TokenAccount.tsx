@@ -112,6 +112,8 @@ export function TokenAccount(props: {
             getBalance={props.getBalance}
             getForge={props.getForge}
             balanceSol={props.balanceSol}
+            network={network}
+            contentProvider={contentProvider}
           />
         </div>
       )}
