@@ -3,7 +3,7 @@ import { useWallet } from "../contexts/WalletProvider";
 import { useCallback, useEffect, useState } from "react";
 import { LABELS } from "../constants";
 import { numberWithCommas } from "../utils";
-import { PixelArt } from "../components/PixelArt";
+import { BareBeachCard } from "../components/BareBeachCard";
 
 import anvilOne from "../images/nft_anvil_1.png";
 import anvilTwo from "../images/nft_anvil_2.png";
@@ -13,6 +13,14 @@ import hammerOne from "../images/nft_hammer_1.png";
 import hammerTwo from "../images/nft_hammer_2.png";
 import hammerThree from "../images/nft_hammer_3.png";
 import rainbowShadesOne from "../images/nft_rainbowShades_1.png";
+import insertOne from "../images/insert_1.png";
+import insertTwo from "../images/insert_2.png";
+import insertThree from "../images/insert_3.png";
+import insertFour from "../images/insert_4.png";
+import insertFive from "../images/insert_5.png";
+import insertSix from "../images/insert_6.png";
+import insertSeven from "../images/insert_7.png";
+import insertEight from "../images/insert_8.png";
 
 const { Title, Link, Paragraph } = Typography;
 
@@ -42,7 +50,7 @@ export function HomeView(props: { height: number; setActivePage: any }) {
       <Paragraph className="home-text">
         A collection of {numberWithCommas(LABELS.MAX_SUPPLY)} unique, tradable,
         and composable assets on the <a href="https://solana.com/">Solana</a>{" "}
-        blockchain. Each {LABELS.TOKEN_NAME} costs an Artist's fee of{" "}
+        blockchain. Creating a {LABELS.TOKEN_NAME} costs an Artist's fee of{" "}
         {LABELS.SOL_SYM}0.25,{" "}
         <strong>99.996% of which goes directly to the Artist</strong>, instead
         of gas fees, thanks to Solana's high performance and low cost design.
@@ -60,75 +68,55 @@ export function HomeView(props: { height: number; setActivePage: any }) {
       </Paragraph>
       <Row gutter={[32, 32]} style={{ paddingBottom: "2em" }}>
         <Col span={6}>
-          <PixelArt
-            src={anvilOne}
-            alt={"An anvil NFT"}
-            width={48}
-            height={48}
-            className={"home-pixel"}
+          <BareBeachCard
+            cover={anvilOne}
+            insert={insertOne}
+            isFlipped={false}
           />
         </Col>
         <Col span={6}>
-          <PixelArt
-            src={anvilTwo}
-            alt={"An anvil NFT"}
-            width={48}
-            height={48}
-            className={"home-pixel"}
+          <BareBeachCard cover={anvilTwo} insert={insertTwo} isFlipped={true} />
+        </Col>
+        <Col span={6}>
+          <BareBeachCard
+            cover={hammerOne}
+            insert={insertThree}
+            isFlipped={false}
           />
         </Col>
         <Col span={6}>
-          <PixelArt
-            src={hammerOne}
-            alt={"An anvil NFT"}
-            width={48}
-            height={48}
-            className={"home-pixel"}
+          <BareBeachCard
+            cover={anvilThree}
+            insert={insertSix}
+            isFlipped={true}
           />
         </Col>
         <Col span={6}>
-          <PixelArt
-            src={anvilThree}
-            alt={"An anvil NFT"}
-            width={48}
-            height={48}
-            className={"home-pixel"}
+          <BareBeachCard
+            cover={hammerTwo}
+            insert={insertFive}
+            isFlipped={true}
           />
         </Col>
         <Col span={6}>
-          <PixelArt
-            src={hammerTwo}
-            alt={"An anvil NFT"}
-            width={48}
-            height={48}
-            className={"home-pixel"}
+          <BareBeachCard
+            cover={rainbowShadesOne}
+            insert={insertFour}
+            isFlipped={false}
           />
         </Col>
         <Col span={6}>
-          <PixelArt
-            src={rainbowShadesOne}
-            alt={"An rainbow sunglasses NFT"}
-            width={48}
-            height={48}
-            className={"home-pixel"}
+          <BareBeachCard
+            cover={hammerThree}
+            insert={insertEight}
+            isFlipped={false}
           />
         </Col>
         <Col span={6}>
-          <PixelArt
-            src={hammerThree}
-            alt={"An anvil NFT"}
-            width={48}
-            height={48}
-            className={"home-pixel"}
-          />
-        </Col>
-        <Col span={6}>
-          <PixelArt
-            src={anvilFour}
-            alt={"An anvil NFT"}
-            width={48}
-            height={48}
-            className={"home-pixel"}
+          <BareBeachCard
+            cover={anvilFour}
+            insert={insertSeven}
+            isFlipped={false}
           />
         </Col>
       </Row>
@@ -191,8 +179,8 @@ export function HomeView(props: { height: number; setActivePage: any }) {
       </Title>
       <Paragraph className="home-text">
         Yes, our Solana program currently supports trading using an interface
-        similar to ERC-721. We will be launching a web-based client to that
-        portion of the program shortly.
+        similar to ERC-721. We will be launching a web-based client interfacing
+        with that portion of the program shortly.
       </Paragraph>
       <Title level={3} id={"algo-gen-unique"}>
         Are {LABELS.TOKEN_NAME_PLURAL} used for anything beyond their artistic
