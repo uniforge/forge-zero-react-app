@@ -42,3 +42,9 @@ export type TokenMetadata = {
   coverSHA256: string;
   rarity?: string;
 };
+
+export type SolSetAttribute = {
+  name: string | number;
+  count: number;
+  probability: number;
+};

@@ -1,10 +1,15 @@
-import { Typography, Row, Col } from "antd";
+import { Typography, Row, Col, Table } from "antd";
 import { useWallet } from "../contexts/WalletProvider";
 import { useCallback, useEffect, useState } from "react";
 import { LABELS } from "../constants";
 import { numberWithCommas } from "../utils";
 import { BareBeachCard } from "../components/BareBeachCard";
+import { KeepInTouch } from "../components/KeepInTouch";
+import { SolSetAttribute } from "../types";
 
+import solSetTypeDistJSON from "../data/dist_types.json";
+import solSetAttrDistJSON from "../data/dist_attrs.json";
+import solSetNumAttrsDistJSON from "../data/dist_num_attrs.json";
 import anvilOne from "../images/nft_anvil_1.png";
 import anvilTwo from "../images/nft_anvil_2.png";
 import anvilThree from "../images/nft_anvil_3.png";
@@ -23,11 +28,33 @@ import insertSeven from "../images/insert_7.png";
 import insertEight from "../images/insert_8.png";
 
 const { Title, Link, Paragraph } = Typography;
+const solSetTypeDist = solSetTypeDistJSON as Array<SolSetAttribute>;
+const solSetAttrDist = solSetAttrDistJSON as Array<SolSetAttribute>;
+const solSetNumAttrsDist = solSetNumAttrsDistJSON as Array<SolSetAttribute>;
+
+const solSetTypeDistCols = [
+  {
+    title: "Name",
+    dataIndex: "name",
+    key: "name",
+  },
+  {
+    title: "Count",
+    dataIndex: "count",
+    key: "count",
+  },
+  {
+    title: "Probability",
+    dataIndex: "probability",
+    key: "probability",
+  },
+];
 
 export function HomeView(props: { height: number; setActivePage: any }) {
   props.setActivePage("/");
   const { wallet, connection } = useWallet();
   const [balanceSol, setBalanceSol] = useState<number>();
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const getBalance = useCallback(async () => {
     const balance = await connection.getBalance(wallet.publicKey);
@@ -41,11 +68,28 @@ export function HomeView(props: { height: number; setActivePage: any }) {
     }
   }, [wallet.publicKey, balanceSol, setBalanceSol, getBalance]);
 
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
   return (
     <div
       className="site-layout-background"
       style={{ padding: "5% 15%", minHeight: props.height - 162 }}
     >
+      <KeepInTouch
+        isVisibile={isModalVisible}
+        handleOk={handleOk}
+        handleCancel={handleCancel}
+      />
       <Title level={1}>{LABELS.TOKEN_NAME_PLURAL}</Title>
       <Paragraph className="home-text">
         A collection of {numberWithCommas(LABELS.MAX_SUPPLY)} unique, tradable,
@@ -64,7 +108,8 @@ export function HomeView(props: { height: number; setActivePage: any }) {
         anyone with a Solana wallet to claim, collect, and trade{" "}
         {LABELS.TOKEN_NAME_PLURAL} for free.{" "}
         <Link onClick={() => wallet.connect()}>Connect</Link> a wallet to try it
-        out. We will be launching on Mainnet shortly.
+        out. We will be launching on Mainnet shortly,{" "}
+        <Link onClick={showModal}>sign up</Link> to be the first to hear.
       </Paragraph>
       <Row gutter={[32, 32]} style={{ paddingBottom: "2em" }}>
         <Col span={6}>
@@ -149,9 +194,10 @@ export function HomeView(props: { height: number; setActivePage: any }) {
         are currently integrated with{" "}
         <Link onClick={() => wallet.connect()}>Sollet.io</Link>).{" "}
         {LABELS.TOKEN_NAME_PLURAL} on Devnet has a built-in airdrop feature that
-        enables you to get Sol to pay the fees. Claiming a{LABELS.TOKEN_NAME} on
-        Mainnet requires actual Sol, a minimum of {LABELS.SOL_SYM}0.25, which
-        can be acquired from most major exchanges, see a list of exchanges{" "}
+        enables you to get Sol to pay the fees. Claiming a
+        {" " + LABELS.TOKEN_NAME + " "}on Mainnet requires actual Sol, a minimum
+        of {LABELS.SOL_SYM}0.25, which can be acquired from most major
+        exchanges, see a list of exchanges{" "}
         <a href="https://www.coingecko.com/en/coins/solana#markets">here</a>.
       </Paragraph>
       <Title level={3} id={"algo-gen-unique"}>
@@ -174,6 +220,18 @@ export function HomeView(props: { height: number; setActivePage: any }) {
         we have learned in developing Solsets to all creators on Solana.
       </Paragraph>
       <Title level={3} id={"algo-gen-unique"}>
+        How can I see which {LABELS.TOKEN_NAME_PLURAL} I own?
+      </Title>
+      <Paragraph className="home-text">
+        When you claim your first{" " + LABELS.TOKEN_NAME + " "} an account is
+        created that "holds" your{" " + LABELS.TOKEN_NAME_PLURAL + " "}. This is
+        why account creation costs closer to {LABELS.SOL_SYM}0.254 than{" "}
+        {LABELS.SOL_SYM}0.250. The additional {LABELS.SOL_SYM}0.004 is used to
+        ensure that your{" " + LABELS.TOKEN_NAME_PLURAL + " "} never disappear
+        from the Solana network. In Solana lingo, the extra {LABELS.SOL_SYM}
+        0.004 makes the account "rent-exempt."
+      </Paragraph>
+      <Title level={3} id={"algo-gen-unique"}>
         Can I trade {LABELS.TOKEN_NAME_PLURAL}?
       </Title>
       <Paragraph className="home-text">
@@ -190,9 +248,19 @@ export function HomeView(props: { height: number; setActivePage: any }) {
         {LABELS.TOKEN_NAME_PLURAL} that will leverage composability and Solana's
         high transaction throughput. But, the wonderful thing about blockchain
         is that anyone can build an application that leverages{" "}
-        {LABELS.TOKEN_NAME_PLURAL} in some way unimaginable to their original
-        creators.
+        {LABELS.TOKEN_NAME_PLURAL} in some way that was unimaginable to their
+        original creators. To that end, the JSON representing the details of
+        each{" " + LABELS.TOKEN_NAME + " "}, such as the position of the various
+        elements of the scene, is readily available.
       </Paragraph>
+      {/* <Title level={3} id={"algo-gen-unique"}>
+        What types of{" " + LABELS.TOKEN_NAME_PLURAL + " "} are there?
+      </Title>
+      <Table
+        columns={solSetTypeDistCols}
+        dataSource={solSetTypeDist}
+        pagination={false}
+      /> */}
     </div>
   );
 }

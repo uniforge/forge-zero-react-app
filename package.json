@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@formspree/react": "^2.2.3",
     "@project-serum/anchor": "^0.6.0",
     "@project-serum/borsh": "^0.1.1",
     "@project-serum/common": "^0.0.1-beta.3",
@@ -19,6 +20,7 @@
     "@types/react-router-dom": "^5.1.7",
     "@types/react-router-hash-link": "^2.4.0",
     "antd": "^4.16.0",
+    "fetch-retry": "^4.1.1",
     "husky": "^6.0.0",
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.0",
