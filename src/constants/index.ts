@@ -1,10 +1,10 @@
 import { PublicKey } from "@solana/web3.js";
 
 export const UNIFORGE_PROGRAM_ID = new PublicKey(
-  "DAAEUH92w79oLQtgwmHinJMXec3w1zHdEyTbTJRQ9juc"
+  "ForgeZwShFswzeB2FDjRfbGQehFZRpAfQFoH65YG9WZT"
 );
 export const FORGE_ID = new PublicKey(
-  "3Pw7jbQRoZsA6WbMuF2bHGWvJxaceoWoWA9zvgZczPg6"
+  "7d6eEgkx3AKLEWPFm6D7PPFvMEhwLaKihqUdgcFmGNUA"
 );
 
 export const LABELS = {

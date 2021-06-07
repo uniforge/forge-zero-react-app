@@ -2,33 +2,34 @@ import { useSelector } from "react-redux";
 import { HashLink as Link } from "react-router-hash-link";
 import { State as StoreState } from "../store/reducer";
 import { Typography, Row, Col } from "antd";
+import {
+  SortAscendingOutlined,
+  SortDescendingOutlined,
+} from "@ant-design/icons";
 import { useTokenAccount } from "../contexts/TokenAccountProvider";
 import { CreateAccount } from "./CreateAccount";
 import { ClaimToken } from "./ClaimToken";
-import { BeachCard } from "./BeachCard";
-import { AccountState } from "../types";
+import { TokenDisplay } from "./TokenDisplay";
 import { FORGE_ID, LABELS } from "../constants";
+import { useState } from "react";
 
-const { Paragraph, Text } = Typography;
+const { Paragraph } = Typography;
 
-function AccountCard(account: AccountState, imgUrilBase: string) {
-  return account.authority !== null ? (
-    <Row gutter={[{ xs: 0, sm: 16 }, 16]}>
-      {account.ownedTokens
-        .filter((token) => token.id !== 0)
-        .sort((a, b) => {
-          return a.id - b.id;
-        })
-        .map((token) => {
-          return (
-            <Col xs={20} sm={16} md={12} lg={8} xl={6} key={token.id}>
-              <BeachCard token={token} imgUriBase={imgUrilBase} />
-            </Col>
-          );
-        })}
-    </Row>
-  ) : (
-    <Text>Account does not exist</Text>
+function SortButton(props: { ascending: boolean; handleClick: any }) {
+  return (
+    <Col>
+      {props.ascending ? (
+        <SortAscendingOutlined
+          style={{ fontSize: "2em" }}
+          onClick={() => props.handleClick(false)}
+        />
+      ) : (
+        <SortDescendingOutlined
+          style={{ fontSize: "2em" }}
+          onClick={() => props.handleClick(true)}
+        />
+      )}
+    </Col>
   );
 }
 
@@ -46,6 +47,11 @@ export function TokenAccount(props: {
       contentProvider: state.common.network.forgeContentProvider,
     };
   });
+  const [ascending, setAscending] = useState<boolean>(false);
+
+  function handleSortClick(asc: boolean) {
+    setAscending(asc);
+  }
 
   const imgUriBase =
     "https://uniforge-public.s3.amazonaws.com/" +
@@ -103,7 +109,15 @@ export function TokenAccount(props: {
               </Col>
             </Row>
           )}
-          {AccountCard(tokenAccount, imgUriBase)}
+          <Row>
+            <Col flex="auto"></Col>
+            <SortButton ascending={ascending} handleClick={handleSortClick} />
+          </Row>
+          <TokenDisplay
+            tokens={tokenAccount.ownedTokens}
+            imgUrilBase={imgUriBase}
+            ascending={ascending}
+          />
         </div>
       ) : (
         <div>

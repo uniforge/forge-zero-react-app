@@ -154,7 +154,7 @@ export function TokenView(props: { height: number; setActivePage?: any }) {
               />
             </Col>
             <Col span={24} style={{ textAlign: "right" }}>
-              <Title level={5}>{LABELS.TOKEN_NAME.toUpperCase()}</Title>
+              <Title level={5}>BEACH SCENE</Title>
             </Col>
           </Row>
         </Col>

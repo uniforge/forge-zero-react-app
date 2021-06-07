@@ -70,6 +70,7 @@ export function ListAccountView(props: {
         <TokenDisplay
           tokens={listedAccount.ownedTokens}
           imgUrilBase={imgUriBase}
+          ascending={true}
         />
       ) : (
         "Null"

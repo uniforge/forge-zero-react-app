@@ -54,7 +54,7 @@ export function BrowseView(props: { height: number }) {
       <Title level={2} style={{ paddingBottom: "0.5em" }}>
         Recent {LABELS.TOKEN_NAME_PLURAL}
       </Title>
-      <TokenDisplay tokens={tokens} imgUrilBase={imgUriBase} />
+      <TokenDisplay tokens={tokens} imgUrilBase={imgUriBase} ascending={true} />
     </div>
   );
 }
