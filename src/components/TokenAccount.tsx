@@ -6,11 +6,10 @@ import { useTokenAccount } from "../contexts/TokenAccountProvider";
 import { CreateAccount } from "./CreateAccount";
 import { ClaimToken } from "./ClaimToken";
 import { BeachCard } from "./BeachCard";
-import { NullBeachCard } from "./NullBeachCard";
 import { AccountState } from "../types";
 import { FORGE_ID, LABELS } from "../constants";
 
-const { Title, Paragraph, Text } = Typography;
+const { Paragraph, Text } = Typography;
 
 function AccountCard(account: AccountState, imgUrilBase: string) {
   return account.authority !== null ? (

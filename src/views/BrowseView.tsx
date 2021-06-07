@@ -1,19 +1,15 @@
 import { useSelector } from "react-redux";
 import { State as StoreState } from "../store/reducer";
-import { useHistory, generatePath } from "react-router-dom";
-import { Typography, Input, Row, Col, Select } from "antd";
+import { Typography, Row, Col } from "antd";
 import { useForge } from "../contexts/ForgeProvider";
-import { PublicKey } from "@solana/web3.js";
 import { Token } from "../types";
 import { SearchQuery } from "../components/SearchQuery";
 import { TokenDisplay } from "../components/TokenDisplay";
 import { LABELS, FORGE_ID } from "../constants";
 
 const { Title } = Typography;
-const { Search } = Input;
 
 export function BrowseView(props: { height: number }) {
-  let history = useHistory();
   const { forge } = useForge();
   // const [sortAsc, setSortAsc] = useState<boolean>(false);
   const { network } = useSelector((state: StoreState) => {

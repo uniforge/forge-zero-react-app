@@ -4,23 +4,16 @@ import {
   Input,
   InputNumber,
   Tooltip,
-  Typography,
   message,
   notification,
 } from "antd";
 import {
   Keypair,
-  Transaction,
   SystemProgram,
   SYSVAR_RENT_PUBKEY,
   LAMPORTS_PER_SOL,
 } from "@solana/web3.js";
-import {
-  Token,
-  TOKEN_PROGRAM_ID,
-  AccountLayout,
-  NATIVE_MINT,
-} from "@solana/spl-token";
+import { Token, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { BN, Program } from "@project-serum/anchor";
 // @ts-ignore
 import Wallet from "@project-serum/sol-wallet-adapter";
@@ -29,8 +22,6 @@ import { useForge } from "../contexts/ForgeProvider";
 import { useTokenAccount } from "../contexts/TokenAccountProvider";
 import { useExplorerQueryString, createWrappedNativeAccountTx } from "../utils";
 import { UNIFORGE_PROGRAM_ID, FORGE_ID, LABELS } from "../constants";
-
-const { Text } = Typography;
 
 notification.config({
   duration: 5,
@@ -168,7 +159,7 @@ export function CreateAccount(props: {
           "Getting your new " + LABELS.TOKEN_NAME,
           0
         );
-        const resp = await fetch(props.contentProvider, {
+        await fetch(props.contentProvider, {
           method: "POST",
           body: JSON.stringify({
             network: props.network,

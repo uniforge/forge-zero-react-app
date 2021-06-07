@@ -12,7 +12,7 @@ import {
   notification,
 } from "antd";
 import { CloseOutlined, UserOutlined } from "@ant-design/icons";
-import { State as StoreState, ActionType, networks } from "../store/reducer";
+import { State as StoreState, ActionType } from "../store/reducer"; // NetworkSelector needs networks
 import { useWallet } from "../contexts/WalletProvider";
 import { useTokenAccount } from "../contexts/TokenAccountProvider";
 import { useForge } from "../contexts/ForgeProvider";
@@ -29,45 +29,45 @@ notification.config({
   placement: "topLeft",
 });
 
-function NetworkSelector(props: any) {
-  const { network } = useSelector((state: StoreState) => {
-    return {
-      network: state.common.network,
-    };
-  });
-  const dispatch = useDispatch();
+// function NetworkSelector(props: any) {
+//   const { network } = useSelector((state: StoreState) => {
+//     return {
+//       network: state.common.network,
+//     };
+//   });
+//   const dispatch = useDispatch();
 
-  function handleChange(value: any) {
-    switch (value) {
-      case "Localhost":
-        dispatch({
-          type: ActionType.CommonSetNetwork,
-          item: { network: networks.localhost },
-        });
-        break;
-      case "Devnet":
-        dispatch({
-          type: ActionType.CommonSetNetwork,
-          item: { network: networks.devnet },
-        });
-        break;
-      case "Mainnet":
-        dispatch({
-          type: ActionType.CommonSetNetwork,
-          item: { network: networks.mainnet },
-        });
-        break;
-    }
-  }
+//   function handleChange(value: any) {
+//     switch (value) {
+//       case "Localhost":
+//         dispatch({
+//           type: ActionType.CommonSetNetwork,
+//           item: { network: networks.localhost },
+//         });
+//         break;
+//       case "Devnet":
+//         dispatch({
+//           type: ActionType.CommonSetNetwork,
+//           item: { network: networks.devnet },
+//         });
+//         break;
+//       case "Mainnet":
+//         dispatch({
+//           type: ActionType.CommonSetNetwork,
+//           item: { network: networks.mainnet },
+//         });
+//         break;
+//     }
+//   }
 
-  return (
-    <Select defaultValue={network.label} onChange={handleChange}>
-      <Option value="Localhost">Localhost</Option>
-      <Option value="Devnet">Devnet</Option>
-      <Option value="Mainnet">Mainnet Beta</Option>
-    </Select>
-  );
-}
+//   return (
+//     <Select defaultValue={network.label} onChange={handleChange}>
+//       <Option value="Localhost">Localhost</Option>
+//       <Option value="Devnet">Devnet</Option>
+//       <Option value="Mainnet">Mainnet Beta</Option>
+//     </Select>
+//   );
+// }
 
 type WalletConnectButtonProps = {
   setActivePage: any;
@@ -119,7 +119,7 @@ export function WalletConnectButton(
       props.setActivePage("/yours");
       history.push("/yours");
     });
-  }, [wallet, dispatch, key, setTokenAccountState]);
+  }, [wallet, dispatch, key, setTokenAccountState, history, props]);
 
   return showDisconnect ? (
     <Button style={props.style} onClick={() => wallet.disconnect()}>

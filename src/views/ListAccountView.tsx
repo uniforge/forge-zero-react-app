@@ -36,7 +36,7 @@ export function ListAccountView(props: {
       .catch((error) => {
         console.error(error);
       });
-  }, [forgeClient, setListedAccount]);
+  }, [forgeClient, setListedAccount, publickey]);
 
   const imgUriBase =
     "https://uniforge-public.s3.amazonaws.com/" +

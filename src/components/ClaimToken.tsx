@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import {
   Button,
   Input,
@@ -7,7 +7,6 @@ import {
   message,
   notification,
 } from "antd";
-import { PlusCircleOutlined } from "@ant-design/icons";
 import { Keypair, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { Token, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { BN, Program } from "@project-serum/anchor";
@@ -147,7 +146,7 @@ export function ClaimToken(props: {
           "Getting your new " + LABELS.TOKEN_NAME,
           0
         );
-        const resp = await fetch(props.contentProvider, {
+        await fetch(props.contentProvider, {
           method: "POST",
           body: JSON.stringify({
             network: props.network,

@@ -2,7 +2,6 @@ import { useHistory, generatePath } from "react-router-dom";
 import { Input, notification } from "antd";
 import { useForge } from "../contexts/ForgeProvider";
 import { LABELS } from "../constants";
-import { useState } from "react";
 
 const { Search } = Input;
 

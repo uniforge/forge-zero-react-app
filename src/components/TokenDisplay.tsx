@@ -1,6 +1,5 @@
 import { Row, Col } from "antd";
 import { BeachCard } from "./BeachCard";
-import { NullBeachCard } from "./NullBeachCard";
 import { Token } from "../types";
 import { useState } from "react";
 

@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { State as StoreState } from "../store/reducer";
-import { Layout, Row, Col, Space, Typography } from "antd";
+import { Row, Col, Space, Typography } from "antd";
 import { WalletOutlined } from "@ant-design/icons";
 import { useWallet } from "../contexts/WalletProvider";
 import { useForge } from "../contexts/ForgeProvider";
@@ -9,7 +9,6 @@ import { Airdrop } from "../components/Airdrop";
 import { useCallback, useEffect, useState } from "react";
 import { LABELS } from "../constants";
 
-const { Content } = Layout;
 const { Title, Text, Link } = Typography;
 
 export function YoursView(props: { height: number; setActivePage?: any }) {

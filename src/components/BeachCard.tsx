@@ -3,7 +3,6 @@ import { Card, Tooltip, Row, Col, Typography } from "antd";
 import { Link } from "react-router-dom";
 import {
   UndoOutlined,
-  ToTopOutlined,
   FieldNumberOutlined,
   InfoCircleOutlined,
 } from "@ant-design/icons";
@@ -12,7 +11,6 @@ import ReactCardFlip from "react-card-flip";
 import { Token } from "../types";
 import { LABELS } from "../constants";
 import { PixelArt } from "./PixelArt";
-import questionMark from "../questionMark.png";
 
 const { Text } = Typography;
 

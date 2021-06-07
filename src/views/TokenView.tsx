@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useHistory, generatePath } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { State as StoreState } from "../store/reducer";
-import { Row, Col, Typography, Collapse, Switch, notification } from "antd";
+import { Row, Col, Typography, Switch, notification } from "antd";
 import {
   FieldNumberOutlined,
   LeftOutlined,
@@ -14,16 +14,8 @@ import { SearchQuery } from "../components/SearchQuery";
 import { PixelArt } from "../components/PixelArt";
 import { Token, TokenMetadata } from "../types";
 import { LABELS } from "../constants";
-import questionMark from "../questionMark.png";
 
 const { Text, Title } = Typography;
-const { Panel } = Collapse;
-
-const someText = `
-  A dog is a type of domesticated animal.
-  Known for its loyalty and faithfulness,
-  it can be found as a welcome guest in many households across the world.
-`;
 
 export function TokenView(props: { height: number; setActivePage?: any }) {
   props.setActivePage("/browse");
@@ -38,8 +30,17 @@ export function TokenView(props: { height: number; setActivePage?: any }) {
   const [metadata, setMetadata] = useState<TokenMetadata>();
   const [showJSON, setShowJSON] = useState<boolean>(false);
 
+  const token = { id: Number(tokenId) } as Token;
+
+  const imgUriBase =
+    "https://uniforge-public.s3.amazonaws.com/" +
+    network +
+    "/" +
+    FORGE_ID.toBase58() +
+    "/";
+
   useEffect(() => {
-    const someJson = fetch(
+    fetch(
       imgUriBase + "metadata_" + String(token.id).padStart(9, "0") + ".json"
     )
       .then((res) => res.json())
@@ -50,7 +51,7 @@ export function TokenView(props: { height: number; setActivePage?: any }) {
       .catch((err) => {
         console.error(err);
       });
-  }, [tokenId, setMetadata]);
+  }, [tokenId, setMetadata, imgUriBase, token.id]);
 
   const goToToken = (value: number) => {
     // Valid max token
@@ -86,15 +87,6 @@ export function TokenView(props: { height: number; setActivePage?: any }) {
   const handleJSONSwitch = () => {
     setShowJSON(!showJSON);
   };
-
-  const token = { id: Number(tokenId) } as Token;
-
-  const imgUriBase =
-    "https://uniforge-public.s3.amazonaws.com/" +
-    network +
-    "/" +
-    FORGE_ID.toBase58() +
-    "/";
 
   const coverUri =
     imgUriBase + "cover_" + String(token.id).padStart(9, "0") + ".png";

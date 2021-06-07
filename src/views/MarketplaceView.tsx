@@ -40,7 +40,7 @@ function AccountCard(account: AccountState) {
   );
 }
 
-export function BrowseView(props: { height: number }) {
+export function MarketplaceView(props: { height: number }) {
   const { forgeClient } = useWallet();
   let { pubKey } = useParams<{ pubKey: string }>();
   const [tokenAccount, setTokenAccount] =

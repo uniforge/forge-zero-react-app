@@ -1,6 +1,5 @@
 import { Typography, Row, Col } from "antd";
 import { useWallet } from "../contexts/WalletProvider";
-import { useForge } from "../contexts/ForgeProvider";
 import { useCallback, useEffect, useState } from "react";
 import { LABELS } from "../constants";
 import { numberWithCommas } from "../utils";
@@ -20,7 +19,6 @@ const { Title, Link, Paragraph } = Typography;
 export function HomeView(props: { height: number; setActivePage: any }) {
   props.setActivePage("/");
   const { wallet, connection } = useWallet();
-  const { getForge } = useForge();
   const [balanceSol, setBalanceSol] = useState<number>();
 
   const getBalance = useCallback(async () => {
@@ -31,8 +29,9 @@ export function HomeView(props: { height: number; setActivePage: any }) {
   useEffect(() => {
     if (wallet.publicKey) {
       getBalance();
+      console.log(balanceSol);
     }
-  }, [wallet.publicKey, setBalanceSol, getBalance]);
+  }, [wallet.publicKey, balanceSol, setBalanceSol, getBalance]);
 
   return (
     <div
