@@ -129,18 +129,17 @@ export function HomeView(props: { height: number; setActivePage: any }) {
         Visually, a {LABELS.TOKEN_NAME} is a card consisting of a <em>cover</em>{" "}
         and a {LABELS.TOKEN_NAME} <em>beach scene</em> (Try clicking on the
         images above). The cover is generated from the block in which the{" "}
-        {LABELS.TOKEN_NAME}
-        was created. As a result, the time at which a {LABELS.TOKEN_NAME} is
-        claimed affects the cover art, thus engaging the claimer in the creation
-        process.
+        {LABELS.TOKEN_NAME} was created. As a result, the time at which a{" "}
+        {LABELS.TOKEN_NAME} is claimed affects the cover art, thus engaging the
+        claimer in the creation process.
       </Paragraph>
       <Paragraph className="home-text">
         The beach scene is generated off-chain and randomly assigned to a given
-        {LABELS.TOKEN_NAME} number. Each scene captures a different time of day
-        at the beach and various happenings, some more rare than others. You can
-        browse recently created {LABELS.TOKEN_NAME_PLURAL}{" "}
+        {" " + LABELS.TOKEN_NAME + " "}number. Each scene captures a different
+        time of day at the beach and various happenings, some more rare than
+        others. You can browse recently created {LABELS.TOKEN_NAME_PLURAL}{" "}
         <Link href="/browse">here</Link>. Be careful venturing too far into the
-        water, here be monsters!
+        water, "Here be monsters!"
       </Paragraph>
       <Title level={3} id={"algo-gen-unique"}>
         How do I get a {LABELS.TOKEN_NAME}?
@@ -152,7 +151,7 @@ export function HomeView(props: { height: number; setActivePage: any }) {
         {LABELS.TOKEN_NAME_PLURAL} on Devnet has a built-in airdrop feature that
         enables you to get Sol to pay the fees. Claiming a{LABELS.TOKEN_NAME} on
         Mainnet requires actual Sol, a minimum of {LABELS.SOL_SYM}0.25, which
-        can be acquired from most major exchanges, see a list of exchanges
+        can be acquired from most major exchanges, see a list of exchanges{" "}
         <a href="https://www.coingecko.com/en/coins/solana#markets">here</a>.
       </Paragraph>
       <Title level={3} id={"algo-gen-unique"}>
@@ -193,67 +192,6 @@ export function HomeView(props: { height: number; setActivePage: any }) {
         is that anyone can build an application that leverages{" "}
         {LABELS.TOKEN_NAME_PLURAL} in some way unimaginable to their original
         creators.
-      </Paragraph>
-      <Title level={3} id={"faqs"}>
-        Frequently Asked Questions
-      </Title>
-      <Title level={4} id={"faqs"}>
-        What portion of the fees go to the artist?
-      </Title>
-      <Paragraph className="home-text">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lectus eros,
-        sagittis a interdum ultricies, ultricies ut tellus. Proin at fermentum
-        nisl. Aliquam erat volutpat. Sed vel ex blandit felis placerat rhoncus
-        vitae et ligula. Aenean molestie gravida ligula, maximus ultrices velit
-        fringilla id. Nam a augue sit amet mauris fermentum convallis. Morbi
-        lorem quam, cursus et nibh sed, tempus pharetra nisi. Etiam sagittis
-        ultricies dolor sit amet bibendum. Sed pretium, nibh ac semper
-        fermentum, lectus sapien scelerisque mi, tristique condimentum felis
-        augue ac turpis.
-      </Paragraph>
-      <Title level={4} id={"faqs"}>
-        What will the proceeds be used for?
-      </Title>
-      <Paragraph className="home-text">
-        Aenean nunc risus, porttitor eget justo vitae, porttitor fringilla
-        libero. Phasellus gravida accumsan sem. Vestibulum condimentum mollis
-        nulla, vitae dignissim mauris volutpat a. Duis ut enim justo. Vivamus
-        bibendum lectus nec molestie auctor. Etiam aliquet elementum ex, at
-        fringilla turpis varius a. Duis porttitor pulvinar pulvinar. Cras in
-        fermentum mauris. Morbi ac nisl dignissim, pretium justo et, faucibus
-        augue. Class aptent taciti sociosqu ad litora torquent per conubia
-        nostra, per inceptos himenaeos. Praesent non finibus ante. Donec ornare
-        rhoncus dui, vitae cursus neque.
-      </Paragraph>
-      <Title level={4} id={"faqs"}>
-        Are {LABELS.TOKEN_NAME} used for anything beyond their artisic nature?
-      </Title>
-      <Paragraph className="home-text">
-        Duis sed risus ex. Nam dignissim tempor mi, non tempus turpis pretium
-        ut. Morbi porta interdum orci, quis blandit sem volutpat placerat. Morbi
-        rhoncus risus vel facilisis convallis. Proin tempor, ligula at imperdiet
-        tristique, metus eros feugiat arcu, at volutpat nunc ante vel tortor.
-        Aliquam nulla justo, eleifend pharetra nisi at, efficitur porta ante.
-        Nam vestibulum, diam ut consectetur dapibus, nisi tellus fermentum mi,
-        eget vehicula enim nisi eget erat.
-      </Paragraph>
-      <Paragraph className="home-text">
-        Duis sed risus ex. Nam dignissim tempor mi, non tempus turpis pretium
-        ut. Morbi porta interdum orci, quis blandit sem volutpat placerat. Morbi
-        rhoncus risus vel facilisis convallis. Proin tempor, ligula at imperdiet
-        tristique, metus eros feugiat arcu, at volutpat nunc ante vel tortor.
-        Aliquam nulla justo, eleifend pharetra nisi at, efficitur porta ante.
-        Nam vestibulum, diam ut consectetur dapibus, nisi tellus fermentum mi,
-        eget vehicula enim nisi eget erat.
-      </Paragraph>
-      <Paragraph className="home-text">
-        Duis sed risus ex. Nam dignissim tempor mi, non tempus turpis pretium
-        ut. Morbi porta interdum orci, quis blandit sem volutpat placerat. Morbi
-        rhoncus risus vel facilisis convallis. Proin tempor, ligula at imperdiet
-        tristique, metus eros feugiat arcu, at volutpat nunc ante vel tortor.
-        Aliquam nulla justo, eleifend pharetra nisi at, efficitur porta ante.
-        Nam vestibulum, diam ut consectetur dapibus, nisi tellus fermentum mi,
-        eget vehicula enim nisi eget erat.
       </Paragraph>
     </div>
   );
