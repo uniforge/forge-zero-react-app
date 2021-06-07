@@ -54,9 +54,9 @@ export function HomeView(props: { height: number; setActivePage: any }) {
       <Paragraph className="home-text">
         {LABELS.TOKEN_NAME_PLURAL} are currently on Solana Devnet, enabling
         anyone with a Solana wallet to claim, collect, and trade{" "}
-        {LABELS.TOKEN_NAME_PLURAL}
-        for free. <Link onClick={() => wallet.connect()}>Connect</Link> a wallet
-        to try it out. We will be launching on Mainnet shortly.
+        {LABELS.TOKEN_NAME_PLURAL} for free.{" "}
+        <Link onClick={() => wallet.connect()}>Connect</Link> a wallet to try it
+        out. We will be launching on Mainnet shortly.
       </Paragraph>
       <Row gutter={[32, 32]} style={{ paddingBottom: "2em" }}>
         <Col span={6}>

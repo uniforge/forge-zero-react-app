@@ -100,6 +100,17 @@ export function CreateAccount(props: {
       });
       transaction.add(createAcctInst);
 
+      // Close out the native token account
+      transaction.add(
+        Token.createCloseAccountInstruction(
+          TOKEN_PROGRAM_ID,
+          newAccount.publicKey,
+          wallet.publicKey,
+          wallet.publicKey,
+          [wallet]
+        )
+      );
+
       // Attach transaction details
       transaction.recentBlockhash = (
         await connection.getRecentBlockhash()
