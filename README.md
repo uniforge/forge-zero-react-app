@@ -1,6 +1,12 @@
-# Getting Started with Create React App
+![Solsets Hero Image](https://uniforge-public.s3.amazonaws.com/solsets_hero.png)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Solsets React App
+
+[Solsets](https://solsets.uniforge.io/) are a project by [Uniforge](https://uniforge.io/) to explore digital ownership on the [Solana](https://solana.com/) blockchain. The project consists of three elements,
+
+1. An [on-chain program](https://github.com/uniforge/forge-zero) implementing rights management. Explore the devnet deployment [here](https://explorer.solana.com/address/ForgeZwShFswzeB2FDjRfbGQehFZRpAfQFoH65YG9WZT?cluster=devnet)
+2. A React App for interacting with the on-chain program (This repository)
+3. A content state manager which translates the on-chain state into [visual assets](https://solsets.uniforge.io/browse)
 
 ## Available Scripts
 
