@@ -21,7 +21,7 @@ export function ListAccountView(props: {
   const { forgeClient } = useWallet();
   const { network } = useSelector((state: StoreState) => {
     return {
-      network: state.common.network.explorerClusterSuffix,
+      network: state.common.network.contentNetwork,
     };
   });
   const [listedAccount, setListedAccount] = useState<AccountState>();

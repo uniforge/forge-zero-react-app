@@ -37,6 +37,8 @@ export default function reducer(
     case ActionType.CommonSetNetwork:
       if (newState.common.network.label !== action.item.network.label) {
         newState.common.network = action.item.network;
+        newState.common.isWalletConnected = false;
+        newState.common.walletDetails.balance = null;
       }
       return newState;
     default:
@@ -77,6 +79,7 @@ export const networks: Networks = {
     ),
     forgeContentProvider:
       "https://aszi9kd696.execute-api.us-east-1.amazonaws.com/release/updateContent",
+    contentNetwork: "mainnet",
   },
   devnet: {
     // Cluster.
@@ -88,6 +91,7 @@ export const networks: Networks = {
     ),
     forgeContentProvider:
       "https://aszi9kd696.execute-api.us-east-1.amazonaws.com/dev/updateContent",
+    contentNetwork: "devnet",
   },
   // Fill in with your local cluster addresses.
   localhost: {
@@ -99,6 +103,7 @@ export const networks: Networks = {
       "ForgeHXbqRF4ssv7QVn9NHkQx4hqUDXrWaJ9EGywjTqv"
     ),
     forgeContentProvider: "http://127.0.0.1:5000/updateContent",
+    contentNetwork: "localhost",
   },
 };
 
@@ -121,4 +126,5 @@ export type Network = {
   forgeProgramId: PublicKey;
   forgeUpgradeAuthority?: PublicKey;
   forgeContentProvider: string;
+  contentNetwork: string;
 };

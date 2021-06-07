@@ -43,7 +43,7 @@ export function TokenAccount(props: {
   const { tokenAccount } = useTokenAccount();
   const { network, contentProvider } = useSelector((state: StoreState) => {
     return {
-      network: state.common.network.explorerClusterSuffix,
+      network: state.common.network.contentNetwork,
       contentProvider: state.common.network.forgeContentProvider,
     };
   });

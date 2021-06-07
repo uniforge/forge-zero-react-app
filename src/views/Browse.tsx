@@ -18,7 +18,7 @@ export function BrowseView(props: { height: number }) {
   // const [sortAsc, setSortAsc] = useState<boolean>(false);
   const { network } = useSelector((state: StoreState) => {
     return {
-      network: state.common.network.explorerClusterSuffix,
+      network: state.common.network.contentNetwork,
       contentProvider: state.common.network.forgeContentProvider,
     };
   });

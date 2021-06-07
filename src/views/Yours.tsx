@@ -18,7 +18,7 @@ export function YoursView(props: { height: number; setActivePage?: any }) {
   const [balanceSol, setBalanceSol] = useState<number>(0);
   const { network } = useSelector((state: StoreState) => {
     return {
-      network: state.common.network.explorerClusterSuffix,
+      network: state.common.network.contentNetwork,
     };
   });
 

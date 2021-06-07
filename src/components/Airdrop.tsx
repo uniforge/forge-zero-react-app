@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { Button, message, notification } from "antd";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { useWallet } from "../contexts/WalletProvider";

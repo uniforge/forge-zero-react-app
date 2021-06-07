@@ -1,5 +1,5 @@
 import { useEffect, useState, ReactElement } from "react";
-import { Link, useHistory, generatePath } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   Layout,
@@ -12,7 +12,7 @@ import {
   notification,
 } from "antd";
 import { CloseOutlined, UserOutlined } from "@ant-design/icons";
-import { State as StoreState, ActionType } from "../store/reducer";
+import { State as StoreState, ActionType, networks } from "../store/reducer";
 import { useWallet } from "../contexts/WalletProvider";
 import { useTokenAccount } from "../contexts/TokenAccountProvider";
 import { useForge } from "../contexts/ForgeProvider";
@@ -28,6 +28,46 @@ notification.config({
   rtl: true,
   placement: "topLeft",
 });
+
+function NetworkSelector(props: any) {
+  const { network } = useSelector((state: StoreState) => {
+    return {
+      network: state.common.network,
+    };
+  });
+  const dispatch = useDispatch();
+
+  function handleChange(value: any) {
+    switch (value) {
+      case "Localhost":
+        dispatch({
+          type: ActionType.CommonSetNetwork,
+          item: { network: networks.localhost },
+        });
+        break;
+      case "Devnet":
+        dispatch({
+          type: ActionType.CommonSetNetwork,
+          item: { network: networks.devnet },
+        });
+        break;
+      case "Mainnet":
+        dispatch({
+          type: ActionType.CommonSetNetwork,
+          item: { network: networks.mainnet },
+        });
+        break;
+    }
+  }
+
+  return (
+    <Select defaultValue={network.label} onChange={handleChange}>
+      <Option value="Localhost">Localhost</Option>
+      <Option value="Devnet">Devnet</Option>
+      <Option value="Mainnet">Mainnet Beta</Option>
+    </Select>
+  );
+}
 
 type WalletConnectButtonProps = {
   setActivePage: any;
@@ -78,15 +118,6 @@ export function WalletConnectButton(
       setKey(key + 1);
       props.setActivePage("/yours");
       history.push("/yours");
-      // const onSearch = (value: string) => {
-      //   if (value !== "") {
-      //     const newPath = generatePath("/listAccount/:pubKey", {
-      //       pubKey: value,
-      //     });
-      //     history.push(newPath);
-      //   }
-      // };
-      // onSearch(wallet.publicKey.toBase58());
     });
   }, [wallet, dispatch, key, setTokenAccountState]);
 
@@ -173,16 +204,21 @@ export function Navigation(props: { activePage: string; setActivePage: any }) {
         style={{ width: 500 }}
       /> */}
       <Col flex="auto"></Col>
-      {!wallet.publicKey ? (
-        <WalletConnectButton
-          style={{
-            display: wallet.publicKey ? "none" : "",
-          }}
-          setActivePage={props.setActivePage}
-        />
-      ) : (
-        <UserSelector />
-      )}
+      <Space>
+        {/* <Col>
+          <NetworkSelector />
+        </Col> */}
+        {!wallet.publicKey ? (
+          <WalletConnectButton
+            style={{
+              display: wallet.publicKey ? "none" : "",
+            }}
+            setActivePage={props.setActivePage}
+          />
+        ) : (
+          <UserSelector />
+        )}
+      </Space>
     </Header>
   );
 }

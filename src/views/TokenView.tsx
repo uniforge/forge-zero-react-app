@@ -32,7 +32,7 @@ export function TokenView(props: { height: number; setActivePage?: any }) {
   const { forge } = useForge();
   const { network } = useSelector((state: StoreState) => {
     return {
-      network: state.common.network.explorerClusterSuffix,
+      network: state.common.network.contentNetwork,
     };
   });
   const [metadata, setMetadata] = useState<TokenMetadata>();
@@ -181,11 +181,11 @@ export function TokenView(props: { height: number; setActivePage?: any }) {
         </Col>
       </Row>
       <Row style={{ paddingBottom: "1.6em" }}>
-        {metadata?.attributes.map((attribute) => {
+        {metadata?.attributes.map((attribute, index) => {
           return (
-            <Col span={24}>
+            <Col key={index} span={24}>
               <Text type="secondary" className="attribute-name">
-                {attribute.name}
+                {attribute.name.replace(/[0-9]/g, "")}
               </Text>
             </Col>
           );
