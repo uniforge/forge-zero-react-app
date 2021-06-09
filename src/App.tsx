@@ -13,6 +13,7 @@ import { Navigation } from "./components/Navigation";
 import { Layout } from "antd";
 import "./App.css";
 import { useState, useLayoutEffect } from "react";
+import { TechView } from "./views/TechView";
 
 const { Content, Footer } = Layout;
 
@@ -77,6 +78,10 @@ function App() {
                           setActivePage={setActivePage}
                         />
                       )}
+                    />
+                    <Route
+                      path="/tech"
+                      component={() => <TechView height={height} />}
                     />
                     <Route
                       path="/marketplace"

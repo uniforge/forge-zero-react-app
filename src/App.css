@@ -14,6 +14,21 @@
   text-align: justify;
 }
 
+.tech-text {
+  font-size: 14pt;
+  text-align: justify;
+}
+
+.tech-attrs {
+  text-decoration: none;
+  color: black;
+}
+
+.tech-attrs:hover {
+  text-decoration: none;
+  background-color: aquamarine;
+}
+
 .builton {
   background-image: url("./builton.svg");
   width: 300px;
