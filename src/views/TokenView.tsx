@@ -14,6 +14,7 @@ import { SearchQuery } from "../components/SearchQuery";
 import { PixelArt } from "../components/PixelArt";
 import { Token, TokenMetadata } from "../types";
 import { LABELS } from "../constants";
+import { useExplorerQueryString } from "../utils";
 
 const { Text, Title } = Typography;
 
@@ -38,6 +39,8 @@ export function TokenView(props: { height: number; setActivePage?: any }) {
     "/" +
     FORGE_ID.toBase58() +
     "/";
+
+  const queryString = useExplorerQueryString();
 
   useEffect(() => {
     fetch(
@@ -92,7 +95,7 @@ export function TokenView(props: { height: number; setActivePage?: any }) {
     imgUriBase + "cover_" + String(token.id).padStart(9, "0") + ".png";
   const insertUri =
     imgUriBase + "insert_" + String(token.id).padStart(9, "0") + ".png";
-
+  const explurl = "https://explorer.solana.com/tx/" + metadata?.tx + "?" + queryString;
   return (
     <div
       className="site-layout-background"
@@ -158,6 +161,11 @@ export function TokenView(props: { height: number; setActivePage?: any }) {
             </Col>
           </Row>
         </Col>
+        <Row>
+          <Col span={24} style={{ textAlign: "right" }}>
+        <Title level={2}><a href={explurl} target="_blank">View Token Transaction In The Block Explorer</a></Title>
+        </Col>
+        </Row>
       </Row>
       <Row>
         <Col>
