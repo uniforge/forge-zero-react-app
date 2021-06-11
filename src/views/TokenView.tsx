@@ -161,11 +161,6 @@ export function TokenView(props: { height: number; setActivePage?: any }) {
             </Col>
           </Row>
         </Col>
-        <Row>
-          <Col span={24} style={{ textAlign: "right" }}>
-        <Title level={2}><a href={explurl} target="_blank">View Token Transaction In The Block Explorer</a></Title>
-        </Col>
-        </Row>
       </Row>
       <Row>
         <Col>
@@ -191,6 +186,11 @@ export function TokenView(props: { height: number; setActivePage?: any }) {
           );
         })}
       </Row>
+      <Row>
+          <Col span={24} style={{ textAlign: "center" }}>
+        <Title level={2}><a href={explurl} target="_blank" rel="noreferrer">View Token Transaction In The Block Explorer</a></Title>
+        </Col>
+        </Row>
       {showJSON ? (
         <Row>
           <Col>
