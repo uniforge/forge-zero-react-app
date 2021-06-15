@@ -7,6 +7,7 @@ import {
   FieldNumberOutlined,
   LeftOutlined,
   RightOutlined,
+  createFromIconfontCN,
 } from "@ant-design/icons";
 import { FORGE_ID } from "../constants";
 import { useForge } from "../contexts/ForgeProvider";
@@ -15,6 +16,9 @@ import { PixelArt } from "../components/PixelArt";
 import { Token, TokenMetadata } from "../types";
 import { LABELS } from "../constants";
 import { useExplorerQueryString } from "../utils";
+
+
+
 
 const { Text, Title } = Typography;
 
@@ -41,6 +45,9 @@ export function TokenView(props: { height: number; setActivePage?: any }) {
     "/";
 
   const queryString = useExplorerQueryString();
+  const IconFont = createFromIconfontCN({
+    scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',
+  });
 
   useEffect(() => {
     fetch(
@@ -108,7 +115,7 @@ export function TokenView(props: { height: number; setActivePage?: any }) {
         </Col>
         <Col flex="auto"></Col>
       </Row>
-      <Row>
+      <Row style={{ paddingBottom: "2.6em" }}>
         <Col>
           <Title level={1}>
             <FieldNumberOutlined />
@@ -126,8 +133,10 @@ export function TokenView(props: { height: number; setActivePage?: any }) {
             <RightOutlined onClick={() => goToToken(token.id + 1)} />
           </Title>
         </Col>
+        <Col span={24}>
+        <Title level={5} style={{marginTop: "-1.0em"}}><a href={explurl} target="_blank" rel="noreferrer"><Text type="secondary">{metadata?.tx}</Text></a></Title>
+        </Col>
       </Row>
-
       <Row gutter={[64, 0]} style={{ paddingBottom: "1.5em" }}>
         <Col xs={24} md={12}>
           <Row gutter={[0, 0]}>
@@ -186,11 +195,6 @@ export function TokenView(props: { height: number; setActivePage?: any }) {
           );
         })}
       </Row>
-      <Row>
-          <Col span={24} style={{ textAlign: "center" }}>
-        <Title level={2}><a href={explurl} target="_blank" rel="noreferrer">View Token Transaction In The Block Explorer</a></Title>
-        </Col>
-        </Row>
       {showJSON ? (
         <Row>
           <Col>
