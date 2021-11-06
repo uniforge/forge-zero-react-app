@@ -27,7 +27,7 @@ export function PixelArt(props: {
   }, [canvasRef, imgRef]);
 
   return (
-    <div className={props.className} onClick={props.onClick}>
+    <div className={props.className} onClick={props.onClick} style={{ position: "sticky" }}>
       <canvas
         ref={canvasRef}
         width={props.width}
